@@ -1,0 +1,36 @@
+{# HOW TO USE IT #}
+
+{# 
+{% include 'components/lists/list-decimal.html.twig' with {
+    data: [
+        'Item 1',
+        'Item 2',
+        'Item 3',
+        'Item 4',
+        'Item 5',
+    ]}%} 
+#}
+
+{# /HOW TO USE IT #}
+
+{# WHAT DOES IT DO #}
+
+{# 
+    This component is a list component. It takes in an array of data and outputs it as a list.
+#}
+
+{# /WHAT DOES IT DO #}
+
+{# PATH #}
+
+{# 
+    components/lists/list-decimal.html.twig
+#}
+
+{# /PATH #}
+
+<ol class='space-y-2.5  w-min'>
+    {% for item in data %}
+        <li class="space-x-2.5"><span class="text-[#49AB9A]">{{  loop.index  }}.</span><span>{{ item }}</span></li>
+    {% endfor %}
+</ol>
