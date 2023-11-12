@@ -30,7 +30,7 @@
 
 {# MORE #}
 
-{# The value of the icon has to be a string of the path to the icon wanted (use the icon inside the buttons icon folder) #}
+{# The value of the icon has to be a string of the ion icon https://icon-sets.iconify.design/ion/ #}
 
 {# /MORE #}
 
@@ -38,13 +38,13 @@
     <div class="w-min text-white text-xl bg-[#49AB9A] rounded-full px-7 py-2 hover:bg-[#337D70] duration-100 flex items-center justify-center space-x-2.5">
    
         {% if icon_left is defined %}
-            <span>{% include icon_left with {color: 'white'} %}</span>
+            <ion-icon name="{{ icon_left }}" class="text-2xl"></ion-icon>
         {% endif %}
 
         <span>{{ content | default('CALLOUT') }}</span>
 
         {% if icon_right is defined %}
-        <span>{% include icon_right with {color: 'white'} %}</span>
+            <ion-icon name="{{ icon_right }}" class="text-2xl"></ion-icon>
         {% endif %}
 
     </div>
