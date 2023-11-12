@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./assets/**/*.js", "./templates/**/*.html.twig"],
+  content: ["./assets/**/*.js","./assets/**/*.scss", "./templates/**/*.html.twig"],
   theme: {
     extend: {
       colors: {
@@ -13,10 +13,13 @@ module.exports = {
           600: "#3D8E80",
         },
         secondary: "#0A1B3A",
+        secondaryLight: "#21295C",
         white: "#F5F5F5",
         black: "#1E1E1E",
       },
     },
   },
-  plugins: [],
+  plugins: [
+      require("@tailwindcss/forms"),
+  ],
 };
