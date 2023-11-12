@@ -1,0 +1,42 @@
+[type="checkbox"]{
+  @apply rounded cursor-pointer border-2 border-primary-100 focus:ring-0 checked:bg-primary-100 checked:focus:bg-primary-100;
+}
+
+form > div{
+  @apply flex flex-wrap;
+
+  --gap-y : 25px; // make scss var
+  --gap-y-demi : calc(var(--gap-y) / 2);
+  --gap-x : 30px; // make scss var
+  --gap-x-demi : calc(var(--gap-x) / 2);
+
+  gap: var(--gap-y) var(--gap-x);
+  padding-bottom: var(--gap-y);
+
+  /* Generate input group sizes available */
+  /* All the other elements have to take the whole row size */
+  > *:not([class^="input-"]){
+    flex : 0 0 100%;
+  }
+
+  $sizes: (
+        75: 75%,
+        66: 66%,
+        50: 50%,
+        33: 33%,
+        25: 25%,
+  );
+
+  @each $className, $sizes in $sizes {
+    .input-#{$className} {
+      flex: 0 0 calc(#{$sizes} - var(--gap-x-demi));
+    }
+  }
+
+  /* On mobile devices all the form elements have to take the whole row size */
+  @media screen and (max-width: 768px) {
+    & > *{
+        flex : 0 0 100% !important;
+    }
+  }
+}
