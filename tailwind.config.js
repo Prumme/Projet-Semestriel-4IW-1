@@ -1,6 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./assets/**/*.js","./assets/**/*.scss", "./templates/**/*.html.twig"],
+  content: [
+    "./assets/**/*.js",
+    "./assets/**/*.scss",
+    "./templates/**/*.html.twig",
+  ],
   theme: {
     extend: {
       colors: {
@@ -14,17 +18,19 @@ module.exports = {
           700: "#54C7B7",
           800: "#2E7881",
         },
-        secondary: "#0A1B3A",
-        secondaryLight: "#21295C",
-        white: "#F5F5F5",
+        secondary: "#1E143B",
+        white: "#F2F4F8",
         black: "#1E1E1E",
+        secondary_light: "#21295C",
+        primary_darken: "#337D70",
+        danger: "#F34E29",
+        warning: "#FFD339",
+        disabled: "#BEDFD9",
       },
       // fontFamily: {
       //   sans: ["Lexend", "sans-serif"],
       // },
     },
   },
-  plugins: [
-      require("@tailwindcss/forms"),
-  ],
+  plugins: [require("@tailwindcss/forms")],
 };
