@@ -6,13 +6,13 @@
         <h1 class="text-[230px] font-semibold text-[#21295C] opacity-10 leading-none translate-y-12 translate-x-32 -z-10">404</h1>
         {% include 'svg/illustrations/404.svg.twig' %}
         <section class="flex flex-col justify-end">
-            <h1>Oooops</h1>
+            {% include 'components/titles/title.html.twig' with {text: 'Oooops', underline: true, color: '#21295C'} %}
             <h2 class="mt-6 text-black text-2xl">When Adventure Takes You Farther.</h2>
             <p class="mt-7 w-3/5 mb-5 text-black text-base">This page is missing or assembled the link incorrectly</p>
             {% include 'components/buttons/button_link.html.twig' with {
                 content: 'Take Me Back to the Trail',
                 link: '/',
-                icon_left: 'svg/buttons/left-arrow.svg.twig'
+                icon_left: 'arrow-back-circle-outline'
             } %}
         </section>
         </div>
