@@ -1,0 +1,8 @@
+<div class="bg-{{ bg_color | default('primary') }} inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full text-{{ text_color | default('white') }} border-2 border-{{ border_color | default('primary') }}"> 
+    {% if close_icon %}
+        {% include 'svg/chips-pills/close.svg.twig' with {'svg_fillColor': svg_fillColor}%}
+    {% endif %}
+    <p>
+        {{ label }}
+    </p>
+</div>
