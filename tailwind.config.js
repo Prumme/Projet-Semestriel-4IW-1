@@ -5,6 +5,16 @@ module.exports = {
     "./assets/**/*.scss",
     "./templates/**/*.html.twig",
   ],
+  safelist: [
+    "bg-primary",
+    "bg-secondary",
+    "bg-warning",
+    "bg-danger",
+    "border-primary",
+    "border-secondary",
+    "border-warning",
+    "border-danger",
+  ],
   theme: {
     extend: {
       colors: {
