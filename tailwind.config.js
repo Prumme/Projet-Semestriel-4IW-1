@@ -14,6 +14,11 @@ module.exports = {
     "border-secondary",
     "border-warning",
     "border-danger",
+    "fill-danger",
+    "fill-warning",
+    "fill-white",
+    "hover:bg-white",
+    "hover:text-primary",
   ],
   theme: {
     extend: {
