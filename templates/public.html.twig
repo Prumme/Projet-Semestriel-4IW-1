@@ -17,19 +17,18 @@
         {% endblock %}
     </head>
     <body class="w-[100vw] h-[100vh]">
-        <div class="flex w-full h-full">
         <section class="hidden lg:block w-1/2 bg-primary-500 h-full relative overflow-hidden">
             <div class="absolute top-0 -left-1">
             {% include 'svg/mark-1.svg.twig' %}
-            </div>
-            <div class="absolute top-5 -right-1">
+        </div>
+        <div class="absolute top-5 -right-1">
             {% include 'svg/mark-2.svg.twig' %}
-            </div>
-            <div class="absolute bottom-0 left-1/2 -translate-x-1/2">
+        </div>
+        <div class="absolute bottom-0 left-1/2 -translate-x-1/2">
             {% include 'svg/mark-3.svg.twig' %}
-            </div>
-            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col justify-center">
-                <div class="flex justify-center">
+        </div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col justify-center">
+            <div class="flex justify-center">
                 {% include 'svg/logo.svg.twig' %}
                 </div>
                 <h1 class="text-white text-6xl text-center my-6">{% block div_title %}Welcome!{% endblock %}</h1>
@@ -39,15 +38,19 @@
         <div class="w-full lg:w-1/2">
         {% block body %}{% endblock %}
         </div>
+    </section>
+    <div class="w-1/2">
+        
+    </div>
+</div>
+
+{% for type, flashMessages in app.flashes %}
+    {% for message in flashMessages %}
+        <div class="alert alert-{{ type }}">
+            {{ message }}
         </div>
-        {% for type, flasheMessages in app.flashes %}
-            {% for message in flasheMessages %}
-                <div class="alert alert-{{ type }}">
-                    {{ message }}
-                </div>
+    {% endfor %}
+{% endfor %}
 
-            {% endfor %}
-        {% endfor %}
-
-    </body>
+</body>
 </html>
