@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+Landing Page
+{% endblock %}
+{% block body %}
+
+<section></section>
+
+<div class="mx-24">
+    <section class="w-full  flex justify-between h-[422px]">
+        <div class="flex flex-col justify-center w-2/5 h-full font-thin">
+            <h2 class="mb-[51px] text-4xl text-[#1E143B]">Over 30K+ Hunters Satisfied, Will You Be Next ?</h2>
+            {% include 'components/buttons/button_link.html.twig' with {content: 'Discover Our Offers', link: '/#ourOffers'} %}
+        </div>
+        <div class="w-1/2 h-full relative">
+            <div class="absolute top-0 left-0">{% include 'svg/streaks.svg.twig' %}</div>
+            <div class="absolute bottom-0 right-0">{% include 'svg/streaks.svg.twig' %}</div>
+            <div class="absolute z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4/5 h-4/5 bg-white">card-caroussel</div>
+        </div>
+    </section>
+
+    <section class="mt-32 w-full flex flex-col items-center">
+        <h2 class="text-4xl text-[#1E143B] mb-[51px]">Unleash Terrifyingly  Features</h2>
+        <div class="flex justify-evenly space-x-32">
+            <article class="flex flex-col justify-end items-center text-center">
+                {% include 'svg/illustrations/email-notification.svg.twig' %}
+                <h1 class="text-2xl whitespace-nowrap mt-10 mb-5">Email Notification</h1>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi.</p>
+            </article>
+
+            <article class="flex flex-col justify-end items-center text-center">
+                {% include 'svg/illustrations/invoicing.svg.twig' %}
+                <h1 class="text-2xl whitespace-nowrap mt-10 mb-5">Invoicing</h1>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi.</p>
+            </article>
+            
+            <article class="flex flex-col justify-end items-center text-center">
+                {% include 'svg/illustrations/online-payment.svg.twig' %}
+                <h1 class="text-2xl whitespace-nowrap mt-10 mb-5">Online Payement</h1>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi.</p>
+            </article>
+        </div>
+    </section>
+
+    <section class="mt-32 w-full flex justify-between">
+    <div class="w-1/2">
+    <h2 class="text-4xl text-[#1E143B]">Simplify Your Accounting</h2>
+    <p class="mb-12 mt-9">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris. Maecenas vitae mattis tellus.</p>
+    {% include 'components/buttons/button_link.html.twig' with {content: 'Know more'} %}
+    </div>
+    <div class="w-[600px] h-[246px] bg-[#3B908D] rounded-md"></div>
+    </section>
+
+    <section class="mt-32 w-full flex justify-between">
+    <div class="w-[600px] h-[246px] bg-[#3B908D] rounded-md"></div>
+    <div class="w-1/2">
+    <h2 class="text-4xl text-[#1E143B]">Get Clarity in Your Payments</h2>
+    <p class="mb-12 mt-9">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris. Maecenas vitae mattis tellus.</p>
+    {% include 'components/buttons/button_link.html.twig' with {content: 'Know more'} %}
+    </div>
+    </section>
+
+    <section id="ourOffers" class="mt-32 mb-32 w-full flex flex-col items-center">
+        <h2 class="text-4xl text-[#1E143B] mb-[51px]">Our Pricing</h2>
+        <div class="flex relative space-x-14">
+            <a href="#" class="text-[#49AB9A] underline">Monthly</a>
+            <a href="#">Annualy</a>
+            <span class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-[110%] text-xs text-white bg-[#49AB9A] px-4 py-2 rounded-full">Save up 20%</span>
+        </div>
+    </section>
+</div>
+
+{% endblock %}
