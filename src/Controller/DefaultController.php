@@ -16,11 +16,10 @@ class DefaultController extends AbstractController
         ]);
     }
 
-    #[Route('/say-my-name/{name}', name: 'default_say_my_name')]
-    public function sayMyName(String $name): Response
+    public function home(): Response
     {
-        return $this->render('default/index.html.twig', [
-            'controller_name' => $name,
+        return $this->render('base.html.twig', [
+            'controller_name' => 'DefaultController',
         ]);
     }
 }
