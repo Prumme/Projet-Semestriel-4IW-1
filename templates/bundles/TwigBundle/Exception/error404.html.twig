@@ -1,12 +1,16 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="absolute w-full h-full top-0 flex justify-center items-center -translate-x-16">
-        <div class="flex">
-        <h1 class="text-[230px] font-semibold text-[#21295C] opacity-10 leading-none translate-y-12 translate-x-32 -z-10">404</h1>
+    <div class="absolute w-full h-full top-0 flex justify-center items-center lg:-translate-x-16 text-center lg:text-left">
+        <div class="flex flex-col lg:flex-row translate-y-24 lg:translate-y-0">
+        <h1 class="text-center text-[110px] lg:text-[230px] font-semibold text-[#21295C] opacity-10 leading-none lg:translate-y-12 lg:translate-x-32 -z-10">404</h1>
+        <div class="w-[160px] h-[120px] lg:w-[392px] lg:h-[310px] self-center">
         {% include 'svg/illustrations/404.svg.twig' %}
-        <section class="flex flex-col justify-end">
-            {% include 'components/titles/title.html.twig' with {text: 'Oooops', underline: true, color: '#21295C'} %}
+
+        </div>
+        <section class="flex flex-col justify-end items-center lg:items-start ">
+        {% include 'components/titles/title.html.twig' with {text: 'Oooops', underline: true, color: '#21295C'} %}
+
             <h2 class="mt-6 text-black text-2xl">When Adventure Takes You Farther.</h2>
             <p class="mt-7 w-3/5 mb-5 text-black text-base">This page is missing or assembled the link incorrectly</p>
             {% include 'components/buttons/button_link.html.twig' with {
