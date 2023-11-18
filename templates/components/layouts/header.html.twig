@@ -28,9 +28,13 @@
           </a>
         </div>
       </div>
-      <div class="flex items-center">
+      <div class="flex items-center text-lg gap-4">
+        <a href="#responsive-header" class="block mt-4 lg:inline-block lg:mt-0 text-white text-sm hover:text-primary-100 ml-5 ">
+            Contact Us
+          </a>
          {% include 'components/buttons/button_link.html.twig' with {
                 content: 'Login',
+                size: "sm",
                 link: '/',
             } %}
       </div>
