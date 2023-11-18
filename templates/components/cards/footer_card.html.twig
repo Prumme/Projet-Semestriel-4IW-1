@@ -1,19 +1,21 @@
-<div class="grid grid-col-12 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-primary-600 bg-gradient-to-r from-primary-100 via-transparent to-primary-800 rounded-xl flex items-center justify-center">
-    <div class="p-5">
-        <div class="">
-            <h1 class="text-2xl lg:text-5xl text-white font-bold">Try Apagnan today!</h1>
-            <ul class="flex flex-wrap text-white mt-3">
+<div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-primary-600 bg-gradient-to-r from-primary-100 via-transparent to-primary-800 rounded-xl md:flex items-center justify-center hidden">
+    <div class="flex px-12 py-11 space-x-12">
+        <div class="flex flex-col">
+            <h2 class="text-white font-bold">Try Apagnan today!</h2>
+            <ul class="flex flex-wrap text-white mt-5 text-sm">
                 <li class="mr-2 mb-2">Secure</li>
                 <li class="mr-2 mb-2">Scalability</li>
                 <li class="mr-2 mb-2">Unbeatable prices</li>
-                <li class="mr-2 mb-2">Pricing</li>
             </ul>
         </div>
 
         <div class="flex justify-end items-center">
-            <a href="#" class="bg-white bg-opacity-50 text-white font-semibold px-4 py-2 rounded-full transition duration-300 ease-in-out hover:bg-opacity-75 focus:outline-none focus:ring focus:border-blue-300">
-                Get started now
-            </a>
+            {% include 'components/buttons/button_link.html.twig' with {
+                'content': 'Get started now',
+                'link': 'https://apagnan.com',
+                'icon_right': 'arrow-forward-circle-outline',
+                'class': 'bg-white bg-opacity-50 text-white font-semibold px-4 py-2 rounded-full transition duration-300 ease-in-out hover:bg-opacity-75 focus:outline-none focus:ring focus:border-blue-300'
+            }%}
         </div>
     </div>
 </div>
