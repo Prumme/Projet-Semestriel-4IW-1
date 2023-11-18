@@ -33,7 +33,18 @@
 
 {# /PATH #}
 
-<div class="bg-{{ bg_color | default('primary') }} inline-flex items-center gap-2.5 px-4 py-1.5 rounded-xl text-{{ text_color | default('white') }} border-2 border-{{ border_color | default('primary') }} hover:bg-{{ text_color | default('white') }} hover:text-{{ bg_color | default('primary') }} duration-100 ease-in-out"> 
+
+{# Set Variable if not defined #}
+{% if svg_fillColor is not defined %}
+{% set svg_fillColor = 'white' %}
+{% endif %}
+
+{% if close_icon is not defined %}
+{% set close_icon = false %}
+{% endif %}
+
+
+<div class="bg-{{ bg_color | default('primary') }} inline-flex items-center gap-2.5 px-4 py-1.5 rounded-xl text-{{ text_color | default('white') }} border-2 border-{{ border_color | default('primary') }} {{ close_icon ?'hover:scale-105 duration-300 ease-in-out cursor-pointer': '' }}"> 
     {% if close_icon %}
         {% include 'svg/chips-pills/close.svg.twig' with {'svg_fillColor': svg_fillColor}%}
     {% endif %}
