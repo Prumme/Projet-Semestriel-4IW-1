@@ -18,8 +18,8 @@
         {% endblock %}
         
     </head>
-    <body class="w-[100vw] h-[100vh]">
-        {% include 'components/nav/navbar.html.twig' %}
+    <body class="w-[100vw] h-[100vh] relative">
+        {% include 'components/layouts/header.html.twig' %}
 
         {% block body %}
         {% endblock %}
@@ -33,5 +33,6 @@
 
             {% endfor %}
         {% endfor %}
+    {% include 'components/layouts/footer.html.twig' %}
     </body>
 </html>
