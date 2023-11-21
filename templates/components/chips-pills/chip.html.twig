@@ -4,10 +4,7 @@
 {% include 'components/chips-pills/chip.html.twig' with {
         'label': 'Chip 1', -- OPTIONAL
         'close_icon': true, 
-        'bg_color':'warning', -- OPTIONAL
-        'svg_fillColor': 'white', -- OPTIONAL
-        'text_color': 'white', -- OPTIONAL
-        'border_color': 'warning' -- OPTIONAL
+        'type' : 'primary', -- OPTIONAL
         } 
     %}
 
@@ -33,20 +30,14 @@
 
 {# /PATH #}
 
-
-{# Set Variable if not defined #}
-{% if svg_fillColor is not defined %}
-{% set svg_fillColor = 'white' %}
-{% endif %}
-
 {% if close_icon is not defined %}
 {% set close_icon = false %}
 {% endif %}
 
 
-<div class="bg-{{ bg_color | default('primary') }} inline-flex items-center gap-2.5 px-4 py-1.5 rounded-xl text-{{ text_color | default('white') }} border-2 border-{{ border_color | default('primary') }} {{ close_icon ?'hover:scale-105 duration-300 ease-in-out cursor-pointer': '' }}"> 
+<div class="bg-{{ type | default('primary') }} inline-flex items-center gap-2.5 px-4 py-1.5 rounded-xl text-white border-2 border-{{ type | default('primary') }}"> 
     {% if close_icon %}
-        {% include 'svg/chips-pills/close.svg.twig' with {'svg_fillColor': svg_fillColor}%}
+        {% include 'svg/chips-pills/close.svg.twig' %}
     {% endif %}
     <p>
         {{ label | default('Chip')}}

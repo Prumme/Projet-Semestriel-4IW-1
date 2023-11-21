@@ -6,19 +6,10 @@ module.exports = {
     "./templates/**/*.html.twig",
   ],
   safelist: [
-    "bg-primary",
-    "bg-secondary",
-    "bg-warning",
-    "bg-danger",
-    "border-primary",
-    "border-secondary",
-    "border-warning",
-    "border-danger",
-    "fill-danger",
-    "fill-warning",
-    "fill-white",
-    "hover:bg-white",
-    "hover:text-primary",
+    {
+      pattern: /(bg|text|border|fill)-.*/,
+      variants: ["hover"],
+    },
   ],
   theme: {
     extend: {
