@@ -92,6 +92,39 @@ Landing Page
                 <a href="#">Annualy</a>
                 <span class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-[110%] text-xs text-white bg-[#49AB9A] px-4 py-2 rounded-full">Save up 20%</span>
             </div>
+
+            <div class="relative p-20 flex space-x-16">
+            {% include 'components/cards/price_card.html.twig' with {
+                title: "Personal",
+                bestSeller: false,
+                description: "Lorem ipsum dolor sit amet consectetur.",
+                advantages: ['item', 'items2'],
+                price: 0.99,
+                link: "#",
+            } %} 
+
+            {% include 'components/cards/price_card.html.twig' with {
+                title: "Team",
+                bestSeller: true,
+                description: "Lorem ipsum dolor sit amet consectetur.",
+                advantages: ['item', 'items2'],
+                price: 0.99,
+                link: "#",
+            } %} 
+
+            {% include 'components/cards/price_card.html.twig' with {
+                title: "Entreprise",
+                bestSeller: false,
+                description: "Lorem ipsum dolor sit amet consectetur.",
+                advantages: ['item', 'items2'],
+                price: 0.99,
+                link: "#",
+            } %} 
+
+             <div class="absolute top-0  z-0 right-1/2 -translate-x-8 -translate-y-4 opacity-80">{% include 'svg/streaks.svg.twig' with {color: '#49AB9A'} %}</div>
+             <div class="absolute z-20 bottom-0 left-1/2  opacity-80">{% include 'svg/streaks.svg.twig' with {color: '#49AB9A'} %}</div>
+            </div>
+            
         </section>
     </div>
 </div>
