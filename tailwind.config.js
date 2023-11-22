@@ -1,9 +1,22 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./assets/**/*.js","./assets/**/*.scss", "./templates/**/*.html.twig"],
+  content: [
+    "./assets/**/*.js",
+    "./assets/**/*.scss",
+    "./templates/**/*.html.twig",
+  ],
+  safelist: [
+    {
+      pattern: /(bg|text|border|fill)-.*/,
+      variants: ["hover"],
+    },
+  ],
   theme: {
     extend: {
       colors: {
+        primary: "#49AB9A",
+        secondary: "#1E143B",
+        white: "#F2F4F8",
         primary: {
           100: "#49AB9A",
           200: "#3E9E8D",
@@ -18,13 +31,16 @@ module.exports = {
         secondaryLight: "#21295C",
         white: "#F5F5F5",
         black: "#1E1E1E",
+        secondary_light: "#21295C",
+        primary_darken: "#337D70",
+        danger: "#F34E29",
+        warning: "#FFD339",
+        disabled: "#BEDFD9",
       },
       // fontFamily: {
       //   sans: ["Lexend", "sans-serif"],
       // },
     },
   },
-  plugins: [
-      require("@tailwindcss/forms"),
-  ],
+  plugins: [require("@tailwindcss/forms")],
 };
