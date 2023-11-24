@@ -1,39 +1,3 @@
-{# HOW TO USE IT #}
-
-{#
-{% include 'components/buttons/button_link.html.twig' with {
-    content: 'CALLOUT', -- OPTIONAL
-    link: '#', -- OPTIONAL
-    icon_left: 'icon', -- OPTIONAL
-    icon_right: 'icon', -- OPTIONAL
-} %}
-#}
-
-{# /HOW TO USE IT #}
-
-{# WHAT DOES IT DO #}
-
-{#
-This component is a button with a link.
-It can be used to create a redirect button.
-#}
-
-{# /WHAT DOES IT DO #}
-
-{# PATH #}
-
-{#
-components/buttons/button_link.html.twig
-#}
-
-{# /PATH #}
-
-{# MORE #}
-
-{# The value of the icon has to be a string of the ion icon https://icon-sets.iconify.design/ion/ #}
-
-{# /MORE #}
-
 <div class="inline-flex flex-col {{ class|default('') }}">
     {% if label is defined %}
         {% include 'components/inputs/formLabel.html.twig' with {
