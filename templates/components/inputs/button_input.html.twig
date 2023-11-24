@@ -1,0 +1,8 @@
+<button type="submit" class="text-white text-{{ size | default('base') }} bg-primary-500 rounded-full px-7 py-2 hover:bg-primary-600 duration-100 inline-flex items-center justify-center space-x-2.5">
+    <div class="inline-flex items-center gap-2">
+        {% if(icon is defined) %}
+            <ion-icon name="{{ icon }}" class="text-2xl"></ion-icon>
+        {% endif %}
+        <span>{{ content | upper }}</span>
+    </div>
+</button>

@@ -1,9 +1,13 @@
 [type="checkbox"]{
-  @apply rounded cursor-pointer border-2 border-primary-100 focus:ring-0 checked:bg-primary-100 checked:focus:bg-primary-100;
+  @apply rounded cursor-pointer border-2 border-primary-500 focus:ring-0 checked:bg-primary-500 checked:focus:bg-primary-500;
+}
+form input{
+  font-size: calc(14 / 16 * 1rem);
 }
 
 form > div{
   @apply flex flex-wrap;
+
 
   --gap-y : 25px; // make scss var
   --gap-y-demi : calc(var(--gap-y) / 2);
