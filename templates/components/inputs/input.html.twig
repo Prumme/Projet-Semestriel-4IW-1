@@ -1,3 +1,17 @@
+{# HOW TO USE IT
+
+{% include 'components/inputs/input.html.twig' with {
+            'label': 'Email' OPT,
+            'name': 'email' OPT,
+            'type': 'email' OPT,
+            'placeholder': 'Email' OPT,
+            'value': last_username OPT,
+            'required': true OPT,
+            'autofocus': true OPT,
+            'icon':'mail' OPT
+} %}
+
+/HOW TO USE IT #}
 <div class="inline-flex flex-col {{ class|default('') }}">
     {% if label is defined %}
         {% include 'components/inputs/formLabel.html.twig' with {
@@ -9,7 +23,7 @@
     <input
             autocomplete="off"
             type="{{ type|default('text') }}"
-            name="{{ name|default('') }}"
+            name="{{ (name ?? label) |default('') }}"
             class="w-full px-0 py-2.5 border-0 border-b-2 border-secondary focus:border-primary-500 text-primary-500 focus:ring-0"
             id="{{ id|default('') }}"
             required="{{ required|default('') }}"
