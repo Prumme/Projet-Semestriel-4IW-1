@@ -34,6 +34,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 45)]
     private ?string $lastname = null;
 
+    #[ORM\ManyToOne(targetEntity: Company::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Company $company;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -78,6 +82,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->roles = $roles;
 
         return $this;
+    }
+
+    public function hasRole($role): bool
+    {
+        return in_array($role, $this->getRoles());
     }
 
     /**
@@ -126,4 +135,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function getCompany(): Company
+    {
+        return $this->company;
+    }
+
+    public function setCompany(Company $company): static
+    {
+        $this->company = $company;
+        return $this;
+    }
+
+
 }
