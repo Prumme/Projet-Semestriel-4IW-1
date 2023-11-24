@@ -22,9 +22,10 @@
 		{% endblock %}
 
 	</head>
-	<body class="w-[100vw] h-[100vh] relative overflow-x-hidden">
-		{% include 'components/layouts/header.html.twig' %}
-
+	<body
+		class="w-[100vw] h-[100vh] relative overflow-x-hidden">
+		{# {% include 'components/layouts/header.html.twig' %} #}
+		{% include 'components/layouts/admin/sidebar.html.twig' %}
 		{% block body %}{% endblock %}
 
 		<br>
@@ -36,6 +37,6 @@
 
 			{% endfor %}
 		{% endfor %}
-		{% include 'components/layouts/footer.html.twig' %}
+		{# {% include 'components/layouts/footer.html.twig' %} #}
 	</body>
 </html>
