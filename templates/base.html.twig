@@ -24,9 +24,12 @@
 	</head>
 	<body
 		class="w-[100vw] h-[100vh] relative overflow-x-hidden">
-		{# {% include 'components/layouts/header.html.twig' %} #}
-		{% include 'components/layouts/admin/sidebar.html.twig' %}
-		{% block body %}{% endblock %}
+		{% include 'components/layouts/header.html.twig' %}
+		
+		{% block content %}
+
+
+		{% endblock %}
 
 		<br>
 		{% for type, flasheMessages in app.flashes %}
