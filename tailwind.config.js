@@ -26,6 +26,7 @@ module.exports = {
           600: "#3D8E80",
           700: "#54C7B7",
           800: "#2E7881",
+          900: "#0E4138",
         },
         secondary: "#1E143B",
         white: "#F2F4F8",
