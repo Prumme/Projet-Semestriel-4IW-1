@@ -1,41 +1,38 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1"/>
-		<title>
-			{% block title %}Welcome!
-			{% endblock %}
-		</title>
-		<link
-		rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-		{# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
-		{% block stylesheets %}
-			{{ encore_entry_link_tags('app_css') }}
-		{% endblock %}
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="icon" href="images/logo.png">
+        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app_css') }}
+        {% endblock %}
 
-		{% block javascripts %}
-			{{ encore_entry_script_tags('app') }}
-			{# IO Icons #}
-			<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-			<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-		{% endblock %}
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+            {# IO Icons #}
+            <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+            <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+        {% endblock %}
+        
+    </head>
+    <body class="w-[100vw] h-[100vh] relative">
+        {% include 'components/layouts/header.html.twig' %}
 
-	</head>
-	<body class="w-[100vw] h-[100vh] relative">
-		{% include 'components/layouts/header.html.twig' %}
+        {% block body %}
+        {% endblock %}
 
-		{% block body %}{% endblock %}
+        <br>
+        {% for type, flasheMessages in app.flashes %}
+            {% for message in flasheMessages %}
+                <div class="alert alert-{{ type }}">
+                    {{ message }}
+                </div>
 
-		<br>
-		{% for type, flasheMessages in app.flashes %}
-			{% for message in flasheMessages %}
-				<div class="alert alert-{{ type }}">
-					{{ message }}
-				</div>
-
-			{% endfor %}
-		{% endfor %}
-		{% include 'components/layouts/footer.html.twig' %}
-	</body>
+            {% endfor %}
+        {% endfor %}
+    {% include 'components/layouts/footer.html.twig' %}
+    </body>
 </html>
