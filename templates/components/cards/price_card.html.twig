@@ -1,0 +1,65 @@
+{# HOW TO USE IT #}
+
+{# 
+{% include 'components/cards/price_card.html.twig' with {
+    title: 'CALLOUT',
+    description: 'Lorem Ipsum',
+    advantages: ['item1', item2', 'item3'],
+    price: 0.99,
+    regular_price: 'month' | 'year', -- DEFAULT: 'month'
+    link: '#,
+    bestSeller: true | false, -- DEFAULT: false
+} %} 
+#}
+
+{# /HOW TO USE IT #}
+
+{# WHAT DOES IT DO #}
+
+{# 
+    Create a vertical card for a price plan
+#}
+
+{# /WHAT DOES IT DO #}
+
+{# PATH #}
+
+{# 
+    components/cards/price_card.html.twig
+#}
+
+{# /PATH #}
+
+{% if bestSeller is not defined %}
+    {% set bestSeller = false %}
+{% endif %}
+
+{% if regular_price is not defined %}
+    {% set regular_price = 'month' %}
+{% endif %}
+
+{% set price = price | number_format(2, '.', ',') %}
+
+<article class="relative bg-[#fff] rounded-md flex flex-col justify-center items-center p-6 space-y-6 text-[#1E143B] z-10 shadow-[#D2D8E9] {{ bestSeller?'shadow-lg -translate-y-5':''}}">
+    {% if bestSeller %}
+        <div class="absolute top-3 left-3 px-3 py-1 text-xs text-white font-light tracking-wide bg-gradient-to-l from-[#49AB9A] to-[#2E7881] rounded-full">
+            Best-seller
+        </div>
+    {% endif %}
+    <h1 class="">{{ title | default('') }}</h1>
+    <h2 class=" font-thin text-sm">{{ description | default('') }}</h2>
+    <hr class="border-[#D9D9D9] border w-full ">
+
+    <div class="">
+    {% include 'components/lists/list-custom.html.twig' with {data: advantages, icon: "checkmark-circle-outline"} %}
+    </div>
+
+    <div class="space-y-1">
+        <h2 class="text-[#49AB9A] text-3xl">${{ price }}</h2>
+        <h3 class="text-lg text-[#21295C]">{{ regular_price == 'month'?'per month': 'per year' }}</h3>
+    </div>
+
+    <div class="font-thin">
+    {% include 'components/buttons/button_link.html.twig' with {link: link, content: 'Get Started', size: "md"} %}
+    </div>
+</article>
