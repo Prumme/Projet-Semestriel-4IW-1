@@ -1,0 +1,50 @@
+{% extends 'public.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block body %}
+<form method="post" class="p-5 mb-[200px]">
+    {% if error %}
+        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+    {% if app.user %}
+        <div class="mb-3">
+            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+        </div>
+    {% endif %}
+
+    <div>
+        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+
+        {% include 'components/inputs/input.html.twig' with {
+            'label': 'Email',
+            'name': 'email',
+            'type': 'email',
+            'placeholder': 'Email',
+            'value': last_username,
+            'required': true,
+            'autofocus': true,
+            'icon':'mail'
+        } %}
+
+        {% include 'components/inputs/input.html.twig' with {
+            'label': 'Password',
+            'name': 'password',
+            'type': 'password',
+            'placeholder': 'Password',
+            'required': true,
+            'icon':'lock-closed'
+        } %}
+        {% include 'components/inputs/input.html.twig' with {
+            'name': '_csrf_token',
+            'type': 'hidden',
+            'value': csrf_token('authenticate')
+        } %}
+    </div>
+
+    {% include 'components/inputs/button_input.html.twig' with {
+        'content': 'Sign in',
+    } %}
+</form>
+{% endblock %}
