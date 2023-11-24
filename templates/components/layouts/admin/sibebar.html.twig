@@ -1,0 +1,99 @@
+<button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+	<span class="sr-only">Open sidebar</span>
+	<svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+		<path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
+	</svg>
+</button>
+
+<aside id="logo-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
+	<div class="h-full px-3 py-1 overflow-y-auto bg-primary-900">
+		<div class="flex items-center justify-between">
+			<a href="https://flowbite.com/" class="flex items-center ps-2.5 mb-5">
+				<img src="images/logo.png" alt="Company name" class="w-20 h-20 mr-2">
+			</a>
+		</div>
+		<div class="w-full inline-flex flex-col items-start">
+			<ul
+				class="w-full space-y-8">
+				{# DASHBOARD #}
+				<li class="w-full px-4">
+					<h3 class="flex items-center text-primary-100 py-2 rounded-lg">- Dashboard</h3>
+				</li>
+				{# BALANCE #}
+				<li class="w-full px-4">
+					<div class="w-full py-2 pl-2 rounded-md group bg-primary-900 hover:bg-gradient-to-r from-primary-100 to-primary-800 duration-300 transition ease-in">
+						<a href="#balance" class="flex items-center">
+							<ion-icon name="bar-chart" class="text-2xl text-primary-100 group-hover:text-white"></ion-icon>
+							<span class="ml-3 text-white text-sm">Balance</span>
+						</a>
+					</div>
+				</li>
+				{# PRODUCTS #}
+				<li class="w-full px-4">
+					<div class="w-full py-2 pl-2 rounded-md group bg-transparent hover:bg-gradient-to-r from-primary-100 to-primary-800 duration-300">
+						<a href="#products" class="flex items-center">
+							<ion-icon name="pricetags" class="text-2xl group-hover:text-white text-primary-100"></ion-icon>
+							<span class="ml-3 text-white text-sm">Products</span>
+						</a>
+					</div>
+				</li>
+				<li>
+					{# CUSTOMERS #}
+				</li>
+				<li class="w-full px-4">
+					<div class="w-full py-2 pl-2 rounded-md group bg-transparent hover:bg-gradient-to-r from-primary-100 to-primary-800 duration-300">
+						<a href="#customers" class="flex items-center">
+							<ion-icon name="people-circle" class="text-2xl group-hover:text-white text-primary-100"></ion-icon>
+							<span class="ml-3 text-white text-sm">Customers</span>
+						</a>
+					</div>
+				</li>
+				<li>
+					{# INVOICES #}
+				</li>
+				<li class="w-full px-4">
+					<div class="w-full py-2 pl-2 rounded-md group bg-transparent hover:bg-gradient-to-r from-primary-100 to-primary-800 duration-300">
+						<a href="#invoices" class="flex items-center">
+							<ion-icon name="document-text" class="text-2xl group-hover:text-white text-primary-100"></ion-icon>
+							<span class="ml-3 text-white text-sm">Invoices</span>
+						</a>
+					</div>
+				</li>
+				<li>
+					{# QUOTES #}
+				</li>
+				<li class="w-full px-4">
+					<div class="w-full py-2 pl-2 rounded-md group bg-transparent hover:bg-gradient-to-r from-primary-100 to-primary-800 duration-300">
+						<a href="#quotes" class="flex items-center">
+							<ion-icon name="cash" class="text-2xl group-hover:text-white text-primary-100"></ion-icon>
+							<span class="ml-3 text-white text-sm">Quotes</span>
+						</a>
+					</div>
+				</li>
+				<li>
+					{# INFORMATIONS  #}
+				</li>
+				<li class="w-full px-4">
+					<span class="flex items-center text-primary-100 rounded-lg dis">- Parameters</span>
+				</li>
+				<li class="w-full px-4">
+					<div class="w-full py-2 pl-2 rounded-md">
+						<a href="#logout" class="flex items-center">
+							<ion-icon name="log-out-outline" class="text-2xl text-primary-100"></ion-icon>
+							<span class="ml-3 text-white text-sm">Logout</span>
+						</a>
+					</div>
+				</li>
+				<li></li>
+				<li class="w-full px-4">
+					<div class="w-full py-2 pl-2 rounded-md">
+						<a href="#sun" class="flex items-center">
+							<ion-icon name="sunny" class="text-2xl text-primary-100"></ion-icon>
+							<span class="ml-3 text-white text-sm">Light Mode</span>
+						</a>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+</aside>
