@@ -1,40 +1,40 @@
-@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@200,300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Lexend:wght@200,300;400;500;600;700&display=swap");
 
 @mixin typo {
   @apply text-secondary_light text-base;
-  font-family: 'Lexend', sans-serif;
+  font-family: "Lexend", sans-serif;
 }
-@mixin default{
+@mixin default {
   @include typo;
 }
-@mixin title{
-    @include typo;
-    @apply text-4xl font-semibold;
+@mixin title {
+  @include typo;
+  @apply text-4xl font-semibold;
 }
-@mixin subtitle{
-    @include typo;
-    @apply text-2xl font-semibold;
+@mixin subtitle {
+  @include typo;
+  @apply text-2xl font-semibold;
 }
-@mixin small{
-    @include typo;
-    @apply text-sm;
-}
-
-h1{
-    @include title;
-}
-h2{
-    @include subtitle;
-}
-body{
-    @include default;
+@mixin small {
+  @include typo;
+  @apply text-sm;
 }
 
-.typo{
-  &-emphasis{
+h1 {
+  @include title;
+}
+h2 {
+  @include subtitle;
+}
+body {
+  @include default;
+}
+
+.typo {
+  &-emphasis {
     @include default;
     position: relative;
-    &:after{
+    &:after {
       content: "";
       position: absolute;
       inset: 0;
@@ -42,10 +42,10 @@ body{
       background-color: var(--color-accent-secondary);
     }
   }
-  &-small{
+  &-small {
     @include small;
   }
-  &-title{
+  &-title {
     @include title;
   }
 }
