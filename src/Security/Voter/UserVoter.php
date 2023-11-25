@@ -45,6 +45,7 @@ class UserVoter extends Voter
 
     private function canView(User $resource, User $user) : bool
     {
+
         return $user->getCompany() === $resource->getCompany();
     }
 
