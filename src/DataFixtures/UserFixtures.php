@@ -3,14 +3,22 @@
 namespace App\DataFixtures;
 
 use App\Entity\User;
+use App\Security\AuthentificableRoles;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class UserFixtures extends Fixture
+class UserFixtures extends Fixture implements DependentFixtureInterface
 {
 
     private $passwordEncoder;
+    public function getDependencies()
+    {
+        return [
+            CompanyFixtures::class
+        ];
+    }
 
     public function __construct(UserPasswordHasherInterface $passwordEncoder)
     {
@@ -20,13 +28,25 @@ class UserFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
 
-        //create admin user
+        $company = $this->getReference("company");
+
+        $superAdmin = new User();
+        $superAdmin->setEmail("superadmin@superadmin");
+        $superAdmin->setFirstname("superadmin");
+        $superAdmin->setLastname("superadmin");
+        $superAdmin->setPassword($this->passwordEncoder->hashPassword($superAdmin, 'superadmin'));
+        $superAdmin->setRoles([AuthentificableRoles::ROLE_SUPER_ADMIN]);
+        $superAdmin->setCompany($company); // not logical but it's just for the demo
+        $manager->persist($superAdmin);
+
+
         $admin = new User();
         $admin->setEmail("admin@admin");
         $admin->setFirstname("admin");
         $admin->setLastname("admin");
         $admin->setPassword($this->passwordEncoder->hashPassword($admin, 'admin'));
-        $admin->setRoles(["ROLE_ADMIN"]);
+        $admin->setRoles([AuthentificableRoles::ROLE_COMPANY_ADMIN]);
+        $admin->setCompany($company);
         $manager->persist($admin);
 
         $user = new User();
@@ -34,6 +54,7 @@ class UserFixtures extends Fixture
         $user->setFirstname("user");
         $user->setLastname("user");
         $user->setPassword($this->passwordEncoder->hashPassword($user, 'user'));
+        $user->setCompany($company);
         $manager->persist($user);
 
         $faker = \Faker\Factory::create();
@@ -43,6 +64,7 @@ class UserFixtures extends Fixture
             $user->setFirstname($faker->firstName);
             $user->setLastname($faker->lastName);
             $user->setPassword($this->passwordEncoder->hashPassword($user, 'test'));
+            $user->setCompany($company);
             $manager->persist($user);
         }
 
