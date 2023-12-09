@@ -16,7 +16,8 @@
             <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
         {% endblock %}
     </head>
-    <body class="w-[100vw] h-[100vh]">
+
+    <body class="w-[100vw] h-[100vh] flex">
         <section class="hidden lg:block w-1/2 bg-primary-500 h-full relative overflow-hidden">
             <div class="absolute top-0 -left-1">
             {% include 'svg/mark-1.svg.twig' %}
@@ -35,13 +36,10 @@
                 <h2 class="text-primary-300 text-2xl text-center">{% block section_paragraph %}To discover our website, please register with your personal infos{% endblock %}</h2>
             </div>
         </section>
+
         <div class="w-full lg:w-1/2">
-        {% block body %}{% endblock %}
+            {% block body %}{% endblock %}
         </div>
-    </section>
-    <div class="w-1/2">
-        
-    </div>
 </div>
 
 {% for type, flashMessages in app.flashes %}
