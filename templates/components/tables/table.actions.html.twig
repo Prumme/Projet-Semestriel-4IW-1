@@ -16,12 +16,6 @@
                     {{ action.content }}
                 </button>
             </form>
-            <!--<a class=" flex gap-4 items-center px-4 py-2 items-center hover:bg-white cursor-pointer" href="{{ path(action.href.path,action.href.params) }}">
-                {% if(action.icon is defined) %}
-                    <ion-icon name="{{ action.icon }}" ></ion-icon>
-                {% endif %}
-                {{ action.content }}
-            </a>-->
         {% endfor %}
     </div>
 </div>
