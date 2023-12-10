@@ -1,0 +1,32 @@
+
+{% set uniqueId = random() %}
+
+<div class="relative">
+    <ion-icon name="ellipsis-vertical" class="text-secondary cursor-pointer text-xl" id="menuIcon-{{ uniqueId }}"></ion-icon>
+    <div class="hidden absolute left-0 top-0 mt-2 bg-[#FFFFFF]  border rounded shadow-md z-10" style="transform: translateX(-35%)" id="contextMenu-{{ uniqueId }}">
+        {% for action in actions %}
+            <a class=" flex gap-4 items-center px-4 py-2 items-center hover:bg-white cursor-pointer" href="{{ path(action.href.path,action.href.params) }}">
+                {% if(action.icon is defined) %}
+                    <ion-icon name="{{ action.icon }}" ></ion-icon>
+                {% endif %}
+                {{ action.content }}
+            </a>
+        {% endfor %}
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const menuIcon = document.getElementById("menuIcon-{{ uniqueId }}");
+        const contextMenu = document.getElementById("contextMenu-{{ uniqueId }}");
+
+        menuIcon.addEventListener("click", function () {
+            contextMenu.classList.toggle("hidden");
+        });
+
+        document.addEventListener("click", function (event) {
+            if (!event.target.matches("#menuIcon-{{ uniqueId }}") && !event.target.matches("#contextMenu-{{ uniqueId }} *")) {
+                contextMenu.classList.add("hidden");
+            }
+        });
+    });
+</script>

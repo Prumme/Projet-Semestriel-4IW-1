@@ -1,0 +1,107 @@
+{% set tableId = 'table' ~ random() %}
+<div id="{{ tableId }}" class="flex  flex-col gap-2">
+    {% if table.actions is defined %}
+    <div class="table_actions flex justify-end">
+        {% for action in table.actions %}
+            {% include 'components/buttons/button_link.html.twig' with {size:"sm", icon_left:action.icon, content: action.content, link: path(action.href.path,action.href.params)} %}
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% if table.groupedActions is defined %}
+        {% include 'components/tables/table_grouped_actions.html.twig' with {tableId: tableId, groupedActions: table.groupedActions} %}
+    {% endif %}
+    <table class="w-full">
+        <thead>
+        <th class="text-left py-5 pl-4">
+            {% include "components/inputs/checkbox.html.twig" with { onChange: "selectAll" ~ tableId ~"(this)" } %}
+        </th>
+        {% for header in table['headers'] %}
+            <th class="text-left py-5 font-semibold opacity-50 {{ header.class|default('') }}">{{ header.title }}</th>
+        {% endfor %}
+        </thead>
+        <tbody>
+        {% for row in  table['rows'] %}
+            <tr id="item-{{ row['item'].id }}" class="{% if loop.index0 is even %}bg-[#F4F5F8]{% endif %}">
+                <td class="pl-4">
+                    {% include "components/inputs/checkbox.html.twig" with { onChange: "selectOne" ~ tableId ~"(this)" } %}
+                </td>
+                {% for cell in row['cells'] %}
+                    <td class="py-5 {{ cell['header'].class|default('') }}">
+                        {% if cell['header'].component is defined %}
+                            {% include cell['header'].component with { item: row['item'], actions: cell['value'] } %}
+                        {% else %}
+                            {{ cell['value'] }}
+                        {% endif %}
+                    </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script>
+    const table = {{ tableId }};
+
+    const onSelectHandler = "{{ onSelect|default('') }}";
+    if(onSelectHandler){
+        table.addEventListener('select', function ($event) {
+            eval(onSelectHandler);
+        })
+    }
+
+    function emitSelect(){
+        const selected = getAllSelected()
+        const selectEvent = new CustomEvent('select', {
+            bubbles: true,
+            detail: { message: 'Table selection change', selected }
+        });
+        table.dispatchEvent(selectEvent);
+    }
+
+    function getItemIdFromCheckbox(checkbox){
+        return checkbox.closest('tr').id.replace('item-', '');
+    }
+
+    function getAllSelected(){
+        const selected = [];
+        checkboxes = table.querySelectorAll('td input[type="checkbox"]');
+        for(var i=0, n=checkboxes.length;i<n;i++) {
+            if(checkboxes[i].checked){
+                selected.push(getItemIdFromCheckbox(checkboxes[i]));
+            }
+        }
+
+        // Update grouped action inputs
+        const groupedActionInputs = table.querySelectorAll('[data-grouped-action-input]');
+        for(var i=0, n=groupedActionInputs.length;i<n;i++) {
+            groupedActionInputs[i].value = selected.join(',');
+        }
+
+        // Show/Hide grouped actions container
+        const groupedActionsContainer = table.querySelector('[data-grouped-actions-container]');
+        if(selected.length > 0)
+            groupedActionsContainer.classList.remove('hidden');
+        else
+            groupedActionsContainer.classList.add('hidden');
+
+        // Update grouped actions count
+        const groupedActionsCount = table.querySelector('[data-grouped-actions-count]');
+        groupedActionsCount.innerText = selected.length;
+
+        return selected;
+    }
+
+    function selectAll{{ tableId }}(source) {
+        checkboxes = table.querySelectorAll('input[type="checkbox"]');
+        let selected = [];
+        for(var i=0, n=checkboxes.length;i<n;i++) {
+            checkboxes[i].checked = source.checked;
+        }
+
+        this.emitSelect()
+    }
+
+    function selectOne{{ tableId }}(source) {
+        this.emitSelect()
+    }
+</script>
