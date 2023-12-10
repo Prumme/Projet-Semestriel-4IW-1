@@ -36,7 +36,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $superAdmin->setLastname("superadmin");
         $superAdmin->setPassword($this->passwordEncoder->hashPassword($superAdmin, 'superadmin'));
         $superAdmin->setRoles([AuthentificableRoles::ROLE_SUPER_ADMIN]);
-        $superAdmin->setCompany($company); // not logical but it's just for the demo
+        $superAdmin->setCompany($company); // not logical but it's just for the demo 
         $manager->persist($superAdmin);
 
 

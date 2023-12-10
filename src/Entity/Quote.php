@@ -16,6 +16,9 @@ class Quote
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $title;
+
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $emited_at = null;
 
@@ -36,6 +39,18 @@ class Quote
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): static
+    {
+        $this->title = $title;
+
+        return $this;
     }
 
     public function getEmitedAt(): ?\DateTimeInterface
