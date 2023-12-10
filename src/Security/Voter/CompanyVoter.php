@@ -51,7 +51,7 @@ class CompanyVoter extends Voter
 
     private function canEdit(Company $company, User $user) : bool
     {
-        if(!$user->hasRole(AuthentificableRoles::ROLE_COMPANY_ADMIN)) return false;
+        if(!$this->security->isGranted(AuthentificableRoles::ROLE_COMPANY_ADMIN)) return false;
         return $user->getCompany() === $company;
     }
 

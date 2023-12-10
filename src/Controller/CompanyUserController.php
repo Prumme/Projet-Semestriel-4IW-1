@@ -8,6 +8,7 @@ use App\Form\UserType;
 use App\Repository\UserRepository;
 use App\Security\Voter\Attributes\CompanyVoterAttributes;
 use App\Security\Voter\Attributes\UserVoterAttributes;
+use App\Table\UserCompanyTable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,10 +23,29 @@ class CompanyUserController extends AbstractController
     #[IsGranted(CompanyVoterAttributes::CAN_VIEW_COMPANY, subject: 'company')]
     public function index(Company $company, UserRepository $userRepository): Response
     {
+        $users = $userRepository->findAllWithingCompany($company);
+        $table = new UserCompanyTable($users,["company" => $company]);
         return $this->render('company_user/index.html.twig', [
-            'users' => $userRepository->findAllWithingCompany($company),
-            'company' => $company,
+            'table'=> $table->createTable(),
         ]);
+    }
+
+    #[Route('/delete', name: 'app_company_user_mass_delete', methods: ['GET'])]
+    public function massDelete(Request $request,Company $company, EntityManagerInterface $entityManager){
+        $selectedStr = $request->query->get('selected');
+        if(!$selectedStr) return $this->redirectToRoute('app_company_user_index', ['company' => $company->getId()]);
+
+        $selectedIds = explode(',',$selectedStr);
+        $CSRFToken = $request->query->get('token');
+        if ($this->isCsrfTokenValid('delete-item', $CSRFToken)){
+            foreach ($selectedIds as $userId) {
+                $user = $entityManager->getRepository(User::class)->find($userId);
+                if ($this->isGranted(UserVoterAttributes::CAN_DELETE_USER, $user)) $entityManager->remove($user);
+                else $this->addFlash('error', 'You are not allowed to delete user with email: '.$user->getEmail());
+            }
+            $entityManager->flush();
+        }
+        return $this->redirectToRoute('app_company_user_index',['company' => $company->getId()]);
     }
 
     #[Route('/new', name: 'app_company_user_new', methods: ['GET', 'POST'])]
