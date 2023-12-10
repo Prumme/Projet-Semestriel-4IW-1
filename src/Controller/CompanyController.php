@@ -7,6 +7,7 @@ use App\Form\CompanyType;
 use App\Repository\CompanyRepository;
 use App\Security\AuthentificableRoles;
 use App\Security\Voter\Attributes\CompanyVoterAttributes;
+use App\Table\CompanyTable;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,8 +23,10 @@ class CompanyController extends AbstractController
     #[IsGranted(AuthentificableRoles::ROLE_SUPER_ADMIN)]
     public function index(CompanyRepository $companyRepository): Response
     {
+        $companies = $companyRepository->findAll();
+        $table = new CompanyTable($companies);
         return $this->render('company/index.html.twig', [
-            'companies' => $companyRepository->findAll(),
+            'table' => $table->createTable(),
         ]);
     }
 
