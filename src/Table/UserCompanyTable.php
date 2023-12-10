@@ -46,6 +46,19 @@ class UserCompanyTable extends Table{
                     ]
                 ],
             ],
+            [
+                'content'=>'Delete',
+                'icon'=>'trash',
+                "href"=> [
+                    'csrf'=> fn($item)=> 'delete' . $item->getId(),
+                    'method'=>'post',
+                    'path'=>'app_company_user_delete',
+                    'params'=>[
+                        'id'=> fn($item)=>$item->getId(),
+                        'company'=> $company->getId(),
+                    ]
+                ],
+            ]
         ]);
 
         $this->setGroupedActions([
