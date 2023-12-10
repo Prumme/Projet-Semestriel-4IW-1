@@ -1,33 +1,39 @@
 {% set tableId = 'table' ~ random() %}
+{% set hasActions = table.actions is defined ? table.actions != null : false  %}
+{% set hasGrouppedActions = table.groupedActions is defined ? table.groupedActions != null : false  %}
 <div id="{{ tableId }}" class="flex  flex-col gap-2">
-    {% if table.actions is defined %}
+    {% if hasActions %}
     <div class="table_actions flex justify-end">
         {% for action in table.actions %}
             {% include 'components/buttons/button_link.html.twig' with {size:"sm", icon_left:action.icon, content: action.content, link: path(action.href.path,action.href.params)} %}
         {% endfor %}
     </div>
     {% endif %}
-    {% if table.groupedActions is defined %}
+    {% if hasGrouppedActions %}
         {% include 'components/tables/table_grouped_actions.html.twig' with {tableId: tableId, groupedActions: table.groupedActions} %}
     {% endif %}
     <table class="w-full">
         <thead>
-        <th class="text-left py-5 pl-4">
+        {% if hasGrouppedActions  %}
+        <th class="text-left py-4 px-4">
             {% include "components/inputs/checkbox.html.twig" with { onChange: "selectAll" ~ tableId ~"(this)" } %}
         </th>
+        {% endif %}
         {% for header in table['headers'] %}
-            <th class="text-left py-5 font-semibold opacity-50 {{ header.class|default('') }}">{{ header.title }}</th>
+            <th class="text-left  font-semibold opacity-50 {{ header.class|default('') }}{{ hasGrouppedActions ? '' : ' pl-4 ' }}py-4">{{ header.title }}</th>
         {% endfor %}
         </thead>
         <tbody>
-        {% for row in  table['rows'] %}
+        {% for row in table['rows'] %}
             <tr id="item-{{ row['item'].id }}" class="{% if loop.index0 is even %}bg-[#F4F5F8]{% endif %}">
-                <td class="pl-4">
+                {% if hasGrouppedActions  %}
+                <td class="px-4">
                     {% include "components/inputs/checkbox.html.twig" with { onChange: "selectOne" ~ tableId ~"(this)" } %}
                 </td>
+                {% endif %}
                 {% for cell in row['cells'] %}
-                    <td class="py-5 {{ cell['header'].class|default('') }}">
-                        {% if cell['header'].component is defined %}
+                    <td class="py-2 {{ cell['header'].class|default('') }} {{ hasGrouppedActions ? '' : 'pl-4' }}">
+                        {% if cell['header'].component != null %}
                             {% include cell['header'].component with { item: row['item'], actions: cell['value'] } %}
                         {% else %}
                             {{ cell['value'] }}

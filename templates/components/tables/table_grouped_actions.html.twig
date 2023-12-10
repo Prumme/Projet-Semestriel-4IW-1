@@ -9,7 +9,7 @@
                 {%  for action in groupedActions %}
                     <form action="{{ path(action.href.path, action.href.params) }}" method="get">
                         <input type="hidden" name="selected" data-grouped-action-input>
-                        <input type="hidden" name="token" value="{{ csrf_token('delete-item') }}">
+                        <input type="hidden" name="_token" value="{{ csrf_token('mass-action-token') }}">
                         <button type="submit" class="w-full flex gap-4 px-4 py-2 items-center hover:bg-white cursor-pointer">
                             {% if(action.icon is defined) %}
                                 <ion-icon name="{{ action.icon }}" ></ion-icon>
