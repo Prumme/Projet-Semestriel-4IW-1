@@ -1,0 +1,34 @@
+{# HOW TO USE IT #}
+
+{# 
+{% include 'components/switch/switch.html.twig' with {
+	id: 'switch',
+	name: 'switch',
+	checked: true | false
+} only %}
+#}
+
+{# /HOW TO USE IT #}
+
+{# WHAT DOES IT DO #}
+
+{# 
+    This component is a switch component. It takes two state (active / inactive) and can be used for a lot of things.
+#}
+
+{# /WHAT DOES IT DO #}
+
+{# PATH #}
+
+{# 
+    components/switch/switch.html.twig
+#}
+
+{# /PATH #}
+	<label for="{{ id }}" class="flex items-center cursor-pointer"> <input type="checkbox" id="{{ id }}" name="{{ name }}" class="hidden" {% if checked %} checked {% endif %}>
+	<div class="relative">
+		<div class="block bg-gray-600 w-14 h-8 rounded-full"></div>
+		<div class="dot absolute left-1 bottom-1 bg-white w-6 h-6 rounded-full transition"></div>
+	</div>
+	<div class="ml-3 text-gray-700">{{ label }}</div>
+</label>
