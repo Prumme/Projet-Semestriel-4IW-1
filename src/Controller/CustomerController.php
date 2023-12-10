@@ -8,6 +8,7 @@ use App\Form\CustomerType;
 use App\Repository\CustomerRepository;
 use App\Security\Voter\Attributes\CompanyVoterAttributes;
 use App\Security\Voter\Attributes\CustomerVoterAttributes;
+use App\Table\CustomersTable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,9 +23,10 @@ class CustomerController extends AbstractController
     #[IsGranted(CompanyVoterAttributes::CAN_VIEW_COMPANY, subject: 'company')]
     public function index(Company $company, CustomerRepository $customerRepository): Response
     {
+        $customers = $customerRepository->findAll();
+        $table = new CustomersTable($customers, ['company'=>$company]);
         return $this->render('customer/index.html.twig', [
-            'customers' => $customerRepository->findAll(),
-            'company' => $company,
+            'table' => $table->createTable(),
         ]);
     }
 
@@ -88,7 +90,7 @@ class CustomerController extends AbstractController
 
     #[Route('/{id}', name: 'app_customer_delete', methods: ['POST'])]
     #[IsGranted(CustomerVoterAttributes::CAN_DELETE_CUSTOMER, subject: 'customer')]
-    public function delete(Request $request, Customer $customer, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Customer $customer,Company $company, EntityManagerInterface $entityManager): Response
     {
 
         if ($this->isCsrfTokenValid('delete'.$customer->getId(), $request->request->get('_token'))) {
@@ -96,6 +98,8 @@ class CustomerController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_customer_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_customer_index', [
+            'company' => $company->getId(),
+        ], Response::HTTP_SEE_OTHER);
     }
 }
