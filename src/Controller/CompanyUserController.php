@@ -36,8 +36,8 @@ class CompanyUserController extends AbstractController
         if(!$selectedStr) return $this->redirectToRoute('app_company_user_index', ['company' => $company->getId()]);
 
         $selectedIds = explode(',',$selectedStr);
-        $CSRFToken = $request->query->get('token');
-        if ($this->isCsrfTokenValid('delete-item', $CSRFToken)){
+        $CSRFToken = $request->query->get('_token');
+        if ($this->isCsrfTokenValid('mass-action-token', $CSRFToken)){
             foreach ($selectedIds as $userId) {
                 $user = $entityManager->getRepository(User::class)->find($userId);
                 if ($this->isGranted(UserVoterAttributes::CAN_DELETE_USER, $user)) $entityManager->remove($user);

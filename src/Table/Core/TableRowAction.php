@@ -23,15 +23,21 @@ class TableRowAction
         return $this->icon;
     }
 
+
+    private function callIfCallable($el){
+        if(is_callable($el)){
+            return $el($this->item);
+        }else
+            return $el;
+    }
+
     public function getHref(){
-        $item = $this->item;
         return [
+            'csrf' => isset($this->href['csrf']) ? $this->callIfCallable($this->href['csrf']) :  false,
+            'method' => $this->href['method'] ?? 'get',
             'path' => $this->href['path'],
-            'params' => array_map(function($param) use ($item){
-                    if(is_callable($param)){
-                        return $param($item);
-                    }else
-                        return $param;
+            'params' => array_map(function($param){
+                    return $this->callIfCallable($param);
                 },$this->href['params'])
         ];
     }

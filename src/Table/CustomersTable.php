@@ -4,7 +4,7 @@ namespace App\Table;
 
 use App\Table\Core\Table;
 
-class UserCompanyTable extends Table{
+class CustomersTable extends Table{
     protected array $neededData = ['company'];
     protected function buildTable() : void
     {
@@ -13,13 +13,17 @@ class UserCompanyTable extends Table{
         $this->setHeaders([
             [
                 'title' => 'Identity',
-                'component' => 'company_user/identity_cell.html.twig',
-                'key' => 'email',
+                'component' => 'customer/identity_cell.html.twig',
+                'key' => 'lastname',
             ],
             [
-                'title' => 'Roles',
-                'component' => 'company_user/roles_cell.html.twig',
-                'key' => 'roles',
+                'title'=>"Company",
+                'component'=>'customer/company_cell.html.twig',
+                'key'=>'companyName',
+            ],
+            [
+                'title'=>"Phone",
+                'key'=>'tel'
             ]
         ]);
 
@@ -28,7 +32,7 @@ class UserCompanyTable extends Table{
                 'content'=>'Show',
                 'icon'=>'eye',
                 "href"=> [
-                    'path'=>'app_company_user_show',
+                    'path'=>'app_customer_show',
                     'params'=>[
                         'id'=> fn($item)=>$item->getId(),
                         'company'=> $company->getId(),
@@ -39,7 +43,7 @@ class UserCompanyTable extends Table{
                 'content'=>'Edit',
                 'icon'=>'create',
                 "href"=> [
-                    'path'=>'app_company_user_edit',
+                    'path'=>'app_customer_edit',
                     'params'=>[
                         'id'=> fn($item)=>$item->getId(),
                         'company'=> $company->getId(),
@@ -52,34 +56,22 @@ class UserCompanyTable extends Table{
                 "href"=> [
                     'csrf'=> fn($item)=> 'delete' . $item->getId(),
                     'method'=>'post',
-                    'path'=>'app_company_user_delete',
+                    'path'=>'app_customer_delete',
                     'params'=>[
                         'id'=> fn($item)=>$item->getId(),
                         'company'=> $company->getId(),
                     ]
                 ],
-            ]
+            ],
         ]);
 
-        $this->setGroupedActions([
-            [
-                'content'=>"delete",
-                'icon'=>'trash',
-                'href'=>[
-                    'path'=>'app_company_user_mass_delete',
-                    'params'=>[
-                        'company'=> $company->getId(),
-                    ]
-                ],
-            ]
-        ]);
 
         $this->setActions([
             [
-                'content'=>"Add user",
+                'content'=>"Add customer",
                 'icon'=>'add-circle-outline',
                 'href'=>[
-                    'path'=>'app_company_user_new',
+                    'path'=>'app_customer_new',
                     'params'=>[
                         'company'=> $company->getId(),
                     ]
