@@ -21,6 +21,7 @@ class CompanyFixtures extends Fixture
 
         $manager->persist($company);
         $manager->flush();
+        
         $this->addReference("company", $company);
     }
 }

@@ -28,6 +28,9 @@ class Quote
     #[ORM\OneToMany(mappedBy: 'quote', targetEntity: Invoice::class)]
     private Collection $invoices;
 
+    #[ORM\ManyToOne(targetEntity: Customer::class, inversedBy: 'quotes')]
+    private ?Customer $customer = null;
+
     public function __construct()
     {
         $this->invoices = new ArrayCollection();
@@ -62,7 +65,7 @@ class Quote
         return $this;
     }
 
-    public function isHasBeenSigned(): ?bool
+    public function getHasBeenSigned(): ?bool
     {
         return $this->has_been_signed;
     }
@@ -70,6 +73,18 @@ class Quote
     public function setHasBeenSigned(bool $has_been_signed): static
     {
         $this->has_been_signed = $has_been_signed;
+
+        return $this;
+    }
+
+    public function getCustomer(): ?Customer
+    {
+        return $this->customer;
+    }
+
+    public function setCustomer(?Customer $customer): static
+    {
+        $this->customer = $customer;
 
         return $this;
     }

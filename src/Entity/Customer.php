@@ -37,7 +37,6 @@ class Customer
     #[ORM\JoinColumn(nullable: false)]
     private Company $company;
 
-
     #[ORM\OneToMany(mappedBy: 'customer', targetEntity: BillingAddress::class, cascade: ['remove'])]
     private Collection $billing_addresses;
 
