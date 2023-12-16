@@ -1,0 +1,8 @@
+{% extends 'backoffice.html.twig' %}
+
+{% block title %}Quote index
+{% endblock %}
+
+{% block body %}
+	{% include 'components/layouts/table_layout.html.twig' with {title:"Quotes", table:table} %}
+{% endblock %}

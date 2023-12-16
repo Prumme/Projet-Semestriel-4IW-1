@@ -18,7 +18,6 @@ class UserVoter extends Voter
         $this->security = $security;
     }
 
-
     public function supports($attr, $subject) : bool
     {
         return UserVoterAttributes::has($attr)  && $subject instanceof User;
