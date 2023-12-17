@@ -15,10 +15,19 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use App\Service\EmailService;
 
 #[Route('/company/{company}/user')]
 class CompanyUserController extends AbstractController
 {
+
+    private $sendinblueService;
+
+    public function __construct(EmailService $sendinblueService)
+    {
+        $this->sendinblueService = $sendinblueService;
+    }
+
     #[Route('/', name: 'app_company_user_index', methods: ['GET'])]
     #[IsGranted(CompanyVoterAttributes::CAN_VIEW_COMPANY, subject: 'company')]
     public function index(Company $company, UserRepository $userRepository): Response
@@ -60,6 +69,19 @@ class CompanyUserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($user);
             $entityManager->flush();
+
+            // EMAIL SENDING
+            $to = $user->getEmail();
+            $templateId = 1; // Welcome email template
+            $templateVariables = [
+                'name' => $user->getFirstName(),
+                'company_name' => $user->getCompany()->getName(),
+                'user_id' => $user->getId(),
+            ];
+
+
+            $this->sendinblueService->sendEmailWithTemplate($to, $templateId, $templateVariables);
+
 
             return $this->redirectToRoute('app_company_user_index', [
                 'company' => $company->getId()

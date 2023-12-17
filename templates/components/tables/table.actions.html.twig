@@ -2,8 +2,9 @@
 {% set uniqueId = random() %}
 
 <div class="relative">
-    <ion-icon name="ellipsis-vertical" class="text-secondary-500 cursor-pointer text-xl" id="menuIcon-{{ uniqueId }}"></ion-icon>
-    <div class="hidden absolute left-0 top-0 mt-2 bg-[#FFFFFF]  border rounded shadow-md z-10" style="transform: translateX(-35%)" id="contextMenu-{{ uniqueId }}">
+    <ion-icon name="ellipsis-vertical" class="text-secondary cursor-pointer text-xl" id="menuIcon-{{ uniqueId }}"></ion-icon>
+    <div class="hidden absolute left-0 top-0 mt-2 bg-[#FFFFFF]  border rounded shadow-md z-10" style="transform: translate(-60%, -100%);" id="contextMenu-{{ uniqueId }}">
+
         {% for action in actions %}
             <form action="{{ path(action.href.path, action.href.params) }}" method="{{ action.href.method|default('GET') }}">
                  {% if action.href.csrf|default(false) %}
