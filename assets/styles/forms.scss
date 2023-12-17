@@ -19,7 +19,7 @@ form > div{
 
   /* Generate input group sizes available */
   /* All the other elements have to take the whole row size */
-  > *:not([class^="input-"]){
+  > *:not(:where([class^="input-"],button,a)){
     flex : 0 0 100%;
   }
 

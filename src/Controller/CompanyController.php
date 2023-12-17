@@ -51,15 +51,6 @@ class CompanyController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_company_show', methods: ['GET'])]
-    #[IsGranted(CompanyVoterAttributes::CAN_VIEW_COMPANY, subject: 'company')]
-    public function show(Company $company): Response
-    {
-        return $this->render('company/show.html.twig', [
-            'company' => $company,
-        ]);
-    }
-
     #[Route('/{id}/edit', name: 'app_company_edit', methods: ['GET', 'POST'])]
     #[IsGranted(CompanyVoterAttributes::CAN_EDIT_COMPANY, subject: 'company')]
     public function edit(Request $request, Company $company, EntityManagerInterface $entityManager): Response
