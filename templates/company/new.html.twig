@@ -1,11 +1,17 @@
-{% extends 'base.html.twig' %}
+{% extends 'backoffice.html.twig' %}
 
-{% block title %}New Company{% endblock %}
+{% block title %}Create Company{% endblock %}
 
 {% block body %}
-    <h1>Create new Company</h1>
-
-    {{ include('company/_form.html.twig') }}
-
-    <a href="{{ path('app_company_index') }}">back to list</a>
+    <div class="flex flex-col gap-4">
+        <h1>Create company</h1>
+        {{ include('components/buttons/button_link.html.twig',{
+            size:'sm',
+            bg:'secondary',
+            content:"Go back",
+            icon_left:"arrow-back-circle-outline",
+            link:path('app_company_index')
+        }) }}
+        {% include 'components/layouts/form_layout.html.twig' %}
+    </div>
 {% endblock %}

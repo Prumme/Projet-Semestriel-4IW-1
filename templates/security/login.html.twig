@@ -43,8 +43,9 @@
         } %}
     </div>
 
-    {% include 'components/inputs/button_input.html.twig' with {
+    {% include 'components/buttons/button.html.twig' with {
         'content': 'Sign in',
+        'type': 'submit',
     } %}
 </form>
 {% endblock %}

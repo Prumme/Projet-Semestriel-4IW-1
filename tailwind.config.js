@@ -31,10 +31,14 @@ module.exports = {
           900: "#0b1917",
           950: "#060e0d",
         },
+        secondary: {
+          400: "#21295C",
+          500: "#1E143B",
+          600: "#1a1234",
+        },
         danger: {
           500: "#F34E29",
         },
-        secondary: "#1E143B",
         white: "#F2F4F8",
         black: "#1E1E1E",
         green_blue: "#2e7881",

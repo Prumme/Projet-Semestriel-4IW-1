@@ -95,16 +95,6 @@ class CompanyUserController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_company_user_show', methods: ['GET'])]
-    #[IsGranted(UserVoterAttributes::CAN_VIEW_USER, subject: 'user')]
-    public function show(Company $company,User $user): Response
-    {
-        return $this->render('company_user/show.html.twig', [
-            'user' => $user,
-            'company' => $company,
-        ]);
-    }
-
     #[Route('/{id}/edit', name: 'app_company_user_edit', methods: ['GET', 'POST'])]
     #[IsGranted(UserVoterAttributes::CAN_EDIT_USER, subject: 'user')]
     public function edit(Request $request,Company $company, User $user, EntityManagerInterface $entityManager): Response
