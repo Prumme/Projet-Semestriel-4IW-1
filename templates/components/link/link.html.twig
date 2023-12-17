@@ -1,0 +1,42 @@
+{# HOW TO USE IT #}
+
+{# 
+{% include 'components/link/link.html.twig' with {
+        url: 'www.google.com | {{ path('route_name') }}',
+        classes: 'text-white hover:text-primary-500...', --OPTIONAL
+        text : 'Link text', 
+        } 
+    %}
+    {% include 'components/buttons/button_link.html.twig' with {
+        content: 'Login',
+        size: 'sm',
+        link: '/login',
+    } %}
+
+    Only the classes are optional, the rest is required.
+#}
+
+{# /HOW TO USE IT #}
+
+{# WHAT DOES IT DO #}
+
+{# 
+   This component is a link with a line under it that animates on hover.
+#}
+
+{# COMPONENT #}
+
+{% set classes = classes ?? '' %}
+
+	<a href="#" class="relative inline-block"> <span class="text-white absolute left-0 bottom-[-2px] w-0 h-[1.5px] bg-primary-500 transition-width duration-300 ease-in-out group-hover:w-full {{ classes }}"></span>
+	{{ text }}
+</a>
+<style>
+	.hover\:w-full:hover {
+		width: 100%;
+	}
+
+	a:hover span {
+		width: 100%;
+	}
+</style>

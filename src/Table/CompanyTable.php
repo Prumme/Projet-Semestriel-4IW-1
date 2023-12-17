@@ -4,8 +4,9 @@ namespace App\Table;
 
 use App\Table\Core\Table;
 
-class CompanyTable extends Table{
-    protected function buildTable() : void
+class CompanyTable extends Table
+{
+    protected function buildTable(): void
     {
         $this->setHeaders([
             [
@@ -13,35 +14,35 @@ class CompanyTable extends Table{
                 'key' => 'name',
             ],
             [
-                'title'=>"Siret",
-                'key'=>'siret'
+                'title' => "Siret",
+                'key' => 'siret'
             ],
             [
-                'title'=>"VAT Number",
-                'key'=>'vatNumber'
+                'title' => "VAT Number",
+                'key' => 'vatNumber'
             ]
         ]);
 
         $this->setItemsActions([
             [
-                'content'=>'Edit',
-                'icon'=>'create',
-                "href"=> [
-                    'path'=>'app_company_edit',
-                    'params'=>[
-                        'id'=> fn($item)=>$item->getId(),
+                'content' => 'Edit',
+                'icon' => 'create',
+                "href" => [
+                    'path' => 'app_company_edit',
+                    'params' => [
+                        'id' => fn ($item) => $item->getId(),
                     ]
                 ],
             ],
             [
-                'content'=>'Delete',
-                'icon'=>'trash',
-                "href"=> [
-                    'csrf'=> fn($item)=> 'delete' . $item->getId(),
-                    'method'=>'post',
-                    'path'=>'app_company_delete',
-                    'params'=>[
-                        'id'=> fn($item)=>$item->getId(),
+                'content' => 'Delete',
+                'icon' => 'trash',
+                "href" => [
+                    'csrf' => fn ($item) => 'delete' . $item->getId(),
+                    'method' => 'post',
+                    'path' => 'app_company_delete',
+                    'params' => [
+                        'id' => fn ($item) => $item->getId(),
                     ]
                 ],
             ],
@@ -50,11 +51,11 @@ class CompanyTable extends Table{
 
         $this->setActions([
             [
-                'content'=>"Create company",
-                'icon'=>'add-circle-outline',
-                'href'=>[
-                    'path'=>'app_company_new',
-                    'params'=>[]
+                'content' => "Create company",
+                'icon' => 'add-circle-outline',
+                'href' => [
+                    'path' => 'app_company_new',
+                    'params' => []
                 ],
             ]
         ]);

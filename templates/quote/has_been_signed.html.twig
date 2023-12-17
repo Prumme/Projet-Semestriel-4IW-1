@@ -1,0 +1,6 @@
+<div>
+	{% include 'components/chips-pills/chip.html.twig' with {
+		label: item.hasBeenSigned ? 'Signed' : 'Not signed',
+		type: item.hasBeenSigned ? 'primary' : 'danger'
+	} %}
+</div>
