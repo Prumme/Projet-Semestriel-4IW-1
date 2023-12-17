@@ -44,15 +44,19 @@ class EmailService
 
     public function sendEmailWithTemplate(string $to, int $templateId, array $templateVariables): bool
     {
+
         $email = new SendSmtpEmail();
+        $email->setSender(new SendSmtpEmailSender(['email' => 'contact@apagnan.com', 'name' => 'Apagnan']));
         $email->setTo([new SendSmtpEmailTo(['email' => $to])]);
         $email->setTemplateId($templateId);
-        // $email->setParams($templateVariables); // Paramètres pour remplacer les variables du template
-
+        $templateVariablesObject = (object)$templateVariables;
+        $email->setParams($templateVariablesObject); // Paramètres pour remplacer les variables du template
+        // dd($email);
         try {
             $this->apiInstance->sendTransacEmail($email);
             return true;
         } catch (\Exception $e) {
+            dd($e);
             error_log('Exception lors de l\'envoi de l\'e-mail avec template: ' . $e->getMessage());
             return false;
         }

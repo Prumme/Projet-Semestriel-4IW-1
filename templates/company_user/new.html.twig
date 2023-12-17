@@ -1,11 +1,11 @@
-{% extends 'base.html.twig' %}
+{% extends 'backoffice.html.twig' %}
 
 {% block title %}New User{% endblock %}
 
 {% block body %}
     <h1>Create new User</h1>
-
-    {{ include('company_user/_form.html.twig') }}
-
+    <div class="mt-4">
+        {{ include('company_user/_form.html.twig') }}
+    </div>
     <a href="{{ path('app_company_user_index', {'company': company.id}) }}">back to list</a>
 {% endblock %}
