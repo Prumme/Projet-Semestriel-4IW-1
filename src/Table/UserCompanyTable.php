@@ -25,17 +25,6 @@ class UserCompanyTable extends Table{
 
         $this->setItemsActions([
             [
-                'content'=>'Show',
-                'icon'=>'eye',
-                "href"=> [
-                    'path'=>'app_company_user_show',
-                    'params'=>[
-                        'id'=> fn($item)=>$item->getId(),
-                        'company'=> $company->getId(),
-                    ]
-                ],
-            ],
-            [
                 'content'=>'Edit',
                 'icon'=>'create',
                 "href"=> [
