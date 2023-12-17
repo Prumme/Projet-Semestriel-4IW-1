@@ -1,0 +1,10 @@
+<form method="post" action="{{ action }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ item.id) }}">
+    {{ include('components/buttons/button.html.twig',{
+        size:'sm',
+        type:'submit',
+        bg:'secondary',
+        content:"Delete",
+        icon:"trash-outline",
+    }) }}
+</form>

@@ -34,18 +34,14 @@
 
 {# /MORE #}
 
-<a href="{{ link | default('#') }}">
-    <div class="w-min text-white text-{{ size | default('xl') }} bg-[#49AB9A] rounded-full px-5 py-2 hover:bg-[#337D70] duration-100 flex items-center justify-center space-x-2.5">
-   
-        {% if icon_left is defined %}
-            <ion-icon name="{{ icon_left }}" class="text-{{ size | default('xl') }}"></ion-icon>
-        {% endif %}
+<a href="{{ link | default('#') }}" class="w-min text-white text-{{ size | default('xl') }} bg-{{ bg | default('primary')}}-500 rounded-full px-5 py-2 hover:bg-{{ bg | default('primary')}}-600 duration-100 inline-flex items-center justify-center space-x-2.5">
+    {% if icon_left is defined %}
+        <ion-icon name="{{ icon_left }}"></ion-icon>
+    {% endif %}
 
-        <span class="whitespace-nowrap">{{ content | default('CALLOUT') }}</span>
+    <span class="whitespace-nowrap">{{ content | default('CALLOUT') }}</span>
 
-        {% if icon_right is defined %}
-            <ion-icon name="{{ icon_right }}" class="text-{{ size | default('xl') }}"></ion-icon>
-        {% endif %}
-
-    </div>
+    {% if icon_right is defined %}
+        <ion-icon name="{{ icon_right }}" ></ion-icon>
+    {% endif %}
 </a>
