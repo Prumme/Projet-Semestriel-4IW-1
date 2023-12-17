@@ -24,16 +24,6 @@ class CompanyTable extends Table{
 
         $this->setItemsActions([
             [
-                'content'=>'Show',
-                'icon'=>'eye',
-                "href"=> [
-                    'path'=>'app_company_show',
-                    'params'=>[
-                        'id'=> fn($item)=>$item->getId(),
-                    ]
-                ],
-            ],
-            [
                 'content'=>'Edit',
                 'icon'=>'create',
                 "href"=> [
