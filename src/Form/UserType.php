@@ -21,7 +21,7 @@ class UserType extends AbstractType
                     'ROLE_COMPANY_ADMIN' => AuthentificableRoles::ROLE_COMPANY_ADMIN,
                 ],
                 'multiple' => true,
-                'expanded' => false,
+                'expanded' => true,
                 'placeholder' => 'Choose a role',
             ])
             ->add('firstname')

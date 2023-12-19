@@ -146,10 +146,12 @@ class Customer
 
     public function removeBillingAddress(BillingAddress $billing_address): static
     {
-        if ($this->billing_addresses->contains($billing_address)) {
-            $this->billing_addresses->removeElement($billing_address);
-            if ($billing_address->getCustomer() === $this) {
-                $billing_address->setCustomer(null);
+        if (!empty($this->billing_addresses)) {
+            if ($this->billing_addresses->contains($billing_address)) {
+                $this->billing_addresses->removeElement($billing_address);
+                if ($billing_address->getCustomer() === $this) {
+                    $billing_address->setCustomer(null);
+                }
             }
         }
         return $this;

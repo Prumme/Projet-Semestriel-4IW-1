@@ -3,11 +3,15 @@
     {% set classes = attr.class is defined ?  attr.class : '' %}
     <div class="inline-block {{ classes }} ">
         {{ form_label(form) }}
-        {{ form_widget(form,{
-            'attr': {
-                'class': inputClasses
-            }
-        }) }}
+        {% if 'choice' in form.vars.block_prefixes %}
+            {{ include('components/inputs/select.html.twig') }}
+        {% else %}
+            {{ form_widget(form,{
+                'attr': {
+                    'class': inputClasses
+                }
+            }) }}
+        {% endif %}
         {{ form_errors(form) }}
     </div>
 {% endblock %}
@@ -26,12 +30,11 @@
 
 {%- block form_label -%}
     {% set icon = form.vars.attr.icon is defined ? form.vars.attr.icon : '' %}
-
     {# Create tailwind flex container #}
     <div class="inline-flex items-center gap-2">
         {% if(icon) %}
             <ion-icon name="{{ icon }}" class="text-2xl"></ion-icon>
         {% endif %}
-        <label for="">{{ (name ?? title) | capitalize }}</label>
+        <label for="">{{ (form.vars.label ?? name ?? title) | capitalize }}</label>
     </div>
 {%- endblock form_label -%}
