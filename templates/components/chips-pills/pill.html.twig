@@ -34,7 +34,7 @@
 {% set close_icon = false %}
 {% endif %}
 
-<div class="bg-{{ type | default('1Œ') }}-500 inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full text-white border-2 border-{{ type | default('primary') }}-500">
+<div class="bg-{{ type | default('primary') }}-500 inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full text-white border-2 border-{{ type | default('primary') }}-500">
     {% if close_icon %}
         {% include 'svg/chips-pills/close.svg.twig' %}
     {% endif %}
