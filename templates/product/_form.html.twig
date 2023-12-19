@@ -1,7 +1,5 @@
 {{ form_start(form) }}
     {{ form_widget(form) }}
 
-    {{ include ('price/_list.html.twig', {'prices': product.prices}) }}
-
     <button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

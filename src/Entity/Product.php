@@ -26,9 +26,6 @@ class Product
     #[ORM\JoinColumn(nullable: false)]
     private ?Company $company = null;
 
-    #[ORM\OneToMany(mappedBy: 'product', targetEntity: Price::class, cascade: ['persist'], fetch: 'EAGER')]
-    private Collection $prices;
-
     #[ORM\ManyToOne(inversedBy: 'products')]
     #[ORM\JoinColumn(nullable: true)]
     private ?User $user_id = null;
@@ -38,7 +35,6 @@ class Product
 
     public function __construct()
     {
-        $this->prices = new ArrayCollection();
         $this->categories = new ArrayCollection();
     }
 
@@ -79,34 +75,6 @@ class Product
     public function setCompany(?Company $company): static
     {
         $this->company = $company;
-
-        return $this;
-    }
-
-
-    public function getPrices(): Collection
-    {
-        return $this->prices;
-    }
-
-    public function addPrice(Price $price): static
-    {
-        if (!$this->prices->contains($price)) {
-            $this->prices->add($price);
-            $price->setProduct($this);
-        }
-
-        return $this;
-    }
-
-    public function removePrice(Price $price): static
-    {
-        if ($this->prices->removeElement($price)) {
-            // set the owning side to null (unless already changed)
-            if ($price->getProduct() === $this) {
-                $price->setProduct(null);
-            }
-        }
 
         return $this;
     }
