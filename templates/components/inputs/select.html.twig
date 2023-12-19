@@ -2,7 +2,7 @@
     {% set name =  form.vars.full_name %}
     {% set type = form.vars.multiple ? 'checkbox' : 'radio' %}
     <div class="flex justify-between items-center">
-        <span id="label">{{form.vars.placeholder | default('Séléctionné')}}</span>
+        <span id="label">{{form.vars.placeholder | default('Séléctionner')}}</span>
         <ion-icon name="chevron-down-outline"></ion-icon>
     </div>
     <ul class="hidden absolute top-full left-0 right-0 max-h-[200px] bg-white shadow-primary-200 shadow rounded z-10 overflow-y-auto">
@@ -25,7 +25,7 @@
     function updateLabel(){
         const checked = container.querySelectorAll('input:checked')
         if (checked.length === 0){
-            label.innerText = '{{form.vars.placeholder | default("Séléctionné")}}'
+            label.innerText = '{{form.vars.placeholder | default("Séléctionner")}}'
         }else if (checked.length === 1){
             label.innerText = checked[0].nextElementSibling.innerText
         }else{
