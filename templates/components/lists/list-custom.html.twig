@@ -31,10 +31,18 @@
 
 {# /PATH #}
 
-<ol class='space-y-2.5  w-min'>
-    {% for item in data %}
-        <li class="space-x-2.5 flex items-center">
-        <span class="flex justify-center items-center"><ion-icon name="{{ icon }}" class="text-lg text-[#49AB9A]"></ion-icon></span>
-        <span>{{ item }}</span></li>
-    {% endfor %}
+	<ol class='space-y-2.5  w-min'> {% for item in data %}
+		<li class="space-x-2.5 flex items-center">
+			{% if(loop.index <= max) %}
+				<span class="flex justify-center items-center">
+					<ion-icon name="{{ icon }}" class="text-lg text-[#49AB9A]"></ion-icon>
+				</span>
+			{% else %}
+				<span class="flex justify-center items-center">
+					<ion-icon name="{{ second_icon }}" class="text-lg text-danger-500"></ion-icon>
+				</span>
+			{% endif %}
+			<span>{{ item }}</span>
+		</li>
+	{% endfor %}
 </ol>
