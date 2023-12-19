@@ -5,7 +5,27 @@
 @tailwind utilities;
 
 @layer base {
-  html{
+  html {
     font-size: 16px;
+  }
+}
+
+@layer components {
+  .nav-active-link {
+    @apply w-full py-2 pl-2 rounded-md bg-transparent bg-gradient-to-r from-green_blue to-primary-500 duration-300 transition ease-in;
+  }
+  .nav-active-link ion-icon {
+    @apply text-white;
+  }
+
+  .nav-unactive-link {
+    @apply w-full py-2 pl-2 rounded-md bg-transparent hover:bg-gradient-to-r from-green_blue to-primary-500 duration-300 transition ease-in;
+  }
+  .nav-unactive-link ion-icon {
+    @apply text-primary-600;
+  }
+
+  .nav-unactive-link:hover ion-icon {
+    @apply text-white;
   }
 }
