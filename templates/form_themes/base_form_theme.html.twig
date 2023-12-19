@@ -26,12 +26,11 @@
 
 {%- block form_label -%}
     {% set icon = form.vars.attr.icon is defined ? form.vars.attr.icon : '' %}
-
     {# Create tailwind flex container #}
     <div class="inline-flex items-center gap-2">
         {% if(icon) %}
             <ion-icon name="{{ icon }}" class="text-2xl"></ion-icon>
         {% endif %}
-        <label for="">{{ (name ?? title) | capitalize }}</label>
+        <label for="">{{ (form.vars.label ?? name ?? title) | capitalize }}</label>
     </div>
 {%- endblock form_label -%}
