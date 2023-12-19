@@ -16,16 +16,19 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use App\Service\EmailService;
+use App\Data\TemplatesList;
+use App\Helpers\URL;
 
 #[Route('/company/{company}/user')]
 class CompanyUserController extends AbstractController
 {
-
     private $sendinblueService;
+    private $urlHelper;
 
-    public function __construct(EmailService $sendinblueService)
+    public function __construct(EmailService $sendinblueService, URL $urlHelper)
     {
         $this->sendinblueService = $sendinblueService;
+        $this->urlHelper = $urlHelper;
     }
 
     #[Route('/', name: 'app_company_user_index', methods: ['GET'])]
@@ -69,14 +72,17 @@ class CompanyUserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($user);
             $entityManager->flush();
-
             // EMAIL SENDING
             $to = $user->getEmail();
-            $templateId = 1; // Welcome email template
+            $templateId = TemplatesList::WELCOME_EMAIL;
+
+            $url = $this->urlHelper->generateUrl('/user/activate', ['id' => $user->getId()]);
+
             $templateVariables = [
                 'name' => $user->getFirstName(),
                 'company_name' => $user->getCompany()->getName(),
                 'user_id' => $user->getId(),
+                'link' => $url
             ];
 
 

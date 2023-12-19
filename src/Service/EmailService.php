@@ -51,12 +51,10 @@ class EmailService
         $email->setTemplateId($templateId);
         $templateVariablesObject = (object)$templateVariables;
         $email->setParams($templateVariablesObject); // Paramètres pour remplacer les variables du template
-        // dd($email);
         try {
             $this->apiInstance->sendTransacEmail($email);
             return true;
         } catch (\Exception $e) {
-            dd($e);
             error_log('Exception lors de l\'envoi de l\'e-mail avec template: ' . $e->getMessage());
             return false;
         }
