@@ -22,7 +22,6 @@ use App\Helpers\URL;
 #[Route('/company/{company}/user')]
 class CompanyUserController extends AbstractController
 {
-
     private $sendinblueService;
     private $urlHelper;
 
@@ -75,7 +74,7 @@ class CompanyUserController extends AbstractController
             $entityManager->flush();
             // EMAIL SENDING
             $to = $user->getEmail();
-            $templateId = TemplatesList::getTemplateId('welcome_email');
+            $templateId = TemplatesList::WELCOME_EMAIL;
 
             $url = $this->urlHelper->generateUrl('/user/activate', ['id' => $user->getId()]);
 
