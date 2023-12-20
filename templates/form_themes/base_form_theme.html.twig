@@ -15,11 +15,10 @@
         {{ form_errors(form) }}
     </div>
 {% endblock %}
-
 {% block checkbox_row %}
     {% set inputClasses =  "w-full px-0 py-2.5 border-0 border-b-2 border-primary-500 text-primary-500 focus:border-secondary-500 focus:text-secondary-500  focus:ring-0 " %}
     {% set classes = attr.class is defined ?  attr.class : '' %}
-    <div class="inline-flex items-center gap-2 {{ classes }} ">
+    <div class="inline-flex items-center gap-2  {{ classes }} ">
         {{ form_widget(form) }}
         {{ form_label(form) }}
         {{ form_errors(form) }}
