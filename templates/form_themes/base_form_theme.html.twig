@@ -16,6 +16,17 @@
     </div>
 {% endblock %}
 
+{% block form_errors %}
+{%- if errors|length > 0 -%}
+    <ul>
+        {%- for error in errors -%}
+            <li><span class="text-danger-500 text-sm block pt-2">{{ error.message }}</span></li>
+        {%- endfor -%}
+    </ul>
+    {%- endif -%}
+
+{% endblock %}
+
 {% block checkbox_row %}
     {% set inputClasses =  "w-full px-0 py-2.5 border-0 border-b-2 border-primary-500 text-primary-500 focus:border-secondary-500 focus:text-secondary-500  focus:ring-0 " %}
     {% set classes = attr.class is defined ?  attr.class : '' %}
