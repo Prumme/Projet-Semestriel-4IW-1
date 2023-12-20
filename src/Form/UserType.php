@@ -21,12 +21,10 @@ class UserType extends AbstractType
                     'ROLE_COMPANY_ADMIN' => AuthentificableRoles::ROLE_COMPANY_ADMIN,
                 ],
                 'multiple' => true,
-                'expanded' => false,
                 'placeholder' => 'Choose a role',
             ])
             ->add('firstname')
-            ->add('lastname')
-        ;
+            ->add('lastname');
     }
 
     public function configureOptions(OptionsResolver $resolver): void

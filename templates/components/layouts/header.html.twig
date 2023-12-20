@@ -12,57 +12,77 @@
 				</button>
 			</div>
 			<div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto" id="menu-links">
-				<div class="text-white text-sm lg:flex-grow">
-					<div
-						class="block mt-4 lg:inline-block lg:mt-0 ml-5 ">
-						{# PRODUCTS #}
+				<div
+					class="text-white text-sm lg:flex-grow">
+					{# REVIEWS #}
+					<div class="block mt-4 lg:inline-block lg:mt-0 ml-5 ">
 						{% include 'components/link/link.html.twig' with {
-						url: '#products',
-						text: 'Products'
+						href: '#reviews',
+						text: 'Reviews'
 					} %}
 					</div>
-					<div
-						class="block mt-4 lg:inline-block lg:mt-0 ml-5 ">
-						{# PRICING #}
+					{# SERVICES #}
+					<div class="block mt-4 lg:inline-block lg:mt-0 ml-5 ">
 						{% include 'components/link/link.html.twig' with {
-						url: '#products',
+						href: '#services',
+						text: 'Services'
+					} %}
+					</div>
+					{# SERVICES #}
+					<div class="block mt-4 lg:inline-block lg:mt-0 ml-5 ">
+						{% include 'components/link/link.html.twig' with {
+						href: '#advantages',
+						text: 'Advantages'
+					} %}
+					</div>
+					{# PRICING #}
+					<div class="block mt-4 lg:inline-block lg:mt-0 ml-5 ">
+						{% include 'components/link/link.html.twig' with {
+						href: '#pricing',
 						text: 'Pricing'
 					} %}
 					</div>
-					<div
-						class="block mt-4 lg:inline-block lg:mt-0 ml-5 ">
-						{# COMPANY #}
-						{% include 'components/link/link.html.twig' with {
-						url: '#products',
-						text: 'Company'
-					} %}
-					</div>
-					<div
-						class="block mt-4 lg:inline-block lg:mt-0 ml-5 ">
-						{# RESOURCES #}
-						{% include 'components/link/link.html.twig' with {
-						url: '#products',
-						text: 'Resources'
-					} %}
-					</div>
 				</div>
-				<div class="w-full block flex-end lg:flex items-center lg:w-auto gap-4" id="menu-links">
-
-					<div class="block mt-4 lg:inline-block lg:mt-0 text-white text-sm ml-5 ">
+				<div class="w-full block flex-end lg:flex items-center lg:w-auto gap-1" id="menu-links">
+					<div class="block mt-4 lg:inline-block lg:mt-0 text-white text-sm mr-5">
 						{% include 'components/link/link.html.twig' with {
-							url: '#contact-us',
+							href: '#contact-us',
 							classes: 'text-white',
 							text: 'Contact Us'
 						} %}
 					</div>
-					<div class="mt-4 ml-4 lg:mt-0 lg:ml-0">
-						{% include 'components/buttons/button_link.html.twig' with {
+					{# ONLY WHEN app.user #}
+					{% if (app.user) %}
+						{# DASHBOARD #}
+						<div class="block mt-4 lg:inline-block lg:mt-0 text-white text-sm ml-4	 ">
+							{% include 'components/buttons/button_link.html.twig' with {
+								content: 'Dashboard',
+								link: path('app_dashboard'),
+								size: 'xs',
+								icon_right: 'desktop-outline'
+							} %}
+						</div>
+						{# LOGOUT #}
+						<div class="block mt-4 lg:inline-block lg:mt-0 text-white text-sm ml-4 ">
+							{% include 'components/buttons/button_link.html.twig' with {
+								content: 'Logout',
+								link: path('app_logout'),
+								size: 'xs',
+								icon_right: 'log-out-outline',
+								bg: 'danger'
+							} %}
+						</div>
+					{% else %}
+						{# LOGIN #}
+						<div class="mt-4 ml-4 lg:mt-0 lg:ml-0">
+							{% include 'components/buttons/button_link.html.twig' with {
 							content: 'Login',
-							size: 'sm',
-							link: '/login',
+							link: path('app_login'),
+							size: 'xs',
 						} %}
+						</div>
 					</div>
-				</div>
+				{% endif %}
 			</div>
 		</div>
 	</nav>
@@ -71,11 +91,11 @@
 {# TODO : Add a transition of opening/closing the burger menu on Responsive Version #}
 <script>
 	document.addEventListener('DOMContentLoaded', function () {
-	const menuToggle = document.getElementById('menu-toggle');
-	const mobileMenu = document.getElementById('menu-links');
+const menuToggle = document.getElementById('menu-toggle');
+const mobileMenu = document.getElementById('menu-links');
 
-	menuToggle.addEventListener('click', function () {
-	mobileMenu.classList.toggle('hidden');
-	});
+menuToggle.addEventListener('click', function () {
+mobileMenu.classList.toggle('hidden');
+});
 });
 </script>

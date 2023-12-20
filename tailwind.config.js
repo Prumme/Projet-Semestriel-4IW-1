@@ -39,7 +39,6 @@ module.exports = {
         danger: {
           500: "#F34E29",
         },
-        white: "#F2F4F8",
         black: "#1E1E1E",
         green_blue: "#2e7881",
         secondary_light: "#21295C",

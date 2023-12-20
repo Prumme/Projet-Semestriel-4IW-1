@@ -22,14 +22,10 @@
 		{% endblock %}
 
 	</head>
-	<body
-		class="w-[100vw] h-[100vh] relative overflow-x-hidden">
+	<body class="w-[100vw] h-[100vh] relative overflow-x-hidden">
 		{% include 'components/layouts/header.html.twig' %}
-		
-		{% block content %}
 
-
-		{% endblock %}
+		{% block content %}{% endblock %}
 
 		<br>
 		{% for type, flasheMessages in app.flashes %}
@@ -40,6 +36,7 @@
 
 			{% endfor %}
 		{% endfor %}
-		{# {% include 'components/layouts/footer.html.twig' %} #}
+
+	{% include 'components/layouts/footer.html.twig' %}
 	</body>
 </html>
