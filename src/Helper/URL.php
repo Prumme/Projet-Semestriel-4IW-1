@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Helpers;
+namespace App\Helper;
 
 
 
@@ -13,7 +13,7 @@ class URL {
         $this->base = $base;
     }
 
-    public function generateUrl(string $path, array $params): string {
+    public function generateUrl(string $path, array $params = []): string {
         return $this->base.$path.'?'.http_build_query($params);
     }
 

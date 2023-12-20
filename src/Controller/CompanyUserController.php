@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use App\Service\EmailService;
 use App\Data\TemplatesList;
-use App\Helpers\URL;
+use App\Helper\URL;
 
 #[Route('/company/{company}/user')]
 class CompanyUserController extends AbstractController
@@ -77,7 +77,7 @@ class CompanyUserController extends AbstractController
             $to = $user->getEmail();
             $templateId = TemplatesList::WELCOME_EMAIL;
 
-            $url = $this->urlHelper->generateUrl('/user/activate', ['id' => $user->getId()]);
+            $url = $this->urlHelper->generateUrl('/user/'.$user->getId().'/activate');
 
             $templateVariables = [
                 'name' => $user->getFirstName(),

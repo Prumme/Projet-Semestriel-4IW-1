@@ -41,6 +41,12 @@
             'type': 'hidden',
             'value': csrf_token('authenticate')
         } %}
+
+        {% include 'components/link/link.html.twig' with {
+        'href': path('forget_password'),
+        'text' : 'Forget password?', 
+        } 
+    %}
     </div>
 
     {% include 'components/buttons/button.html.twig' with {
