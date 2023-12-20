@@ -14,11 +14,20 @@ class CustomerType extends AbstractType
         $builder
             ->add('lastname')
             ->add('firstname')
-            ->add('company_name')
-            ->add('company_siret')
-            ->add('company_vat_number')
-            ->add('tel')
-        ;
+            ->add(
+                'company_name',
+                null,
+                [
+                    'label' => 'Company Name',
+                ]
+            )
+            ->add('company_siret', null, [
+                'label' => 'Company Siret'
+            ])
+            ->add('company_vat_number', null, [
+                'label' => 'Company VAT Number'
+            ])
+            ->add('tel');
     }
 
     public function configureOptions(OptionsResolver $resolver): void
