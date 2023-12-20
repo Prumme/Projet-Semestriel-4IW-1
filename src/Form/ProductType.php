@@ -18,11 +18,12 @@ class ProductType extends AbstractType
             ->add('description')
             ->add('categories', EntityType::class, [
                     'class' => Category::class,
-                    'expanded' => true,
+                    'expanded' => false,
                     'multiple' => true,
                     'choice_label' => 'name',
                 ]
             )
+            ->add('price')
         ;
     }
 

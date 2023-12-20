@@ -20,6 +20,11 @@ class ProductsTable extends Table{
                 'key'=>'description',
             ],
             [
+                'title'=>"Price",
+                //'component'=>'product/price_cell.html.twig',
+                'key'=>'price'
+            ],
+            [
                 'title'=>"Categories",
                 'component'=>'product/categories_cell.html.twig',
                 'key'=>'categories',

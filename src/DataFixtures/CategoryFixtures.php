@@ -22,8 +22,8 @@ class CategoryFixtures extends Fixture implements DependentFixtureInterface{
         $faker = \Faker\Factory::create();
         for($i = 0; $i < 10; $i++){
             $category = new Category();
-            $category->setName($faker->name);
-            $category->setDescription($faker->text);
+            $category->setName($faker->word);
+            $category->setDescription($faker->text(100));
             $category->setCompany($this->getReference("company"));
             $manager->persist($category);
         }

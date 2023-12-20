@@ -4,11 +4,24 @@
 {% endblock %}
 
 {% block body %}
-	<h1>Edit Category</h1>
+	<div class="flex flex-col gap-4">
+		<h1>Edit Category</h1>
 
-	{{ include('category/_form.html.twig', {'button_label': 'Update'}) }}
+		{{ include('components/buttons/button_link.html.twig',{
+				size:'sm',
+				bg:'secondary',
+				content:"Go back",
+				icon_left:"arrow-back-circle-outline",
+				link:path('app_category_index', {'company':company.id})
+			}) }}
 
-	<a href="{{ path('app_category_index', {'company':company.id}) }}">back to list</a>
-
-	{{ include('category/_delete_form.html.twig') }}
+		{% embed 'components/layouts/form_layout.html.twig' with {'content': 'Update', icon:"create-outline"} %}
+            {% block footer %}
+                {% include('components/layouts/delete_form_layout.html.twig') with {
+                    item: category,	
+                    action: path('app_category_delete', {id:category.id, company:company.id})
+                } %}
+            {% endblock %}
+        {% endembed %}
+	</div>
 {% endblock %}

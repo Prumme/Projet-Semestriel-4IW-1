@@ -18,7 +18,7 @@ class CategoryType extends AbstractType
             ->add('description')
             ->add('products', EntityType::class, [
                     'class' => Product::class,
-                    'expanded' => true,
+                    'expanded' => false,
                     'multiple' => true,
                     'choice_label' => 'name',
                 ]
