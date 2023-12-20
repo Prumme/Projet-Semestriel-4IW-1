@@ -17,8 +17,8 @@
         }) }}
 		{% embed 'components/layouts/form_layout.html.twig' with {'content': 'Update', icon:"create-outline"} %}
 			{% block footer %}
-				{% include('components/layouts/delete_form_layout.html.twig') with {
-                    item: company,
+                {% include('components/layouts/delete_form_layout.html.twig') with {
+                    item: customer,
                     action: path('app_customer_delete', {company:company.id, id:customer.id}),
                 } %}
 			{% endblock %}
