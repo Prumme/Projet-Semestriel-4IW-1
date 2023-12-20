@@ -1,13 +1,20 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
+<div>
+    {% set formId = 'form'~random()%}
+    {{ form_start(form,{attr:{id:formId}}) }}
+        {{ form_widget(form) }}
+    {{ form_end(form) }}
     <div class="flex gap-4">
         {{ include('components/buttons/button.html.twig',{
             size:'sm',
             type:'submit',
+            handle: 'submitForm'~formId~'()',
             icon:icon|default('add-circle-outline'),
             content:content|default('Save'),
         }) }}
-
         {% block footer %}{% endblock %}
     </div>
-{{ form_end(form) }}
+    <script>
+        const form = {{formId}}
+        function submitForm{{formId}}(){ form.submit() }
+    </script>
+</div
