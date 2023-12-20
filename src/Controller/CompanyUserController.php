@@ -36,28 +36,29 @@ class CompanyUserController extends AbstractController
     public function index(Company $company, UserRepository $userRepository): Response
     {
         $users = $userRepository->findAllWithingCompany($company);
-        $table = new UserCompanyTable($users,["company" => $company]);
+        $table = new UserCompanyTable($users, ["company" => $company]);
         return $this->render('company_user/index.html.twig', [
-            'table'=> $table->createTable(),
+            'table' => $table->createTable(),
         ]);
     }
 
     #[Route('/delete', name: 'app_company_user_mass_delete', methods: ['GET'])]
-    public function massDelete(Request $request,Company $company, EntityManagerInterface $entityManager){
+    public function massDelete(Request $request, Company $company, EntityManagerInterface $entityManager)
+    {
         $selectedStr = $request->query->get('selected');
-        if(!$selectedStr) return $this->redirectToRoute('app_company_user_index', ['company' => $company->getId()]);
+        if (!$selectedStr) return $this->redirectToRoute('app_company_user_index', ['company' => $company->getId()]);
 
-        $selectedIds = explode(',',$selectedStr);
+        $selectedIds = explode(',', $selectedStr);
         $CSRFToken = $request->query->get('_token');
-        if ($this->isCsrfTokenValid('mass-action-token', $CSRFToken)){
+        if ($this->isCsrfTokenValid('mass-action-token', $CSRFToken)) {
             foreach ($selectedIds as $userId) {
                 $user = $entityManager->getRepository(User::class)->find($userId);
                 if ($this->isGranted(UserVoterAttributes::CAN_DELETE_USER, $user)) $entityManager->remove($user);
-                else $this->addFlash('error', 'You are not allowed to delete user with email: '.$user->getEmail());
+                else $this->addFlash('error', 'You are not allowed to delete user with email: ' . $user->getEmail());
             }
             $entityManager->flush();
         }
-        return $this->redirectToRoute('app_company_user_index',['company' => $company->getId()]);
+        return $this->redirectToRoute('app_company_user_index', ['company' => $company->getId()]);
     }
 
     #[Route('/new', name: 'app_company_user_new', methods: ['GET', 'POST'])]
@@ -103,7 +104,7 @@ class CompanyUserController extends AbstractController
 
     #[Route('/{id}/edit', name: 'app_company_user_edit', methods: ['GET', 'POST'])]
     #[IsGranted(UserVoterAttributes::CAN_EDIT_USER, subject: 'user')]
-    public function edit(Request $request,Company $company, User $user, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Company $company, User $user, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
@@ -124,9 +125,9 @@ class CompanyUserController extends AbstractController
 
     #[Route('/{id}', name: 'app_company_user_delete', methods: ['POST'])]
     #[IsGranted(UserVoterAttributes::CAN_DELETE_USER, subject: 'user')]
-    public function delete(Request $request,Company $company, User $user, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Company $company, User $user, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
             $entityManager->remove($user);
             $entityManager->flush();
         }

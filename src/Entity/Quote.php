@@ -28,7 +28,8 @@ class Quote
     #[ORM\OneToMany(mappedBy: 'quote', targetEntity: Invoice::class)]
     private Collection $invoices;
 
-    #[ORM\ManyToOne(targetEntity: Customer::class, inversedBy: 'quotes')]
+    #[ORM\ManyToOne(targetEntity: Customer::class, inversedBy: 'quotes', cascade: ['remove'])]
+    #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?Customer $customer = null;
 
     public function __construct()
