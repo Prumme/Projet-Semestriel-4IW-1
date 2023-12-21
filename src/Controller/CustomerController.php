@@ -24,7 +24,7 @@ class CustomerController extends AbstractController
     public function index(Company $company, CustomerRepository $customerRepository): Response
     {
         $customers = $customerRepository->findAll();
-        $table = new CustomersTable($customers, ['company'=>$company]);
+        $table = new CustomersTable($customers, ['company' => $company]);
         return $this->render('customer/index.html.twig', [
             'table' => $table->createTable(),
         ]);
@@ -68,7 +68,7 @@ class CustomerController extends AbstractController
 
     #[Route('/{id}/edit', name: 'app_customer_edit', methods: ['GET', 'POST'])]
     #[IsGranted(CustomerVoterAttributes::CAN_EDIT_CUSTOMER, subject: 'customer')]
-    public function edit(Request $request,Company $company, Customer $customer, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Company $company, Customer $customer, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(CustomerType::class, $customer);
         $form->handleRequest($request);
@@ -90,10 +90,9 @@ class CustomerController extends AbstractController
 
     #[Route('/{id}', name: 'app_customer_delete', methods: ['POST'])]
     #[IsGranted(CustomerVoterAttributes::CAN_DELETE_CUSTOMER, subject: 'customer')]
-    public function delete(Request $request, Customer $customer,Company $company, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Customer $customer, Company $company, EntityManagerInterface $entityManager): Response
     {
-
-        if ($this->isCsrfTokenValid('delete'.$customer->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $customer->getId(), $request->request->get('_token'))) {
             $entityManager->remove($customer);
             $entityManager->flush();
         }

@@ -1,14 +1,27 @@
-{% extends 'base.html.twig' %}
+{% extends 'backoffice.html.twig' %}
 
 {% block title %}Edit Customer
 {% endblock %}
 
 {% block body %}
-	<h1>Edit Customer</h1>
-
-	{{ include('customer/_form.html.twig', {'button_label': 'Update'}) }}
-
-	<a href="{{ path('app_customer_index', {'company':company.id}) }}">back to list</a>
-
-	{{ include('customer/_delete_form.html.twig') }}
+	<div class="flex flex-col gap-4">
+		<h1>Edit
+			{{ customer.firstname }}
+			{{customer.lastname}}</h1>
+		{{ include('components/buttons/button_link.html.twig',{
+            size:'sm',
+            bg:'secondary',
+            content:"Go back",
+            icon_left:"arrow-back-circle-outline",
+            link:path('app_customer_index', {company:company.id})
+        }) }}
+		{% embed 'components/layouts/form_layout.html.twig' with {'content': 'Update', icon:"create-outline"} %}
+			{% block footer %}
+                {% include('components/layouts/delete_form_layout.html.twig') with {
+                    item: customer,
+                    action: path('app_customer_delete', {company:company.id, id:customer.id}),
+                } %}
+			{% endblock %}
+		{% endembed %}
+	</div>
 {% endblock %}

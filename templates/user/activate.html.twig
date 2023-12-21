@@ -1,0 +1,14 @@
+{% extends 'empty.html.twig' %}
+{% block title %}Activate your Account{% endblock %}
+
+{% block content %}
+<div class="flex justify-center items-center w-screen h-full absolute top-0">
+    <div class="w-full px-3 lg:px-0 lg:w-1/2 flex flex-col space-y-2">
+        <h1>To Complete your Registration.</h1>
+        <h2 class="!mb-4">Please insert your password and verify it.</h2>
+        {% embed 'components/layouts/form_layout.html.twig' with {'content': 'Activate your account', icon:"create-outline",} %}
+        {% endembed %}
+    </div>
+</div>
+
+{% endblock %}
