@@ -22,8 +22,20 @@
 		{% endblock %}
 
 	</head>
-	<body 
-    class="w-screen h-screen relative overflow-x-hidden bg-gradient-to-r from-[#49AB9A] to-[#2E7881] flex justify-center items-center">
-		{% block content %}{% endblock %}
+	<body class="w-screen h-screen relative overflow-x-hidden">
+		{% include 'components/layouts/header.html.twig' %}
+
+        <div class="h-full w-screen absolute top-0 flex justify-center items-center">
+		    {% block content %}{% endblock %}
+        </div>
+		{% for type, flasheMessages in app.flashes %}
+			{% for message in flasheMessages %}
+				<div class="alert alert-{{ type }}">
+					{{ message }}
+				</div>
+
+			{% endfor %}
+		{% endfor %}
+
 	</body>
 </html>
