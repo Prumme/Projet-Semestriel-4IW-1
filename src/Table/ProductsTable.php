@@ -69,6 +69,17 @@ class ProductsTable extends Table{
                         'company'=> $company->getId(),
                     ]
                 ],
+            ],
+            [
+                'content'=>"See categories",
+                'icon'=>'list',
+                'href'=>[
+                    'path'=>'app_category_index',
+                    'params'=>[
+                        'company'=> $company->getId(),
+                    ]
+                ],
+
             ]
         ]);
     }
