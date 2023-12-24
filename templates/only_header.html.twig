@@ -22,11 +22,12 @@
 		{% endblock %}
 
 	</head>
-	<body class="w-[100vw] h-[100vh] relative overflow-x-hidden">
+	<body class="w-screen h-screen relative overflow-x-hidden">
 		{% include 'components/layouts/header.html.twig' %}
 
-		{% block content %}{% endblock %}
+        <div class="h-full w-screen absolute top-0 flex justify-center items-center">
+		    {% block content %}{% endblock %}
+        </div>
 
-	{% include 'components/layouts/footer.html.twig' %}
 	</body>
 </html>
