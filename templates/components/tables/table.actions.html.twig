@@ -3,20 +3,36 @@
 
 <div class="relative">
     <ion-icon name="ellipsis-vertical" class="text-secondary cursor-pointer text-xl" id="menuIcon-{{ uniqueId }}"></ion-icon>
-    <div class="hidden absolute left-0 top-0 mt-2 bg-[#FFFFFF]  border rounded shadow-md z-10" style="transform: translate(-60%, -100%);" id="contextMenu-{{ uniqueId }}">
-
+    <div class="hidden absolute left-0 top-0 mt-2 bg-[#FFFFFF] border rounded shadow-md z-10" style="transform: translate(-60%, -100%);" id="contextMenu-{{ uniqueId }}">
         {% for action in actions %}
+            {% if action.condition is defined %}
+            
+                {% if action.condition %}
+                    <form action="{{ path(action.href.path, action.href.params) }}" method="{{ action.href.method|default('GET') }}">
+                        {% if action.href.csrf|default(false) %}
+                            <input type="hidden" name="_token" value="{{ csrf_token(action.href.csrf) }}">
+                        {% endif %}
+                        <button type="submit" class="w-full whitespace-nowrap flex gap-4 px-4 py-2 items-center hover:bg-white cursor-pointer">
+                            {% if(action.icon is defined) %}
+                                <ion-icon name="{{ action.icon }}" ></ion-icon>
+                            {% endif %}
+                            {{ action.content }}
+                        </button>
+                    </form>
+                {% endif %}
+            {% else %}
             <form action="{{ path(action.href.path, action.href.params) }}" method="{{ action.href.method|default('GET') }}">
                  {% if action.href.csrf|default(false) %}
                     <input type="hidden" name="_token" value="{{ csrf_token(action.href.csrf) }}">
                  {% endif %}
-                <button type="submit" class="w-full flex gap-4 px-4 py-2 items-center hover:bg-white cursor-pointer">
+                <button type="submit" class="w-full whitespace-nowrap flex gap-4 px-4 py-2 items-center hover:bg-white cursor-pointer">
                     {% if(action.icon is defined) %}
                         <ion-icon name="{{ action.icon }}" ></ion-icon>
                     {% endif %}
                     {{ action.content }}
                 </button>
             </form>
+            {% endif %}
         {% endfor %}
     </div>
 </div>

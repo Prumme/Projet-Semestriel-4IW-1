@@ -38,6 +38,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinColumn(nullable: false)]
     private Company $company;
 
+    #[ORM\Column]
+    private ?bool $activate = false;
+
+    #[ORM\Column]
+    private ?bool $resetPassword = false;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -150,6 +156,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getIdentity(): string
     {
         return $this->getFirstname() . ' ' . $this->getLastname();
+    }
+
+    public function isActivate(): ?bool
+    {
+        return $this->activate;
+    }
+
+    public function setActivate(bool $activate): static
+    {
+        $this->activate = $activate;
+
+        return $this;
+    }
+
+    public function isResetPassword(): ?bool
+    {
+        return $this->resetPassword;
+    }
+
+    public function setResetPassword(bool $resetPassword): static
+    {
+        $this->resetPassword = $resetPassword;
+
+        return $this;
     }
 
 }

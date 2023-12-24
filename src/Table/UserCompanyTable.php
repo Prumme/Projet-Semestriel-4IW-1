@@ -36,6 +36,20 @@ class UserCompanyTable extends Table{
                 ],
             ],
             [
+                'content'=>'Send activation email',
+                'icon'=>'paper-plane-outline',
+                'condition'=> fn($item)=> false,
+                "href"=> [
+                    'csrf'=> fn($item)=> 'delete' . $item->getId(),
+                    'method'=>'get',
+                    'path'=>'app_company_user_send_activate',
+                    'params'=>[
+                        'id'=> fn($item)=>$item->getId(),
+                        'company'=> $company->getId(),
+                    ]
+                ],
+            ],
+            [
                 'content'=>'Delete',
                 'icon'=>'trash',
                 "href"=> [

@@ -136,4 +136,37 @@ class CompanyUserController extends AbstractController
             'company' => $company->getId()
         ], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/{id}/activate', name: 'app_company_user_send_activate', methods: ['GET'])]
+    #[IsGranted(UserVoterAttributes::CAN_EDIT_USER, subject: 'user')]
+    public function sendActivate(Request $request, Company $company, User $user, EntityManagerInterface $entityManager): Response
+    {
+
+        if($user->isActivate() == true){
+            $this->addFlash('error', 'User is already activated');
+            return $this->redirectToRoute('app_company_user_index', [
+                'company' => $company->getId()
+            ], Response::HTTP_SEE_OTHER);
+        }
+
+        $to = $user->getEmail();
+        $templateId = TemplatesList::WELCOME_EMAIL;
+
+        $url = $this->urlHelper->generateUrl('/user/'.$user->getId().'/activate');
+
+        $templateVariables = [
+            'name' => $user->getFirstName(),
+            'company_name' => $user->getCompany()->getName(),
+            'user_id' => $user->getId(),
+            'link' => $url
+        ];
+
+        $this->sendinblueService->sendEmailWithTemplate($to, $templateId, $templateVariables);
+
+        $this->addFlash('success', 'Activation email has been sent to user');
+
+        return $this->redirectToRoute('app_company_user_index', [
+            'company' => $company->getId()
+        ], Response::HTTP_SEE_OTHER);
+    }
 }
