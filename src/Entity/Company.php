@@ -30,6 +30,18 @@ class Company
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: Customer::class)]
     private Collection $customers;
 
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Product::class)]
+    private Collection $products;
+
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Category::class)]
+    private Collection $categories;
+
+    public function __construct()
+    {
+        $this->products = new ArrayCollection();
+        $this->categories = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -85,5 +97,65 @@ class Company
     public function getCustomers() : Collection
     {
         return $this->customers;
+    }
+
+    /**
+     * @return Collection<int, Product>
+     */
+    public function getProducts(): Collection
+    {
+        return $this->products;
+    }
+
+    public function addProduct(Product $product): static
+    {
+        if (!$this->products->contains($product)) {
+            $this->products->add($product);
+            $product->setCompany($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduct(Product $product): static
+    {
+        if ($this->products->removeElement($product)) {
+            // set the owning side to null (unless already changed)
+            if ($product->getCompany() === $this) {
+                $product->setCompany(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Category>
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category): static
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
+            $category->setCompany($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): static
+    {
+        if ($this->categories->removeElement($category)) {
+            // set the owning side to null (unless already changed)
+            if ($category->getCompany() === $this) {
+                $category->setCompany(null);
+            }
+        }
+
+        return $this;
     }
 }

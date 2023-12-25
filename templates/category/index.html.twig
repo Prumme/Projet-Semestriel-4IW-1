@@ -1,0 +1,7 @@
+{% extends 'backoffice.html.twig' %}
+
+{% block title %}Category index{% endblock %}
+
+{% block body %}
+    {% include 'components/layouts/table_layout.html.twig' with {title:'Categories', table:table} %}
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'backoffice.html.twig' %}
+
+{% block title %}Edit Product
+{% endblock %}
+
+{% block body %}
+	<div class="flex flex-col gap-4">
+		<h1>Edit Product</h1>
+
+		{{ include('components/buttons/button_link.html.twig',{
+				size:'sm',
+				bg:'secondary',
+				content:"Go back",
+				icon_left:"arrow-back-circle-outline",
+				link:path('app_product_index', {'company':company.id})
+			}) }}
+
+		{% embed 'components/layouts/form_layout.html.twig' with {'content': 'Update', icon:"create-outline"} %}
+            {% block footer %}
+                {% include('components/layouts/delete_form_layout.html.twig') with {
+                    item: product,
+                    action: path('app_product_delete', {id:product.id, company:company.id})
+                } %}
+            {% endblock %}
+        {% endembed %}
+	</div>
+{% endblock %}
