@@ -1,0 +1,10 @@
+<div>
+    {% for categorie in item.categories %}
+        {% include 'components/chips-pills/chip.html.twig' with {
+            'label': categorie.name,
+            'close_icon': false,
+            'type' : 'primary'
+        }
+        %}
+    {% endfor %}
+</div>
