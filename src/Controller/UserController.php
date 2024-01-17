@@ -37,6 +37,10 @@ class UserController extends AbstractController
     public function finish(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
 
+        if($user->isActivate()){
+            throw $this->createnotfoundexception();
+        }
+
         $form = $this->createForm(UserActivationType::class, $user, [
             'action' => $this->generateUrl('app_user_creation', ['id' => $user->getId()]),
             'method' => 'POST',
@@ -51,6 +55,8 @@ class UserController extends AbstractController
             $encodedPassword = $this->passwordEncoder->hashPassword($user, $data->getPassword());
 
             $user->setPassword($encodedPassword);
+
+            $user->setActivate(true);
 
             $entityManager->persist($user);
 
@@ -100,6 +106,10 @@ class UserController extends AbstractController
     
                 $this->sendinblueService->sendEmailWithTemplate($to, $templateId, $templateVariables);
 
+                $user->setResetPassword(true);
+                $entityManagerInterface->persist($user);
+                $entityManagerInterface->flush();
+
                 return $this->redirectToRoute('message_sent', [
                     'email' => $email,
                     'message' => 'Email for reseting Password sent'
@@ -118,6 +128,10 @@ class UserController extends AbstractController
     public function reset_password(Request $request,User $user, EntityManagerInterface $entityManager): Response
     {
 
+        if(!$user->isResetPassword()){
+            throw $this->createnotfoundexception();
+        }
+
         $form = $this->createForm(ResetPasswordType::class, null, [
             'action' => $this->generateUrl('reset_password', ['id' => $user->getId()]),
             'method' => 'POST',
@@ -131,6 +145,8 @@ class UserController extends AbstractController
             $encodedPassword = $this->passwordEncoder->hashPassword($user, $data->getPassword());
 
             $user->setPassword($encodedPassword);
+
+            $user->setResetPassword(false);
 
             $entityManager->persist($user);
 

@@ -36,6 +36,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $superAdmin->setLastname("superadmin");
         $superAdmin->setPassword($this->passwordEncoder->hashPassword($superAdmin, 'superadmin'));
         $superAdmin->setRoles([AuthentificableRoles::ROLE_SUPER_ADMIN]);
+        $superAdmin->setActivate(true);
         $superAdmin->setCompany($company); // not logical but it's just for the demo 
         $manager->persist($superAdmin);
 
@@ -46,6 +47,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $admin->setLastname("admin");
         $admin->setPassword($this->passwordEncoder->hashPassword($admin, 'admin'));
         $admin->setRoles([AuthentificableRoles::ROLE_COMPANY_ADMIN]);
+        $admin->setActivate(true);
         $admin->setCompany($company);
         $manager->persist($admin);
 
@@ -54,6 +56,8 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $user->setFirstname("user");
         $user->setLastname("user");
         $user->setPassword($this->passwordEncoder->hashPassword($user, 'user'));
+        $user->setRoles([AuthentificableRoles::ROLE_USER]);
+        $user->setActivate(true);
         $user->setCompany($company);
         $manager->persist($user);
 
@@ -65,6 +69,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
             $user->setLastname($faker->lastName);
             $user->setPassword($this->passwordEncoder->hashPassword($user, 'test'));
             $user->setCompany($company);
+            $user->setActivate(true);
             $manager->persist($user);
         }
 

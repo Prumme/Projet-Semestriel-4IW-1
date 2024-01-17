@@ -40,6 +40,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinColumn(nullable: false)]
     private Company $company;
 
+    #[ORM\Column]
+    private ?bool $activate = false;
+
+    #[ORM\Column]
+    private ?bool $resetPassword = false;
+
     #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Product::class)]
     private Collection $products;
 
@@ -191,5 +197,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+
+    public function isActivate(): ?bool
+    {
+        return $this->activate;
+    }
+
+    public function setActivate(bool $activate): static
+    {
+        $this->activate = $activate;
+
+        return $this;
+    }
+
+    public function isResetPassword(): ?bool
+    {
+        return $this->resetPassword;
+    }
+
+    public function setResetPassword(bool $resetPassword): static
+    {
+        $this->resetPassword = $resetPassword;
+
+        return $this;
+    }
 
 }
