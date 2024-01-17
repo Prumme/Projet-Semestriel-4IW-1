@@ -27,16 +27,6 @@
 
 		{% block content %}{% endblock %}
 
-		<br>
-		{% for type, flasheMessages in app.flashes %}
-			{% for message in flasheMessages %}
-				<div class="alert alert-{{ type }}">
-					{{ message }}
-				</div>
-
-			{% endfor %}
-		{% endfor %}
-
 	{% include 'components/layouts/footer.html.twig' %}
 	</body>
 </html>

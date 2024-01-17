@@ -53,7 +53,10 @@ class CompanyUserController extends AbstractController
         if ($this->isCsrfTokenValid('mass-action-token', $CSRFToken)) {
             foreach ($selectedIds as $userId) {
                 $user = $entityManager->getRepository(User::class)->find($userId);
-                if ($this->isGranted(UserVoterAttributes::CAN_DELETE_USER, $user)) $entityManager->remove($user);
+                if ($this->isGranted(UserVoterAttributes::CAN_DELETE_USER, $user)){
+                    $entityManager->remove($user);
+                    $this->addFlash('success', 'User with email: ' . $user->getEmail() . ' deleted successfully');
+                } 
                 else $this->addFlash('error', 'You are not allowed to delete user with email: ' . $user->getEmail());
             }
             $entityManager->flush();
@@ -89,6 +92,8 @@ class CompanyUserController extends AbstractController
 
             $this->sendinblueService->sendEmailWithTemplate($to, $templateId, $templateVariables);
 
+            $this->addFlash('success', 'User Created Successfully');
+            $this->addFlash('info', 'Email sent to user for activation');
 
             return $this->redirectToRoute('app_company_user_index', [
                 'company' => $company->getId()
@@ -111,6 +116,9 @@ class CompanyUserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
+
+            $this->addFlash('success', 'User Edited Successfully');
+
             return $this->redirectToRoute('app_company_user_index', [
                 'company' => $company->getId()
             ], Response::HTTP_SEE_OTHER);
@@ -130,6 +138,7 @@ class CompanyUserController extends AbstractController
         if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
             $entityManager->remove($user);
             $entityManager->flush();
+            $this->addFlash('success', 'User Deleted Successfully');
         }
 
         return $this->redirectToRoute('app_company_user_index', [

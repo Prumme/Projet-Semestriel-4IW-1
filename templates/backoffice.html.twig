@@ -17,6 +17,21 @@
         {# IO Icons #}
         <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
         <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+        <script>
+            function removeFlash(id) {
+                document.getElementById(id).remove();
+            }
+
+            addEventListener('DOMContentLoaded', () => {
+                const flash = document.querySelectorAll('[flash]');
+                flash.forEach((element) => {
+                    setTimeout(() => {
+                        element.remove();
+                    }, 3000);
+                });
+            });
+        </script>
     {% endblock %}
 
 </head>
@@ -24,15 +39,8 @@
     {% include 'components/layouts/admin/sidebar.html.twig' %}
     <div class="flex-1 p-8 relative">
         {% block body %}{% endblock %}
-        <br>
-        {% for type, flasheMessages in app.flashes %}
-            {% for message in flasheMessages %}
-                <div class="alert alert-{{ type }}">
-                    {{ message }}
-                </div>
 
-            {% endfor %}
-        {% endfor %}
+        {% include 'components/flashes/flash.html.twig' %}
     </div>
 </body>
 </html>

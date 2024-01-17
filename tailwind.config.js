@@ -39,11 +39,22 @@ module.exports = {
         danger: {
           500: "#F34E29",
         },
+        error: {
+          500: "#F34E29",
+        },
+        success: {
+          500: "#2e7881",
+        },
+        warning: {
+          500: "#FFD339",
+        },
+        info: {
+          500: "#BBDEF0",
+        },
         black: "#1E1E1E",
         green_blue: "#2e7881",
         secondary_light: "#21295C",
         primary_darken: "#337D70",
-        warning: "#FFD339",
         disabled: "#BEDFD9",
       },
     },
