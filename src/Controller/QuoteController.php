@@ -45,6 +45,8 @@ class QuoteController extends AbstractController
             $entityManager->persist($quote);
             $entityManager->flush();
 
+            $this->addFlash('success', 'Quote created successfully');
+
             return $this->redirectToRoute('app_quote_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -73,6 +75,8 @@ class QuoteController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
+            $this->addFlash('success', 'Quote edited successfully');
+
             return $this->redirectToRoute('app_quote_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -89,6 +93,8 @@ class QuoteController extends AbstractController
         if ($this->isCsrfTokenValid('delete' . $quote->getId(), $request->request->get('_token'))) {
             $entityManager->remove($quote);
             $entityManager->flush();
+
+            $this->addFlash('success', 'Quote deleted successfully');
         }
 
         return $this->redirectToRoute('app_quote_index', [], Response::HTTP_SEE_OTHER);

@@ -62,6 +62,8 @@ class UserController extends AbstractController
 
             $entityManager->flush();
 
+            $this->addFlash('success', 'Account Activate successfully');
+
             return $this->redirectToRoute('app_login');
         }
 
@@ -149,6 +151,8 @@ class UserController extends AbstractController
             $entityManager->persist($user);
 
             $entityManager->flush();
+
+            $this->addFlash('success', 'Password Reset successfully');
 
             return $this->redirectToRoute('app_login');
         }
