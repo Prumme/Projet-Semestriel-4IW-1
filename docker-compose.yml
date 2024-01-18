@@ -29,7 +29,7 @@ services:
     container_name: adminer
     restart: always
     environment:
-      ADMINER_DEFAULT_SERVER: pgsql
+      ADMINER_DEFAULT_SERVER: database
       ADMINER_DEFAULT_DB_HOST: database
       ADMINER_DEFAULT_DB_NAME: app
     ports:
