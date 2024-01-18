@@ -8,11 +8,14 @@ class TableRowAction
     private string $icon;
     private array $href;
     private $item;
-    public function __construct(string $content,string $icon,array $href,$item){
+    private $visible;
+    
+    public function __construct(string $content,string $icon,array $href, $visible,$item){
         $this->content = $content;
         $this->icon = $icon;
         $this->href = $href;
         $this->item = $item;
+        $this->visible = $visible;
     }
 
     public function getContent(){
@@ -44,6 +47,7 @@ class TableRowAction
 
     public function createRowAction(){
         return [
+            'visible' => $this->callIfCallable($this->visible),
             'content' => $this->getContent(),
             'icon' => $this->getIcon(),
             'href' => $this->getHref(),

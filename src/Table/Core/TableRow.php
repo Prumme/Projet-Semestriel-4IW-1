@@ -26,10 +26,12 @@ class TableRow
     }
     public function getActions() : array
     {
-        return array_map(function($action){
-            $tableRowAction = new TableRowAction($action['content'],$action['icon'],$action['href'],$this->item);
+        return array_filter(array_map(function($action){
+            $tableRowAction = new TableRowAction($action['content'],$action['icon'],$action['href'],$action['visible'] ?? true,$this->item);
             return $tableRowAction->createRowAction();
-        },$this->actions);
+        },$this->actions),function($action){
+            return $action['visible'];
+        });
     }
 
     public function getCells(): array
