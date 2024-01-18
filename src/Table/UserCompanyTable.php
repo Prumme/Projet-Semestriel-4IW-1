@@ -25,6 +25,18 @@ class UserCompanyTable extends Table{
 
         $this->setItemsActions([
             [
+                'content' => "Send onboarding email",
+                'icon' => 'mail',
+                'visible' => fn($item) => !$item->isActivate(),
+                "href"=> [
+                    'path'=>'app_company_user_send_activate',
+                    'params'=>[
+                        'id'=> fn($item)=>$item->getId(),
+                        'company'=> $company->getId(),
+                    ]
+                ],
+            ],
+            [
                 'content'=>'Edit',
                 'icon'=>'create',
                 "href"=> [
