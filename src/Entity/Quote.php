@@ -32,9 +32,13 @@ class Quote
     #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?Customer $customer = null;
 
+    #[ORM\OneToMany(mappedBy: 'quote_id', targetEntity: BillingRow::class)]
+    private Collection $billingRows;
+
     public function __construct()
     {
         $this->invoices = new ArrayCollection();
+        $this->billingRows = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -114,6 +118,36 @@ class Quote
             // set the owning side to null (unless already changed)
             if ($invoice->getQuote() === $this) {
                 $invoice->setQuote(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, BillingRow>
+     */
+    public function getBillingRows(): Collection
+    {
+        return $this->billingRows;
+    }
+
+    public function addBillingRow(BillingRow $billingRow): static
+    {
+        if (!$this->billingRows->contains($billingRow)) {
+            $this->billingRows->add($billingRow);
+            $billingRow->setQuoteId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBillingRow(BillingRow $billingRow): static
+    {
+        if ($this->billingRows->removeElement($billingRow)) {
+            // set the owning side to null (unless already changed)
+            if ($billingRow->getQuoteId() === $this) {
+                $billingRow->setQuoteId(null);
             }
         }
 

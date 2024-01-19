@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Quote;
 use App\Entity\Company;
 use App\Form\Quote1Type;
+use App\Form\QuoteType;
 use App\Table\QuoteTable;
 use App\Repository\QuoteRepository;
 use App\Security\AuthentificableRoles;
@@ -69,7 +70,7 @@ class QuoteController extends AbstractController
     #[IsGranted(QuoteVoterAttributes::CAN_MANAGE_QUOTE, subject: 'quote')]
     public function edit(Request $request, Quote $quote, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(Quote1Type::class, $quote);
+        $form = $this->createForm(QuoteType::class, $quote);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
