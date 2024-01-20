@@ -29,7 +29,7 @@ class BillingRow
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2)]
     private ?string $vat = null;
 
-    #[ORM\ManyToOne(inversedBy: 'billingRows')]
+    #[ORM\ManyToOne(inversedBy: 'billingRows', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Quote $quote_id = null;
 
@@ -109,5 +109,12 @@ class BillingRow
         $this->quote_id = $quote_id;
 
         return $this;
+    }
+
+    public function getTotal(){
+        return $this->getQuantity() * $this->getUnit();
+    }
+    public function getTotalWithVAT(){
+        return $this->getTotal() * (1 + $this->getVat() / 100);
     }
 }

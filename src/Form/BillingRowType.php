@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\BillingRow;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,24 +18,15 @@ class BillingRowType extends AbstractType
 
         $builder->add("product");
         $builder->add("quantity", NumberType::class,[
-            'attr' => [
-                "class"=>"input-10",
-            ]
         ]);
         $builder->add("unit", NumberType::class,[
-            'attr' => [
-                "class"=>"input-10",
-            ]
         ]);
         $builder->add("price", NumberType::class,[
-            'attr' => [
-                "class"=>"input-10",
-            ]
         ]);
         $builder->add("vat", NumberType::class,[
-            'attr' => [
-                "class"=>"input-10",
-            ]
+        ]);
+        $builder->add("total", NumberType::class,[
+            'mapped' => false,
         ]);
     }
 

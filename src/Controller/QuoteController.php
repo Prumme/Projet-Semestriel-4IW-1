@@ -59,16 +59,17 @@ class QuoteController extends AbstractController
 
     #[Route('/{id}', name: 'app_quote_show', methods: ['GET'])]
     #[IsGranted(QuoteVoterAttributes::CAN_MANAGE_QUOTE, subject: 'quote')]
-    public function show(Quote $quote): Response
+    public function show(Quote $quote,Company $company): Response
     {
         return $this->render('quote/show.html.twig', [
             'quote' => $quote,
+            'company' => $company,
         ]);
     }
 
     #[Route('/{id}/edit', name: 'app_quote_edit', methods: ['GET', 'POST'])]
     #[IsGranted(QuoteVoterAttributes::CAN_MANAGE_QUOTE, subject: 'quote')]
-    public function edit(Request $request, Quote $quote, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request,Company $company, Quote $quote, EntityManagerInterface $entityManager): Response
     {
         $products = $entityManager->getRepository(Product::class)->findAll();
         $form = $this->createForm(QuoteType::class, $quote,[
@@ -80,16 +81,20 @@ class QuoteController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            foreach ($quote->getBillingRows() as $billingRow) {
+                if(!$billingRow->getQuoteId())
+                    $billingRow->setQuoteId($quote);
+            }
             $entityManager->flush();
-
             $this->addFlash('success', 'Quote edited successfully');
 
-            return $this->redirectToRoute('app_quote_index', [], Response::HTTP_SEE_OTHER);
+            //return $this->redirectToRoute('app_quote_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('quote/edit.html.twig', [
             'quote' => $quote,
             'form' => $form,
+            'company' => $company,
         ]);
     }
 
@@ -105,5 +110,16 @@ class QuoteController extends AbstractController
         }
 
         return $this->redirectToRoute('app_quote_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+
+    #[Route('/{id}/preview', name: 'app_quote_preview', methods: ['GET'])]
+    #[IsGranted(QuoteVoterAttributes::CAN_MANAGE_QUOTE, subject: 'quote')]
+    public function preview(Quote $quote,Company $company): Response
+    {
+        return $this->render('quote/preview.html.twig', [
+            'quote' => $quote,
+            'company' => $company,
+        ]);
     }
 }

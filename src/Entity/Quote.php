@@ -32,7 +32,7 @@ class Quote
     #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?Customer $customer = null;
 
-    #[ORM\OneToMany(mappedBy: 'quote_id', targetEntity: BillingRow::class)]
+    #[ORM\OneToMany(mappedBy: 'quote_id', targetEntity: BillingRow::class,  cascade: ['persist'])]
     private Collection $billingRows;
 
     public function __construct()
@@ -152,5 +152,21 @@ class Quote
         }
 
         return $this;
+    }
+
+
+    public  function getTotal(){
+        $total = 0;
+        foreach ($this->getBillingRows() as $billingRow) {
+            $total += $billingRow->getTotal();
+        }
+        return $total;
+    }
+    public function getTotalWithVAT(){
+        $total = 0;
+        foreach ($this->getBillingRows() as $billingRow) {
+            $total += $billingRow->getTotalWithVAT();
+        }
+        return $total;
     }
 }

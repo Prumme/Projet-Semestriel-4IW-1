@@ -6,3 +6,5 @@
  */
 
 // any CSS you import will output into a single css file (app.css in this case)
+import {initializeQuoteSystem} from "./js/quote/Quote";
+window.initializeQuoteSystem = initializeQuoteSystem;
