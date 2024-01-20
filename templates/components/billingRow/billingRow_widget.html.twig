@@ -1,0 +1,95 @@
+<div onclick="handleBillinRowClickSetup(event)" onfocus="handleBillinRowClickSetup(event)" tabindex="1" class="flex gap-2 py-2" data-billing-row="true">
+    {% set products = form.vars.products %}
+    {% for child in form %}
+        {% if child.vars.name == 'product' %}
+            <div class="inline-block">
+                {{ form_label(child) }}
+                {{ include('components/inputs/searchInput.html.twig', {
+                    options: products,
+                    value: child.vars.value,
+                    name: child.vars.full_name,
+                    callback: 'handleSearchSelectedProduct',
+                }) }}
+                {{ form_errors(child) }}
+            </div>
+        {% else %}
+            {{ form_row(child) }}
+        {% endif %}
+    {% endfor %}
+    <div>
+        {{ include('form_themes/collection_delete_script.html.twig') }}
+    </div>
+</div>
+
+<script>
+    window.billinghasBeenSetup = window.billinghasBeenSetup ?? false
+    function setUpBillingRow(){
+        if(window.billinghasBeenSetup) return
+        window.billinghasBeenSetup = true
+        class BillingRow{
+            static instances = new Map()
+            static getInstance(id, billingEl){
+                if(this.instances.has(id)){
+                    return this.instances.get(id)
+                }
+                return new BillingRow(id,billingEl)
+            }
+            constructor(id,billingEl) {
+                this.id = id
+                this.billingEl = billingEl
+                this.constructor.instances.set(id,this)
+                this.bindEvents()
+            }
+            getInputs(){
+                let inputPrice = this.billingEl.querySelector('[name$="[price]"]')
+                let inputUnit =  this.billingEl.querySelector('[name$="[unit]"]')
+                let inputQuantity =  this.billingEl.querySelector('[name$="[quantity]"]')
+                return {
+                    price: inputPrice,
+                    unit: inputUnit,
+                    quantity: inputQuantity,
+                }
+            }
+
+            setVal(name,value){
+                let input = this.billingEl.querySelector(`[name$="[${name}]"]`)
+                input.value = value
+                this.handleInputChange()
+            }
+
+            bindEvents(){
+                let inputs = this.getInputs()
+                inputs.unit.addEventListener('change',this.handleInputChange.bind(this))
+                inputs.quantity.addEventListener('change',this.handleInputChange.bind(this))
+                inputs.price.addEventListener('change',this.handleInputChange.bind(this))
+            }
+            handleInputChange(event){
+                let inputs = this.getInputs()
+                let qt = Math.round(inputs.quantity.value)
+                inputs.quantity.value =  qt > 0 ? qt : 1
+                inputs.unit.value = this.toValidAmmount(inputs.unit.value)
+                let total = inputs.unit.value * Math.round(inputs.quantity.value)
+                inputs.price.value = this.toValidAmmount(total)
+            }
+
+            toValidAmmount(value){
+                return Math.round(value * 100) / 100
+            }
+        }
+        window.BillingRow = BillingRow
+    }
+
+    function handleBillinRowClickSetup(event){
+        let billingRow = event.target.closest('[data-billing-row="true"]')
+        let billingRowId = 'billing-row-' + Math.random().toString(36).substr(2, 9)
+        billingRow.id = billingRowId
+        setUpBillingRow()
+        BillingRow.getInstance(billingRowId,billingRow)
+    }
+    function handleSearchSelectedProduct(value,searchInput){
+        let billingRowContainer = searchInput.closest('[data-billing-row="true"]')
+        const billinRow = BillingRow.getInstance(billingRowContainer.id,billingRowContainer)
+        billinRow.setVal('unit',value.price)
+
+    }
+</script>

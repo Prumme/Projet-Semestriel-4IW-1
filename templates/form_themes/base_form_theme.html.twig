@@ -55,14 +55,7 @@
 {% endblock %}
 
 {% block billing_row_widget %}
-    <div class="flex gap-2 py-2">
-        {% for child in form %}
-            {{ form_row(child) }}
-        {% endfor %}
-        <div>
-        {{ include('form_themes/collection_delete_script.html.twig') }}
-        </div>
-    </div>
+    {{ include('components/billingRow/billingRow_widget.html.twig') }}
 {% endblock %}
 
 

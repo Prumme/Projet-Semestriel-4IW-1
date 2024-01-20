@@ -2,13 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Product;
 use App\Entity\Quote;
 use App\Entity\Company;
 use App\Form\Quote1Type;
 use App\Form\QuoteType;
 use App\Table\QuoteTable;
 use App\Repository\QuoteRepository;
-use App\Security\AuthentificableRoles;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -70,7 +70,13 @@ class QuoteController extends AbstractController
     #[IsGranted(QuoteVoterAttributes::CAN_MANAGE_QUOTE, subject: 'quote')]
     public function edit(Request $request, Quote $quote, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(QuoteType::class, $quote);
+        $products = $entityManager->getRepository(Product::class)->findAll();
+        $form = $this->createForm(QuoteType::class, $quote,[
+            'products' => array_map(fn($product) => [
+                'value' => json_encode($product->toArray()),
+                'label' => $product->getName(),
+            ], $products),
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

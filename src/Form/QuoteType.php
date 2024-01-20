@@ -45,6 +45,9 @@ class QuoteType extends AbstractType
             ->add('has_been_signed')
             ->add('billingRows', CollectionType::class, [
                 'entry_type' => BillingRowType::class,
+                'entry_options' => [
+                    'products' => $options['products'],
+                ],
                 'label' => "Billing rows",
                 'allow_add' => true,
                 'allow_delete' => true,
@@ -56,6 +59,7 @@ class QuoteType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Quote::class,
+            'products' => [],
         ]);
     }
 }

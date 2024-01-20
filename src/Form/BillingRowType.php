@@ -38,10 +38,16 @@ class BillingRowType extends AbstractType
         ]);
     }
 
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        $view->vars['products'] = $options['products'];
+    }
+
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => BillingRow::class,
+            'products' => [],
         ]);
     }
 }
