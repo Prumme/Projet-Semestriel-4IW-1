@@ -37,10 +37,10 @@ class QuoteTable extends Table
 
         $this->setItemsActions([
             [
-                'content' => 'Show',
+                'content' => 'Edit',
                 'icon' => 'eye',
                 "href" => [
-                    'path' => 'app_quote_show',
+                    'path' => 'app_quote_edit',
                     'params' => [
                         'id' => fn ($item) => $item->getId(),
                         'company' => $company->getId(),

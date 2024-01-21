@@ -1,13 +1,35 @@
-{% extends 'base.html.twig' %}
+{% extends 'backoffice.html.twig' %}
+
 
 {% block title %}Edit Quote{% endblock %}
-
 {% block body %}
-    <h1>Edit Quote</h1>
-
-    {{ include('quote/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('app_quote_index') }}">back to list</a>
-
-    {{ include('quote/_delete_form.html.twig') }}
+    <script>
+       document.addEventListener('DOMContentLoaded', function() {
+           window.initializeQuoteSystem();
+           window.Quote.getInstance().exploreBillingRows()
+       })
+    </script>
+    <div class="flex flex-col gap-4">
+        <h1>Edit Quote</h1>
+        {{ include('components/buttons/button_link.html.twig',{
+            size:'sm',
+            bg:'secondary',
+            content:"Go back",
+            icon_left:"arrow-back-circle-outline",
+            link:path('app_quote_index',{company:company.id})
+        }) }}
+        <div class="flex gap-6">
+            <div class="w-1/2">
+                {% embed 'components/layouts/form_layout.html.twig' with {'content': 'Update', icon:"create-outline"} %}
+                    {% block footer %}
+                        {% include('components/layouts/delete_form_layout.html.twig') with {
+                            item: quote,
+                            action: path('app_quote_delete', {company:company.id, id:quote.id}),
+                        } %}
+                    {% endblock %}
+                {% endembed %}
+            </div>
+            <iframe class="w-1/2"  id="preview" src="{{ path('app_quote_preview', {company:company.id, id:quote.id}) }}"></iframe>
+        </div>
+    </div>
 {% endblock %}

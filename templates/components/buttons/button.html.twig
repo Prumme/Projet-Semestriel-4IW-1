@@ -14,6 +14,8 @@ HOW TO USE IT
         {% if(icon is defined) %}
             <ion-icon name="{{ icon }}"></ion-icon>
         {% endif %}
-        <span>{{ content }}</span>
+        {% if(content is defined) %}
+            <span>{{ content }}</span>
+        {% endif %}
     </div>
 </button>

@@ -1,0 +1,6 @@
+{% set uniqueDeleteId = random() %}
+{{ include('components/buttons/button.html.twig',{
+    icon:'remove-outline',
+    bg:'danger',
+    handle: 'deleteElementFromCollection(event)',
+}) }}

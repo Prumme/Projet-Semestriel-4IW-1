@@ -1,0 +1,46 @@
+{{ include('components/buttons/button.html.twig',{
+    icon:'add-outline',
+    handle: 'addFormToCollection' ~ uniqueId ~ '(event)',
+}) }}
+<script>
+    function addFormToCollection{{ uniqueId }} (e) {
+        const collection = document.querySelector('[data-collection-unique-id="{{ uniqueId }}"]');
+        const item = document.createElement('div');
+
+        const nextIndex = collection.dataset.nextIndex;
+        item.innerHTML = collection
+            .dataset
+            .prototype
+            .replace(
+                /__name__/g,
+                nextIndex
+            );
+
+        //evaluating scripts in the new item
+        const scripts = item.getElementsByTagName('script');
+        for (let i = 0; i < scripts.length; i++) {
+            eval(scripts[i].innerHTML);
+        }
+        //add the first element of item
+        collection.appendChild(item.firstElementChild);
+        collection.dataset.nextIndex++;
+    };
+
+    function deleteElementFromCollection(e){
+        const btntarget = e.currentTarget;
+        let rowIndex = -1;
+        let collectionElement = btntarget.parentElement;
+        while(collectionElement?.dataset?.collectionUniqueId == undefined){
+            collectionElement = collectionElement.parentElement;
+            if(collectionElement.parentElement.dataset.collectionUniqueId != undefined){
+                let rowElement = collectionElement;
+                collectionElement = collectionElement.parentElement;
+                rowIndex = Array.prototype.indexOf.call(collectionElement.children, rowElement);
+                break;
+            }
+        }
+        if(rowIndex != -1){
+            collectionElement.children[rowIndex].remove();
+        }
+    }
+</script>

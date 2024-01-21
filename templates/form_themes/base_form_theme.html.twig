@@ -1,19 +1,68 @@
 {%block form_row %}
+    {% set classes = attr.class is defined ?  attr.class : '' %}
     {% set inputClasses =  "w-full px-0 py-2.5 border-0 border-b-2 border-primary-500 text-primary-500 focus:border-secondary-500  disabled:text-disabled focus:text-secondary-500 focus:ring-0 " %}
+    <div class="inline-block {{ classes }} ">
+        {{ form_label(form) }}
+        {{ form_widget(form,{
+            'attr': {
+                'class': inputClasses
+            }
+        }) }}
+        {{ form_errors(form) }}
+    </div>
+{% endblock %}
+{% block date_row %}
     {% set classes = attr.class is defined ?  attr.class : '' %}
     <div class="inline-block {{ classes }} ">
         {{ form_label(form) }}
-        {% if 'choice' in form.vars.block_prefixes %}
-            {{ include('components/inputs/select.html.twig') }}
-        {% else %}
-            {{ form_widget(form,{
-                'attr': {
-                    'class': inputClasses
-                }
-            }) }}
-        {% endif %}
+        {{ form_widget(form) }}
         {{ form_errors(form) }}
     </div>
+{% endblock %}
+{% block button_row %}
+    {% set classes = attr.class is defined ?  attr.class : '' %}
+    <div class="inline-block flex justify-center items-end {{ classes }}">
+        {{ form_widget(form) }}
+    </div>
+{% endblock %}
+{% block button_widget %}
+    {{ include('components/buttons/button.html.twig',{
+        content: form.vars.label,
+        icon: form.vars.attr.icon is defined ? form.vars.attr.icon : null,
+        size: 'sm'
+    }) }}
+{% endblock %}
+{% block date_widget %}
+   {{ form_widget(form) }}
+{% endblock %}
+
+{% block choice_widget %}
+    {{ include('components/inputs/select.html.twig') }}
+{% endblock %}
+
+{# Reset collection Type #}
+{% block collection_row %}
+    {% set uniqueId = random() %}
+    <div class="flex justify-between">
+    {{ form_label(form) }}
+    {{ include('form_themes/collection_adding_script.html.twig',{uniqueId:uniqueId}) }}
+    </div>
+    {{ form_widget(form,{
+        'attr':{
+            'data-collection-unique-id': uniqueId,
+            'data-next-index': form.children|length
+        }
+    }) }}
+    {{ form_errors(form) }}
+{% endblock %}
+
+{% block billing_row_row %}
+    {{ form_widget(form) }}
+    {{ form_errors(form) }}
+{% endblock %}
+
+{% block billing_row_widget %}
+    {{ include('components/billingRow/billingRow_widget.html.twig') }}
 {% endblock %}
 
 

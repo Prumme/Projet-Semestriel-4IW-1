@@ -47,6 +47,11 @@ class Customer
         return $this->id;
     }
 
+    public function getIdentity(): string
+    {
+        return $this->getFirstname() . ' ' . $this->getLastname();
+    }
+
     public function getLastname(): ?string
     {
         return $this->lastname;

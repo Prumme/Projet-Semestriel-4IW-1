@@ -1,0 +1,142 @@
+{# make quote pdf html #}
+<div class="page-container">
+    <main id="page" >
+
+        <div id="company">
+                <h2 >{{ company.name }}</h2>
+                <div>Siret : {{ company.siret }}</div>
+                <div>VAT number : {{ company.vatNumber }}</div>
+        </div>
+
+        <div class="line">
+            <div id="customer">
+                <h2 >{{ quote.customer.identity }}</h2>
+                {% if quote.billingAddress is not null %}
+                    <div>{{ quote.billingAddress.addressLine1 }}</div>
+                    {% if quote.billingAddress.addressLine2 is defined %}
+                        <div>{{ quote.billingAddress.addressLine2 }}</div>
+                    {% endif %}
+                    <div>{{ quote.billingAddress.zipCode }} {{ quote.billingAddress.city }}</div>
+                {% endif %}
+            </div>
+            <div id="customer">
+                <div>Emited at : {{ quote.emitedAt | date("m/d/Y") }}</div>
+                <div>Expired_at : {{ quote.expiredAt | date("m/d/Y") }}</div>
+            </div>
+        </div>
+
+
+
+        {# billings rows #}
+
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        Product
+                    </th>
+                    <th>
+                        Quantity
+                    </th>
+                    <th>
+                        Unit Price (HT)
+                    </th>
+                    <th>
+                        Price
+                    </th>
+                    <th>
+                        VAT
+                    </th>
+                    <th>
+                        Total
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for billingRow in quote.billingRows %}
+                    <tr>
+                        <td>
+                            {{ billingRow.product }}
+                        </td>
+                        <td>
+                            {{ billingRow.quantity }}
+                        </td>
+                        <td>
+                            {{ billingRow.unit | format_currency('EUR') }}
+                        </td>
+                        <td>
+                            {{ billingRow.total | format_currency('EUR') }}
+                        </td>
+                        <td>
+                            {{ billingRow.vat }} %
+                        </td>
+                        <td>
+                            {{ billingRow.totalWithVAT | format_currency('EUR') }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4"></td>
+                    <td class="font-semibold">
+                        Total HT
+                    </td>
+                    <td>
+                        {{ quote.total | format_currency('EUR') }}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4"></td>
+                    <td class="font-semibold">
+                        Total TTC
+                    </td>
+                    <td>
+                        {{ quote.totalWithVAT | format_currency('EUR') }}
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </main>
+</div>
+<script>
+    window.addEventListener('resize',sizePage)
+
+    function sizePage(){
+        if(window.innerWidth < 800){
+            let coef= window.innerWidth / 850;
+            document.getElementById('page').style.transform = 'scale('+coef+') translateX(25px)';
+        }else{
+            document.getElementById('page').style.transform = 'scale(1)';
+        }
+    }
+    sizePage()
+</script>
+<style>
+    body{
+        margin: 0;
+        padding: 0;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+    *{
+        box-sizing: border-box;
+    }
+    .page-container{
+        padding: 1em 0;
+        background: #dbe2ea;
+    }
+    #page{
+        transform-origin: left top;
+        background: white;
+        width: 210mm;
+        height: 297mm;
+        margin: 0 auto;
+        padding: 1em;
+    }
+    .line{
+        display: flex;
+        justify-content: space-between;
+    }
+</style>

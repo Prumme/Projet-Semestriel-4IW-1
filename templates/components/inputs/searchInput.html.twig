@@ -1,0 +1,10 @@
+{% set uniqueId = 'search-input-' ~ random() %}
+{% set inputClasses =  "w-full px-0 py-2.5 border-0 border-b-2 border-primary-500 text-primary-500 focus:border-secondary-500 focus:text-secondary-500  focus:ring-0 " %}
+<div data-bind-component="searchInput" data-callback-function="{{ callback }}" class="relative" id="{{ uniqueId }}">
+    <input autocomplete="off" type="text" placeholder="search" class="{{ inputClasses }}" name="{{ name }}" value="{{ value }}">
+    <div class="search-input-list absolute top-full left-0 max-h-[200px] min-w-[200px] bg-white shadow-primary-200 shadow rounded z-10 overflow-y-auto hidden">
+        {% for option in options %}
+            <div class="px-4 py-2 cursor-pointer text-primary-500 flex items-center gap-4 hover:bg-primary-200" data-label="{{ option.label }}" data-value="{{ option.value }}" >{{ option.label }}</div>
+        {% endfor %}
+    </div>
+</div>

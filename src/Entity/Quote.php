@@ -32,8 +32,17 @@ class Quote
     #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?Customer $customer = null;
 
+    #[ORM\OneToMany(mappedBy: 'quote_id', targetEntity: BillingRow::class,  cascade: ['persist'])]
+    private Collection $billingRows;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?BillingAddress $billingAddress = null;
+
     public function __construct()
     {
+        $this->has_been_signed = false;
+        $this->billingRows = new ArrayCollection();
         $this->invoices = new ArrayCollection();
     }
 
@@ -119,4 +128,62 @@ class Quote
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, BillingRow>
+     */
+    public function getBillingRows(): Collection
+    {
+        return $this->billingRows;
+    }
+
+    public function addBillingRow(BillingRow $billingRow): static
+    {
+        if (!$this->billingRows->contains($billingRow)) {
+            $this->billingRows->add($billingRow);
+            $billingRow->setQuoteId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBillingRow(BillingRow $billingRow): static
+    {
+        if ($this->billingRows->removeElement($billingRow)) {
+            // set the owning side to null (unless already changed)
+            if ($billingRow->getQuoteId() === $this) {
+                $billingRow->setQuoteId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public  function getTotal(){
+        $total = 0;
+        foreach ($this->getBillingRows() as $billingRow) {
+            $total += $billingRow->getTotal();
+        }
+        return $total;
+    }
+    public function getTotalWithVAT(){
+        $total = 0;
+        foreach ($this->getBillingRows() as $billingRow) {
+            $total += $billingRow->getTotalWithVAT();
+        }
+        return $total;
+    }
+
+    public function getBillingAddress(): ?BillingAddress
+    {
+        return $this->billingAddress;
+    }
+
+    public function setBillingAddress(?BillingAddress $billingAddress): static
+    {
+        $this->billingAddress = $billingAddress;
+
+        return $this;
+    }
+
 }
