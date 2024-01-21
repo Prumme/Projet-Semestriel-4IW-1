@@ -14,6 +14,7 @@ export class Quote{
          * @type {Map<String,BillingRow>}
          */
         this.billingsRows = new Map()
+        this.bindEvents()
     }
     static init(){
         if(Quote.instance === null){
@@ -44,6 +45,30 @@ export class Quote{
     getBillingRow(id){
         return this.billingsRows.get(id)
     }
+
+    bindEvents(){
+        let customerInput = document.querySelector('#quote_customer')
+        if(customerInput){
+            customerInput.addEventListener('change',()=>this.handleCustomerChange.call(this,customerInput.querySelector('input:checked').value))
+        }
+    }
+
+    async handleCustomerChange(customerID){
+        const newBillingInput = await this.fetchNewCustomerBillingAddressInput(customerID)
+        const oldBillingInput = document.querySelector('#quote_billingAddress')
+        if(!oldBillingInput) return;
+        oldBillingInput.parentNode.replaceChild(newBillingInput,oldBillingInput)
+    }
+
+    async fetchNewCustomerBillingAddressInput(customerID){
+        const response = await  fetch(location.href + `?customer_id=${customerID}`)
+        const html = await response.text()
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML = html;
+        const billingRowInput = wrapper.querySelector('#quote_billingAddress');
+        return billingRowInput;
+    }
+
 }
 
 export function initializeQuoteSystem(){

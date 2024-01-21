@@ -19,9 +19,16 @@
         {{ form_errors(form) }}
     </div>
 {% endblock %}
+{% block button_row %}
+    {% set classes = attr.class is defined ?  attr.class : '' %}
+    <div class="inline-block flex justify-center items-end {{ classes }}">
+        {{ form_widget(form) }}
+    </div>
+{% endblock %}
 {% block button_widget %}
     {{ include('components/buttons/button.html.twig',{
         content: form.vars.label,
+        icon: form.vars.attr.icon is defined ? form.vars.attr.icon : null,
         size: 'sm'
     }) }}
 {% endblock %}

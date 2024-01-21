@@ -35,10 +35,15 @@ class Quote
     #[ORM\OneToMany(mappedBy: 'quote_id', targetEntity: BillingRow::class,  cascade: ['persist'])]
     private Collection $billingRows;
 
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?BillingAddress $billingAddress = null;
+
     public function __construct()
     {
-        $this->invoices = new ArrayCollection();
+        $this->has_been_signed = false;
         $this->billingRows = new ArrayCollection();
+        $this->invoices = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -154,7 +159,6 @@ class Quote
         return $this;
     }
 
-
     public  function getTotal(){
         $total = 0;
         foreach ($this->getBillingRows() as $billingRow) {
@@ -169,4 +173,17 @@ class Quote
         }
         return $total;
     }
+
+    public function getBillingAddress(): ?BillingAddress
+    {
+        return $this->billingAddress;
+    }
+
+    public function setBillingAddress(?BillingAddress $billingAddress): static
+    {
+        $this->billingAddress = $billingAddress;
+
+        return $this;
+    }
+
 }

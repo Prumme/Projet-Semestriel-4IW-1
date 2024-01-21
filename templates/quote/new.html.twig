@@ -1,11 +1,22 @@
-{% extends 'base.html.twig' %}
+{% extends 'backoffice.html.twig' %}
 
 {% block title %}New Quote{% endblock %}
-
 {% block body %}
-    <h1>Create new Quote</h1>
-
-    {{ include('quote/_form.html.twig') }}
-
-    <a href="{{ path('app_quote_index') }}">back to list</a>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            window.initializeQuoteSystem();
+            window.Quote.getInstance().exploreBillingRows()
+        })
+    </script>
+    <div class="flex flex-col gap-4">
+        <h1>Create Quote</h1>
+        {{ include('components/buttons/button_link.html.twig',{
+            size:'sm',
+            bg:'secondary',
+            content:"Go back",
+            icon_left:"arrow-back-circle-outline",
+            link:path('app_quote_index',{company:company.id}),
+        }) }}
+        {% include 'components/layouts/form_layout.html.twig' %}
+    </div>
 {% endblock %}

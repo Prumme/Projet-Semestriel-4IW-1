@@ -9,24 +9,27 @@
            window.Quote.getInstance().exploreBillingRows()
        })
     </script>
-    <h1>Edit Quote</h1>
-
-    <div class="flex gap-6">
-        <div class="w-1/2">
-            {% embed 'components/layouts/form_layout.html.twig' with {'content': 'Update', icon:"create-outline"} %}
-                {% block footer %}
-                    {% include('components/layouts/delete_form_layout.html.twig') with {
-                        item: quote,
-                        action: path('app_quote_delete', {company:company.id, id:quote.id}),
-                    } %}
-                {% endblock %}
-            {% endembed %}
+    <div class="flex flex-col gap-4">
+        <h1>Edit Quote</h1>
+        {{ include('components/buttons/button_link.html.twig',{
+            size:'sm',
+            bg:'secondary',
+            content:"Go back",
+            icon_left:"arrow-back-circle-outline",
+            link:path('app_quote_index',{company:company.id})
+        }) }}
+        <div class="flex gap-6">
+            <div class="w-1/2">
+                {% embed 'components/layouts/form_layout.html.twig' with {'content': 'Update', icon:"create-outline"} %}
+                    {% block footer %}
+                        {% include('components/layouts/delete_form_layout.html.twig') with {
+                            item: quote,
+                            action: path('app_quote_delete', {company:company.id, id:quote.id}),
+                        } %}
+                    {% endblock %}
+                {% endembed %}
+            </div>
+            <iframe class="w-1/2"  id="preview" src="{{ path('app_quote_preview', {company:company.id, id:quote.id}) }}"></iframe>
         </div>
-        <iframe class="w-1/2 h-[1000px]"  id="preview" src="{{ path('app_quote_preview', {company:company.id, id:quote.id}) }}"></iframe>
-
-
     </div>
-
-
-
 {% endblock %}

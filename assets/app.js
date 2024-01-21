@@ -6,5 +6,7 @@
  */
 
 // any CSS you import will output into a single css file (app.css in this case)
+import bootstrap from './js/bootstrap'
 import {initializeQuoteSystem} from "./js/quote/Quote";
+bootstrap()
 window.initializeQuoteSystem = initializeQuoteSystem;

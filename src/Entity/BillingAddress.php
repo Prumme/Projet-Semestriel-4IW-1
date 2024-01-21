@@ -123,4 +123,8 @@ class BillingAddress
     {
         return $this->customer;
     }
+
+    public function getFullAddress(){
+        return $this->address_line_1 . " " . $this->address_line_2 . " " . $this->zip_code . " " . $this->city . " " . $this->country_code;
+    }
 }

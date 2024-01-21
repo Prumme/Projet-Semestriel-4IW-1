@@ -11,9 +11,13 @@
         <div class="line">
             <div id="customer">
                 <h2 >{{ quote.customer.identity }}</h2>
-                <div>ADDRESS</div>
-                <div>CITY 00000</div>
-                <div>COUNTRY</div>
+                {% if quote.billingAddress is not null %}
+                    <div>{{ quote.billingAddress.addressLine1 }}</div>
+                    {% if quote.billingAddress.addressLine2 is defined %}
+                        <div>{{ quote.billingAddress.addressLine2 }}</div>
+                    {% endif %}
+                    <div>{{ quote.billingAddress.zipCode }} {{ quote.billingAddress.city }}</div>
+                {% endif %}
             </div>
             <div id="customer">
                 <div>Emited at : {{ quote.emitedAt | date("m/d/Y") }}</div>
@@ -121,7 +125,7 @@
     }
     .page-container{
         padding: 1em 0;
-        background: grey;
+        background: #dbe2ea;
     }
     #page{
         transform-origin: left top;

@@ -1,60 +1,10 @@
 {% set uniqueId = 'search-input-' ~ random() %}
 {% set inputClasses =  "w-full px-0 py-2.5 border-0 border-b-2 border-primary-500 text-primary-500 focus:border-secondary-500 focus:text-secondary-500  focus:ring-0 " %}
-<div class="relative" id="{{ uniqueId }}">
-
-    <input type="text" onclick="handleClickSearchInput(event)" placeholder="search" class="{{ inputClasses }}" oninput="handleSearchInput(event)" name="{{ name }}" value="{{ value }}">
+<div data-bind-component="searchInput" data-callback-function="{{ callback }}" class="relative" id="{{ uniqueId }}">
+    <input autocomplete="off" type="text" placeholder="search" class="{{ inputClasses }}" name="{{ name }}" value="{{ value }}">
     <div class="search-input-list absolute top-full left-0 max-h-[200px] min-w-[200px] bg-white shadow-primary-200 shadow rounded z-10 overflow-y-auto hidden">
         {% for option in options %}
-            <div class="px-4 py-2 cursor-pointer text-primary-500 flex items-center gap-4 hover:bg-primary-200" onclick="handleClickSearchInputListItem(event)" data-label="{{ option.label }}" data-value="{{ option.value }}" >{{ option.label }}</div>
+            <div class="px-4 py-2 cursor-pointer text-primary-500 flex items-center gap-4 hover:bg-primary-200" data-label="{{ option.label }}" data-value="{{ option.value }}" >{{ option.label }}</div>
         {% endfor %}
     </div>
 </div>
-<script>
-   function retreiveSearchInputContainer(event){
-        const searchInput = event.target.closest("[id^='search-input-']")
-        return searchInput
-   }
-   function openList(list){
-        list.classList.remove("hidden")
-   }
-    function closeList(list){
-          list.classList.add("hidden")
-    }
-   function handleClickSearchInput(event){
-        const searchInput = retreiveSearchInputContainer(event)
-        const searchInputList = searchInput.querySelector(".search-input-list")
-        openList(searchInputList)
-        document.addEventListener("click", function(event){
-            if(!event.target.closest("[id^='search-input-']")){
-                closeList(searchInputList)
-                document.removeEventListener("click", this)
-            }
-        })
-   }
-   function handleSearchInput(event){
-        const searchInput = retreiveSearchInputContainer(event)
-        const searchInputList = searchInput.querySelector(".search-input-list")
-        const search = event.currentTarget.value
-
-        const listItems = searchInputList.querySelectorAll(".search-input-list > div")
-        listItems.forEach(function(listItem){
-            const label = listItem.dataset.label
-            if(label.toLowerCase().includes(search.toLowerCase())){
-                listItem.classList.remove("hidden")
-            }else{
-                listItem.classList.add("hidden")
-            }
-        })
-   }
-   function handleClickSearchInputListItem(event){
-        const searchInput = retreiveSearchInputContainer(event)
-        const label = event.currentTarget.dataset.label
-        const value = JSON.parse(event.currentTarget.dataset.value)
-        const input = searchInput.querySelector("input")
-        input.value = label
-        closeList(searchInput.querySelector(".search-input-list"))
-           {% if callback is defined %}
-                {{ callback }}(value,searchInput)
-           {% endif %}
-   }
-</script>

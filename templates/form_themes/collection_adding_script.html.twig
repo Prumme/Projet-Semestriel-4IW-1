@@ -16,7 +16,13 @@
                 nextIndex
             );
 
-        collection.appendChild(item);
+        //evaluating scripts in the new item
+        const scripts = item.getElementsByTagName('script');
+        for (let i = 0; i < scripts.length; i++) {
+            eval(scripts[i].innerHTML);
+        }
+        //add the first element of item
+        collection.appendChild(item.firstElementChild);
         collection.dataset.nextIndex++;
     };
 
