@@ -65,9 +65,7 @@ class URLSignedService
         $data = $request->query->get('d',null);
         if(!$token || !$data) throw new URLSignedException(URLSignedException::INVALID);
         $dataDecoded= $this->decodeData($data);
-        dump($dataDecoded,!isset($dataDecoded),!isset($dataDecoded->params));
         if(!isset($dataDecoded) || !isset($dataDecoded->params)) throw new URLSignedException(URLSignedException::INVALID);
-        dd("test");
         $urlSigned = new URLSigned($request,$token,$dataDecoded);
         if(!$this->verifyToken($token,$data)) throw new URLSignedException(URLSignedException::INVALID,$urlSigned);
         if($checkParams && !$this->verifyParams($request,$dataDecoded)) throw new URLSignedException(URLSignedException::INVALID,$urlSigned);
