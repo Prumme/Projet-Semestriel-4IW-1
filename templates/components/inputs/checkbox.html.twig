@@ -12,10 +12,11 @@
 
 /HOW TO USE IT #}
 
-<div class="inline-flex flex-col {{ class|default('') }}">
+<div class="inline-flex flex-row-reverse justify-end items-center gap-4 {{ class|default('') }}">
     {% if label is defined %}
         {% include 'components/inputs/formLabel.html.twig' with {
             label: label ?? null,
+            name: name ?? null,
             id: id ?? null,
             icon: icon ?? null
         }%}
@@ -27,7 +28,9 @@
         id="{{ id|default('') }}"
         required="{{ required|default('') }}"
         placeholder="{{ placeholder|default('') }}"
+        {% if value is defined %}
         value="{{ value|default('') }}"
+        {% endif %}
         onchange="{{ onChange|default('') }}"
     >
 </div>
