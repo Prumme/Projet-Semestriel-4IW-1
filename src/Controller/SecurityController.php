@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use App\Form\RegisterType;
 use Doctrine\ORM\EntityManagerInterface;
+use PhpParser\Node\Expr\Cast\String_;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class SecurityController extends AbstractController
@@ -50,6 +51,13 @@ class SecurityController extends AbstractController
 
 
         if($form->isSubmitted()) {
+            $error = $this->checkInputRegister($request->request);
+
+            if($error != ""){
+                return $this->render('security/register.html.twig', ['error' => $error, 'form' => $form]);
+            }
+
+
             $company = new Company();
 
             $company->setName($request->request->get('name'));
@@ -90,5 +98,40 @@ class SecurityController extends AbstractController
     public function registerEmployee(): Response
     {
         return $this->render('security/register_employee.html.twig');
+    }
+
+
+    private function checkInputRegister($data): String
+    {
+
+        if($data->get('password') != $data->get('password_verification')){
+            return "Password and password verification are not the same";
+        }
+
+        if($data->get('name') == ""){
+            return "Name is empty";
+        }
+
+        if($data->get('siret') == ""){
+            return "Siret is empty";
+        }
+
+        if($data->get('vat_number') == ""){
+            return "Vat number is empty";
+        }
+
+        if($data->get('email') == ""){
+            return "Email is empty";
+        }
+
+        if($data->get('firstname') == ""){
+            return "Firstname is empty";
+        }
+
+        if($data->get('lastname') == ""){
+            return "Lastname is empty";
+        }
+
+        return "";
     }
 }

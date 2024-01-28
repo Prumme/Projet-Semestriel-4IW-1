@@ -5,7 +5,7 @@
 {% block content %}
 <form method="post" class="p-2 w-screen lg:mx-16">
     {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        <div class="text-danger-500">{{ error }}</div>
     {% endif %}
 
     {% if app.user %}
@@ -66,7 +66,7 @@
 
             {% include 'components/inputs/input.html.twig' with {
                 'label': 'Confirm password',
-                'name': 'register[password][second]',
+                'name': 'password_verification',
                 'type': 'password',
                 'placeholder': 'Password',
                 'required': true,
