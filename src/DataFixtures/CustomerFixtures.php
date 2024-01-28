@@ -32,6 +32,7 @@ class CustomerFixtures extends Fixture implements DependentFixtureInterface
             $customer->setCompanySiret((string) $faker->numberBetween(1000000000000, 9999999999999));
             $customer->setCompanyVatNumber((string) $faker->numberBetween(1000000000000, 9999999999999));
             $customer->setTel($faker->phoneNumber);
+            $customer->setEmail($faker->email);
             $customer->setReferenceCompany($this->getReference("company"));
             $this->createBillingAddress($manager, $customer);
             $manager->persist($customer);
