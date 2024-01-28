@@ -11,9 +11,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use App\Form\RegisterType;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class SecurityController extends AbstractController
 {
+
+
+    function __construct(private UserPasswordHasherInterface $passwordEncoder){}
+
     #[Route(path: '/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
@@ -41,14 +46,10 @@ class SecurityController extends AbstractController
         $error = "";
 
         $form = $this->createForm(RegisterType::class);
-        // dd($request);
-        // dd($form);
         $form->handleRequest($request);
 
 
         if($form->isSubmitted()) {
-
-            
             $company = new Company();
 
             $company->setName($request->request->get('name'));
@@ -64,7 +65,7 @@ class SecurityController extends AbstractController
             $user->setEmail($request->request->get('email'));
             $user->setFirstname($request->request->get('firstname'));
             $user->setLastname($request->request->get('lastname'));
-            $user->setPassword($request->request->get('password'));
+            $user->setPassword($this->passwordEncoder->hashPassword($user, $request->request->get('password')));
             $user->setRoles(["ROLE_USER", "ROLE_COMPANY_ADMIN"]);
             $user->setCompany($company);
                
