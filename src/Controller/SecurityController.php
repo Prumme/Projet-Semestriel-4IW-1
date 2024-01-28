@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Company;
 use App\Entity\User;
+use App\Data\TemplatesList;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,12 +14,14 @@ use App\Form\RegisterType;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpParser\Node\Expr\Cast\String_;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use App\Helper\URL;
+use App\Service\EmailService;
 
 class SecurityController extends AbstractController
 {
 
 
-    function __construct(private UserPasswordHasherInterface $passwordEncoder){}
+    function __construct(private UserPasswordHasherInterface $passwordEncoder, private URL $urlHelper, private EmailService $sendinblueService){}
 
     #[Route(path: '/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
@@ -80,7 +83,24 @@ class SecurityController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_dashboard');
+            // EMAIL SENDING
+            $to = $user->getEmail();
+            $templateId = TemplatesList::WELCOME_EMAIL_OWNER;
+
+            $url = $this->urlHelper->generateUrl('/user/'.$user->getId().'/activate_owner');
+
+            $templateVariables = [
+                'name' => $user->getFirstName(),
+                'company_name' => $user->getCompany()->getName(),
+                'link' => $url
+            ];
+
+            $this->sendinblueService->sendEmailWithTemplate($to, $templateId, $templateVariables);
+
+            return $this->redirectToRoute('message_sent', [
+                'email' => $to,
+                'message' => 'Email for verifying your address sent'
+            ]);
 
         }
 
