@@ -1,78 +1,105 @@
 {# make quote pdf html #}
+{{ encore_entry_link_tags('app_css') }}
+{{ encore_entry_script_tags('app') }}
 <div class="page-container">
-    <main id="page" >
+    <div id="loader-container" class="flex w-full h-full items-center justify-center">
+        {{ include('components/loader/loader.html.twig',{
+            size:'30px',
+            weight:'4px'
+        }) }}
+    </div>
 
-        <div id="company">
-                <h2 >{{ company.name }}</h2>
+    <main id="page" class="hidden">
+        <header>
+            <h1>Quote </h1>
+            <small>#{{ quote.number }}</small>
+            <h2 >{{ company.name }}</h2>
+        </header>
+
+        <div class="mb-5 flex justify-between">
+            <div>
+                <div>[COMPANY ADDRESS LINE]</div>
+                <div>[CITY, ZIP]</div>
+                <div>[PHONE]</div>
                 <div>Siret : {{ company.siret }}</div>
                 <div>VAT number : {{ company.vatNumber }}</div>
+            </div>
+            <div>
+                <table>
+                    <tr>
+                        <td class="bg-primary-300 p-2 font-semibold border border-primary-500">Date</td>
+                        <td class="p-2 border border-primary-500">{{ quote.emitedAt | date("m/d/Y") }}</td>
+                    </tr>
+                    <tr>
+                        <td class="bg-primary-300 p-2 font-semibold border border-primary-500 ">Valid Until</td>
+                        <td class="p-2 border border-primary-500">{{ quote.expiredAt | date("m/d/Y") }}</td>
+                    </tr>
+                </table>
+            </div>
         </div>
 
-        <div class="line">
-            <div id="customer">
-                <h2 >{{ quote.customer.identity }}</h2>
-                {% if quote.billingAddress is not null %}
-                    <div>{{ quote.billingAddress.addressLine1 }}</div>
-                    {% if quote.billingAddress.addressLine2 is defined %}
-                        <div>{{ quote.billingAddress.addressLine2 }}</div>
-                    {% endif %}
-                    <div>{{ quote.billingAddress.zipCode }} {{ quote.billingAddress.city }}</div>
+        <div id="customer">
+            <h3 class="font-bold">Bill To:</h3>
+            <div><b>Customer: </b>{{ quote.customer.identity }}</div>
+            <div><b>Company:</b> {{ quote.customer.companyName }}</div>
+            <div><b>Email:</b> {{ quote.customer.email }}</div>
+            <div><b>Tel:</b> {{ quote.customer.tel }}</div>
+            {% if quote.billingAddress is not null %}
+                <div>{{ quote.billingAddress.addressLine1 }}</div>
+                {% if quote.billingAddress.addressLine2 is defined %}
+                    <div>{{ quote.billingAddress.addressLine2 }}</div>
                 {% endif %}
-            </div>
-            <div id="customer">
-                <div>Emited at : {{ quote.emitedAt | date("m/d/Y") }}</div>
-                <div>Expired_at : {{ quote.expiredAt | date("m/d/Y") }}</div>
-            </div>
+                <div>{{ quote.billingAddress.zipCode }} {{ quote.billingAddress.city }}</div>
+            {% endif %}
         </div>
-
 
 
         {# billings rows #}
 
-        <table>
+        <table class="w-full my-4">
             <thead>
                 <tr>
-                    <th>
+                    <th class="bg-primary-300 p-2 font-semibold border border-primary-500">
                         Product
                     </th>
-                    <th>
-                        Quantity
+                    <th class="bg-primary-300 p-2 font-semibold border border-primary-500">
+                        Qt
                     </th>
-                    <th>
-                        Unit Price (HT)
+                    <th class="bg-primary-300 p-2 font-semibold border border-primary-500">
+                        Unit Price
                     </th>
-                    <th>
-                        Price
+                    <th class="bg-primary-300 p-2 font-semibold border border-primary-500">
+                        Amount
                     </th>
-                    <th>
+                    <th class="bg-primary-300 p-2 font-semibold border border-primary-500">
                         VAT
                     </th>
-                    <th>
+                    <th class="bg-primary-300 p-2 font-semibold border border-primary-500">
                         Total
                     </th>
 
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="border border-primary-500">
 
                 {% for billingRow in quote.billingRows %}
                     <tr>
-                        <td>
+                        <td class="border-x border-primary-500 p-1">
                             {{ billingRow.product }}
                         </td>
-                        <td>
+                        <td class="border-x border-primary-500 p-1 text-center">
                             {{ billingRow.quantity }}
                         </td>
-                        <td>
+                        <td class="border-x border-primary-500 p-1 text-right">
                             {{ billingRow.unit | format_currency('EUR') }}
                         </td>
-                        <td>
+                        <td class="border-x border-primary-500 p-1 text-right">
                             {{ billingRow.total | format_currency('EUR') }}
                         </td>
-                        <td>
+                        <td class="border-x border-primary-500 p-1 text-right">
                             {{ billingRow.vat }} %
                         </td>
-                        <td>
+                        <td class="border-x border-primary-500 p-1 text-right">
                             {{ billingRow.totalWithVAT | format_currency('EUR') }}
                         </td>
                     </tr>
@@ -80,28 +107,59 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="4"></td>
-                    <td class="font-semibold">
-                        Total HT
+                    <td colspan="4" class="border border-primary-500"></td>
+                    <td class="border-l border-b p-2 border-primary-500" >
+                        Subtotal
                     </td>
-                    <td>
+                    <td class="border-r border-b p-2 border-primary-500 text-right">
                         {{ quote.total | format_currency('EUR') }}
                     </td>
                 </tr>
-                <tr>
+                <tr class="font-semibold">
                     <td colspan="4"></td>
-                    <td class="font-semibold">
+                    <td  class="bg-primary-300 p-2 border-b border-l border-primary-500">
                         Total TTC
                     </td>
-                    <td>
+                    <td class="border-r border-b border-primary-500 p-2 bg-primary-300 text-right">
                         {{ quote.totalWithVAT | format_currency('EUR') }}
                     </td>
                 </tr>
             </tfoot>
         </table>
+
+        <footer>
+            {% if quote.signature is not null %}
+                <table>
+                    <tr>
+                        <td class="bg-primary-300 p-2 font-semibold border border-primary-500">Signature</td>
+                        <td class="p-2 border border-primary-500"> <img src="{{ quote.signature.image }}"  width="100" alt="quote_signature"></td>
+                    </tr>
+                    <tr>
+                        <td class="bg-primary-300 p-2 font-semibold border border-primary-500">Signed By</td>
+                        <td class="p-2 border border-primary-500">{{ quote.signature.signedBy }}</td>
+                    </tr>
+                    <tr>
+                        <td class="bg-primary-300 p-2 font-semibold border border-primary-500 ">Signed On</td>
+                        <td class="p-2 border border-primary-500">{{ quote.signature.signedAt | date("m/d/Y") }}</td>
+                    </tr>
+                </table>
+            {% else %}
+                {% if not embeded %}
+                    {{ include('components/inputs/signatureDrawZone.html.twig',{
+                        action:signPostURLsigned,
+                    }) }}
+                {% endif %}
+            {% endif %}
+        </footer>
     </main>
-</div>
+    {% include 'components/flashes/flash.html.twig' %}
+
 <script>
+    document.addEventListener('DOMContentLoaded',function(){
+        document.getElementById('loader-container').classList.add('hidden')
+        document.getElementById('page').classList.remove('hidden')
+    })
+
     window.addEventListener('resize',sizePage)
 
     function sizePage(){
@@ -119,13 +177,15 @@
         margin: 0;
         padding: 0;
         font-family: Arial, Helvetica, sans-serif;
+        background: #dbe2ea;
+
     }
     *{
         box-sizing: border-box;
     }
     .page-container{
         padding: 1em 0;
-        background: #dbe2ea;
+        min-height: 100vh;
     }
     #page{
         transform-origin: left top;

@@ -39,6 +39,9 @@ class Quote
     #[ORM\JoinColumn(nullable: true)]
     private ?BillingAddress $billingAddress = null;
 
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?QuoteSignature $signature = null;
+
     public function __construct()
     {
         $this->has_been_signed = false;
@@ -182,6 +185,23 @@ class Quote
     public function setBillingAddress(?BillingAddress $billingAddress): static
     {
         $this->billingAddress = $billingAddress;
+
+        return $this;
+    }
+
+    public function getNumber():string
+    {
+        return str_pad($this->getId(), 5, "0", STR_PAD_LEFT);
+    }
+
+    public function getSignature(): ?QuoteSignature
+    {
+        return $this->signature;
+    }
+
+    public function setSignature(?QuoteSignature $signature): static
+    {
+        $this->signature = $signature;
 
         return $this;
     }
