@@ -6,8 +6,10 @@ use App\Entity\Customer;
 use App\Entity\Product;
 use App\Entity\Quote;
 use App\Entity\Company;
+use App\Exception\URLSignedException;
 use App\Form\QuoteType;
 use App\Service\QuoteService;
+use App\Service\URLSignedService;
 use App\Table\QuoteTable;
 use App\Repository\QuoteRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -121,9 +123,28 @@ class QuoteController extends AbstractController
 
 
     #[Route('/{id}/preview', name: 'app_quote_preview', methods: ['GET'])]
-    #[IsGranted(QuoteVoterAttributes::CAN_MANAGE_QUOTE, subject: 'quote')]
-    public function preview(Quote $quote,Company $company): Response
+    public function preview(Request $request, Quote $quote,Company $company, URLSignedService $urlSignedService): Response
     {
+        if(!$urlSignedService->isURLSigned($request)) $this->denyAccessUnlessGranted(QuoteVoterAttributes::CAN_MANAGE_QUOTE,$quote);
+        else{
+            try {
+                $urlSignedService->verifyURL($request);
+            }catch (URLSignedException $e){
+                if(!$e->hasExpired()) throw $e;
+                if($e->getUrlSigned()->isResent()){
+                    $newUrl = $urlSignedService->signURL('app_quote_preview',['id' => $quote->getId(),"company"=>$company->getId()]);
+                    $urlSignedService->sendEmail($quote->getCustomer()->getEmail(),$newUrl);
+                    return $this->render($e->getUrlSigned()->getTempalte(),[
+                        'urlSigned' => $e->getUrlSigned(),
+                        'email'=> $quote->getCustomer()->getEmail(),
+                        'sended' => true,
+                    ]);
+                }else return $this->render($e->getUrlSigned()->getTempalte(),[
+                    'urlSigned' => $e->getUrlSigned(),
+                    'email'=> $quote->getCustomer()->getEmail(),
+                ]);
+            }
+        }
         return $this->render('quote/preview.html.twig', [
             'quote' => $quote,
             'company' => $company,
