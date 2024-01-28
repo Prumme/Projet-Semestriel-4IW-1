@@ -46,8 +46,7 @@ class URLSignedService
     {
         try{
             $validToken = $this->generateToken($dataEncoded);
-            if($validToken != $token) return false;
-            return true;
+            return $validToken == $token;
         }catch (Exception $e) {
             return false;
         }
