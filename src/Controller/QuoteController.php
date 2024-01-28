@@ -131,18 +131,22 @@ class QuoteController extends AbstractController
                 $urlSignedService->verifyURL($request);
             }catch (URLSignedException $e){
                 if(!$e->hasExpired()) throw $e;
-                if($e->getUrlSigned()->isResent()){
-                    $newUrl = $urlSignedService->signURL('app_quote_preview',['id' => $quote->getId(),"company"=>$company->getId()]);
-                    $urlSignedService->sendEmail($quote->getCustomer()->getEmail(),$newUrl);
-                    return $this->render($e->getUrlSigned()->getTempalte(),[
-                        'urlSigned' => $e->getUrlSigned(),
-                        'email'=> $quote->getCustomer()->getEmail(),
+                $urlSigned = $e->getUrlSigned();
+                $customerEmail = $quote->getCustomer()->getEmail();
+                $renderData = [
+                    'urlSigned' => $urlSigned,
+                    'email' => $customerEmail,
+                ];
+
+                if ($urlSigned->isResent()) {
+                    $newUrl = $urlSignedService->signURL('app_quote_preview', ['id' => $quote->getId(), 'company' => $company->getId(),]);
+                    $urlSignedService->sendEmail($customerEmail, $newUrl);
+                    $renderData = [
+                        ...$renderData,
                         'sended' => true,
-                    ]);
-                }else return $this->render($e->getUrlSigned()->getTempalte(),[
-                    'urlSigned' => $e->getUrlSigned(),
-                    'email'=> $quote->getCustomer()->getEmail(),
-                ]);
+                    ];
+                }
+                return $this->render($urlSigned->getTemplate(), $renderData);
             }
         }
         return $this->render('quote/preview.html.twig', [
