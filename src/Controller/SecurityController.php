@@ -51,7 +51,7 @@ class SecurityController extends AbstractController
 
 
         if($form->isSubmitted()) {
-            $error = $this->checkInputRegister($request->request);
+            $error = $this->checkInputRegister($request->request, $entityManager);
 
             if($error != ""){
                 return $this->render('security/register.html.twig', ['error' => $error, 'form' => $form]);
@@ -101,7 +101,7 @@ class SecurityController extends AbstractController
     }
 
 
-    private function checkInputRegister($data): String
+    private function checkInputRegister($data, EntityManagerInterface $entityManager): String
     {
 
         if($data->get('password') != $data->get('password_verification')){
@@ -130,6 +130,11 @@ class SecurityController extends AbstractController
 
         if($data->get('lastname') == ""){
             return "Lastname is empty";
+        }
+
+        // check email does not aloready exist
+        if($entityManager->getRepository(User::class)->findOneBy(['email' => $data->get('email')]) != null){
+            return "Email already exist";
         }
 
         return "";
