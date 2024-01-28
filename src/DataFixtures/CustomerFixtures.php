@@ -25,7 +25,7 @@ class CustomerFixtures extends Fixture implements DependentFixtureInterface
         $faker = \Faker\Factory::create();
 
         for($i = 0; $i < 10; $i++){
-            $customer = new Customer();
+            $customer = new Customer(); 
             $customer->setLastname($faker->lastName);
             $customer->setFirstname($faker->firstName);
             $customer->setCompanyName($faker->company);
