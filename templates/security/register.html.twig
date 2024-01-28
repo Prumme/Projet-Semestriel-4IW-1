@@ -1,0 +1,135 @@
+{% extends 'only_header.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<form method="post" class="p-2 w-screen lg:mx-16">
+    {% if error %}
+        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+    {% if app.user %}
+        <div class="mb-3">
+            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+        </div>
+    {% endif %}
+
+    
+    <div class="mt-[44rem] lg:mt-0">
+    <div class="flex flex-col lg:flex-row  space-y-12 lg:space-y-0 lg:space-x-14 items-center">
+        <div class="w-3/4 lg:w-1/2 flex flex-col space-y-8">
+            <h1 class="text-xl lg:text-4xl  mb-3 font-weight-normal w-min whitespace-nowrap">Your informations.</h1>
+
+            <div class="flex flex-col lg:flex-row space-y-8 lg:space-y-0 lg:space-x-4 w-full justify-between">
+            {% include 'components/inputs/input.html.twig' with {
+                'label': 'Firstname',
+                'name': 'firstname',
+                'type': 'text',
+                'placeholder': 'firstname',
+                'required': true,
+                'autofocus': true,
+                'icon':'people',
+                'class': 'w-full'
+            } %}
+
+            {% include 'components/inputs/input.html.twig' with {
+                'label': 'Lastname',
+                'name': 'lastname',
+                'type': 'text',
+                'placeholder': 'lastname',
+                'required': true,
+                'icon':'people',
+                'class': 'w-full'
+            } %}
+            </div>
+
+            {% include 'components/inputs/input.html.twig' with {
+                'label': 'Email',
+                'name': 'email',
+                'type': 'email',
+                'placeholder': 'Email',
+                'required': true,
+                'autofocus': true,
+                'icon':'mail'
+            } %}
+
+            <div class="flex flex-col lg:flex-row space-y-8 lg:space-y-0 lg:space-x-4 w-full justify-between">
+            {% include 'components/inputs/input.html.twig' with {
+                'label': 'Password',
+                'name': 'password',
+                'type': 'password',
+                'placeholder': 'Password',
+                'required': true,
+                'icon':'lock-closed',
+                'class': 'w-full'
+            } %}
+
+            {% include 'components/inputs/input.html.twig' with {
+                'label': 'Confirm password',
+                'name': 'register[password][second]',
+                'type': 'password',
+                'placeholder': 'Password',
+                'required': true,
+                'icon':'lock-closed',
+                'class': 'w-full'
+            } %}
+            </div>
+        </div>
+
+
+        <div class="w-3/4 lg:w-1/2 flex flex-col space-y-8">
+            <h1 class="text-xl lg:text-4xl mb-3 font-weight-normal w-min whitespace-nowrap">Your Company.</h1>
+
+            {% include 'components/inputs/input.html.twig' with {
+                'label': 'Name of the company',
+                'name': 'name',
+                'type': 'text',
+                'placeholder': 'name',
+                'required': true,
+                'autofocus': true,
+                'icon':'storefront'
+            } %}
+
+            {% include 'components/inputs/input.html.twig' with {
+                'label': 'Siret',
+                'name': 'siret',
+                'type': 'text',
+                'placeholder': 'siret',
+                'required': true,
+                'icon':'at'
+            } %}
+
+            {% include 'components/inputs/input.html.twig' with {
+                'label': 'Vat number',
+                'name': 'vat_number',
+                'type': 'text',
+                'placeholder': 'vat number',
+                'required': true,
+                'icon':'document'
+            } %}
+            
+        </div>
+        </div>
+    </div>
+
+    {{ form_row(form._token) }}
+
+    <div class="flex items-center justify-between w-full">
+    {% include 'components/buttons/button.html.twig' with {
+        'content': 'Register',
+        'type': 'submit',
+    } %}
+
+        <div class="flex space-x-3 w-min">
+            <span class="text-slate-500">Do you already have an account ?</span>
+            <div>
+            {% include 'components/link/link.html.twig' with {
+            'href': path('app_login'),
+            'text' : 'Login',
+            } 
+            %}
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}
