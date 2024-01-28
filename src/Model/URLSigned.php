@@ -22,7 +22,7 @@ class URLSigned
         return false;
     }
 
-    public function getTempalte(){
+    public function getTemplate(){
         return 'bundles/UrlSigned/expired.html.twig';
     }
 
