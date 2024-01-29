@@ -10,7 +10,7 @@
             bg:'secondary',
             content:"Go back",
             icon_left:"arrow-back-circle-outline",
-            link:path('app_company_index')
+            link:path('app_company_user_index', { 'company': company.id })
         }) }}
         {% include 'components/layouts/form_layout.html.twig' %}
     </div>
