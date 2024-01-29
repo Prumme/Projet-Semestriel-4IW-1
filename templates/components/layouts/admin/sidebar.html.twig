@@ -5,8 +5,7 @@
 </button>
 
 <aside id="default-sidebar" class="sticky top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
-	<div
-		class="h-full px-3 py-1 overflow-y-auto bg-primary-750">
+	<div class="h-full px-3 py-1 overflow-y-auto bg-primary-750">
 		{# LOGO #}
 		<div class="w-full h-full inline-flex flex-col items-start px-2 py-2">
 			<div class="flex items-center justify-between">
@@ -18,116 +17,149 @@
 				</button>
 			</div>
 			{# SIDEBAR #}
-			<ul
-				class="flex flex-col w-full h-full gap-3">
+			<ul class="flex flex-col w-full h-full gap-3">
 				{# DASHBOARD #}
 				<li class="w-full px-4">
-					<div class="w-full py-2 pl-2">
-						<h3 class="flex items-center text-primary-500">Dashboard</h3>
-					</div>
+					{% include 'components/sidebar/sidebar_title.html.twig' with {title: "Dashboard"} %}
 				</li>
 				{# BALANCE #}
-				<li
-					class="w-full px-4">
-					{# TODO: PUT THE CORRECT ROUTE IN THE {% if %}  #}
-					<div class="{% if app.request.attributes.get('_route') != 'app_dashboard' %} nav-unactive-link{% else %} nav-active-link {% endif %}">
-						<a href="{{ path('app_dashboard') }}" class="flex items-center">
-							<ion-icon name="bar-chart" class="text-xl text-primary-600 group-hover:text-white"></ion-icon>
-							<span class="ml-3 text-white text-xs">Balance</span>
-						</a>
-					</div>
+				<li class="w-full px-4">					
+					{# TODO: PUT THE CORRECT ROUTE IN THE path:  #}
+					{% include 'components/sidebar/sidebar_link.html.twig' with
+						{
+							'path': path('app_company_index'),
+							'icon': 'bar-chart',
+							'title': 'Balance',
+						}
+					%}
 				</li>
-
 				{# COMPANIES #}
-				<li class="w-full px-4">
-					<div class="{% if app.request.attributes.get('_route') != 'app_company_index' %} nav-unactive-link{% else %} nav-active-link {% endif %}">
-						<a href="{{ path('app_company_index')}}" class="flex items-center">
-							<ion-icon name="business" class="text-xl"></ion-icon>
-							<span class="ml-3 text-xs text-white">Companies</span>
-						</a>
-					</div>
+				<li class="w-full px-4">					
+					{% include 'components/sidebar/sidebar_link.html.twig' with
+						{
+							'path': path('app_company_index'),
+							'icon': 'business',
+							'title': 'Companies',
+						}
+					%}
 				</li>
 				{# PRODUCTS #}
 				<li
 					class="w-full px-4">
-					{# TODO: PUT THE CORRECT ROUTE IN THE {% if %}  #}
-					<div class="{% if app.request.attributes.get('_route') != '' %} nav-unactive-link{% else %} nav-active-link {% endif %}">
-						<a href="#products" class="flex items-center">
-							<ion-icon name="pricetags" class="text-xl group-hover:text-white text-primary-600"></ion-icon>
-							<span class="ml-3 text-white text-xs">Products</span>
-						</a>
-					</div>
+					{# TODO: PUT THE CORRECT ROUTE IN THE path:  #}
+					{% include 'components/sidebar/sidebar_link.html.twig' with
+						{
+							'path': '#',
+							'icon': 'pricetags',
+							'title': 'Products',
+						}
+					%}
 				</li>
 				{# CUSTOMERS #}
 				<li class="w-full px-4">
-					<div class="{% if app.request.attributes.get('_route') != '/app_customer_index' %} nav-unactive-link{% else %} nav-active-link {% endif %}">
-						<a href="#customers" class="flex items-center">
-							<ion-icon name="people-circle" class="text-xl group-hover:text-white text-primary-600"></ion-icon>
-							<span class="ml-3 text-white text-xs">Customers</span>
-						</a>
-					</div>
+					{% include 'components/sidebar/sidebar_link.html.twig' with
+						{
+							'path': '#',
+							'icon': 'people-circle',
+							'title': 'Customers',
+						}
+					%}
 				</li>
 				{# INVOICES #}
-			</li>
-			<li
-				class="w-full px-4">
-				{# TODO: PUT THE CORRECT ROUTE IN THE {% if %}  #}
-				<div class="{% if app.request.attributes.get('_route') != '' %} nav-unactive-link{% else %} nav-active-link {% endif %}">
-					<a href="#invoices" class="flex items-center">
-						<ion-icon name="document-text" class="text-xl group-hover:text-white text-primary-600"></ion-icon>
-						<span class="ml-3 text-white text-xs">Invoices</span>
-					</a>
-				</div>
-			</li>
-			{# QUOTES #}
-			<li class="w-full px-4">
-				<div class="{% if app.request.attributes.get('_route') != 'app_quote_index' %} nav-unactive-link{% else %} nav-active-link {% endif %}">
-					<a href="/company/{company}/quote" class="flex items-center">
-						<ion-icon name="cash" class="text-xl group-hover:text-white text-primary-600"></ion-icon>
-						<span class="ml-3 text-white text-xs">Quotes</span>
-					</a>
-				</div>
-			</li>
+				<li
+					class="w-full px-4">
+					{# TODO: PUT THE CORRECT ROUTE IN THE path:  #}
+					{% include 'components/sidebar/sidebar_link.html.twig' with
+						{
+							'path': '#',
+							'icon': 'document-text',
+							'title': 'Invoices',
+						}
+					%}
+				</li>
+				{# QUOTES #}
+				<li class="w-full px-4">
+					{# TODO: PUT THE CORRECT ROUTE IN THE path:  #}
+					{% include 'components/sidebar/sidebar_link.html.twig' with
+						{
+							'path': '#quotes',
+							'icon': 'cash',
+							'title': 'Quotes',
+						}
+					%}
+				</li>
+			</ul>
 			{# SETTINGS #}
 			<div class="flex-grow basis-full"></div>
-			{# INFORMATIONS  #}
-			<li class="w-full px-4">
-				<div class="w-full py-2 pl-2">
-					<h3 class="flex items-center text-primary-500">Parameters</h3>
-				</div>
-			</li>
-			<li class="w-full px-4">
-				<div class="w-full py-2 pl-2 rounded-md group bg-transparent hover:bg-gradient-to-r	from-[#2E7881] to-primary-500 duration-300 transition ease-in">
-					<a href="/logout" class="flex items-center">
-						<ion-icon name="log-out-outline" class="text-xl group-hover:text-white text-primary-600"></ion-icon>
-						<span class="ml-3 text-white text-xs">Logout</span>
-					</a>
-				</div>
-			</li>
-			<li></li>
-			<li class="w-full px-4">
+			{# INFORMATIONS #}
+			<ul class="flex flex-col w-full h-full gap-3">
+				<li class="w-full px-4">
+					{% include 'components/sidebar/sidebar_title.html.twig' with {title: "Informations"} %}
+				</li>
+			</ul>
+			{# PROFILE #}
+			<ul class="flex flex-col w-full h-full gap-3">
+				<li class="w-full px-4">
+					{% include 'components/sidebar/sidebar_link.html.twig' with
+							{
+								'path': '#profile',
+								'icon': 'person-circle-outline',
+								'title': 'Profile',
+							}
+						%}
+				</li>
+			</ul>
+			<div class="flex-grow basis-full"></div>
+			{# PARAMETERS  #}
+			<ul class="flex flex-col w-full h-full gap-3">
+				<li class="w-full px-4">
+					{% include 'components/sidebar/sidebar_title.html.twig' with {title: "Actions"} %}
+				</li>
+			</ul>		
+			{# LOGOUT #}
+			<ul class="flex flex-col w-full h-full gap-3">
+				<li class="w-full px-4">
+					{% include 'components/sidebar/sidebar_link.html.twig' with
+						{
+							'path': path('app_logout'),
+							'icon': 'log-out-outline',
+							'title': 'Logout',
+						}
+					%}
+				</li>
+			</ul>
+			{# LIGHT MODE #}
+			{# <li class="w-full px-4">
 				<div class="w-full py-2 pl-2 rounded-md">
 					<a href="#sun" class="flex items-center">
 						<ion-icon name="sunny" class="text-xl text-primary-600"></ion-icon>
 						<span class="ml-3 text-white text-xs">Light Mode</span>
 					</a>
 				</div>
-			</li>
-		</ul>
+			</li> #}
+		</div>
 	</div>
-</div></aside><script>
+</aside>
+
+<script>
 const sidebar = document.getElementById('default-sidebar');
 const toggle = document.querySelector('[data-drawer-toggle="default-sidebar"]');
-const backdrop = document.querySelector('[data-drawer-backdrop="default-sidebar"]');
 const close = document.querySelector('[data-drawer-close="default-sidebar"]');
 
 toggle.addEventListener('click', () => {
-sidebar.classList.toggle('translate-x-0');
-backdrop.classList.toggle('opacity-100');
-backdrop.classList.toggle('pointer-events-auto');
+  sidebar.classList.toggle('translate-x-0');
+  const backdrop = document.querySelector('[data-drawer-backdrop="default-sidebar"]');
+  if (backdrop) {
+    backdrop.classList.toggle('opacity-100');
+    backdrop.classList.toggle('pointer-events-auto');
+  }
 });
 
 close.addEventListener('click', () => {
-sidebar.classList.remove('translate-x-0');
-backdrop.classList.remove('opacity-100', 'pointer-events-auto');
-});</script></li>
+  sidebar.classList.remove('translate-x-0');
+  const backdrop = document.querySelector('[data-drawer-backdrop="default-sidebar"]');
+  if (backdrop) {
+    backdrop.classList.remove('opacity-100', 'pointer-events-auto');
+  }
+});
+</script>

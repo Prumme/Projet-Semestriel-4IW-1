@@ -1,0 +1,16 @@
+{#
+HOW TO USE IT
+
+{% include 'components/sideabr/nav_link.html.twig' with {
+    'path': {{ path('path') }},
+    'icon': 'mail',
+    'title': 'Logout'
+} %}
+
+#}
+<div class="w-full py-2 pl-2 rounded-md group bg-transparent hover:bg-gradient-to-r	from-[#2E7881] to-primary-500 duration-300 transition ease-in">
+    <a href="{{ path }}" class="flex items-center">
+        <ion-icon name="{{ icon }}" class="text-xl group-hover:text-white text-primary-600"></ion-icon>
+        <span class="ml-3 text-white text-xs">{{ title }}</span>
+    </a>
+</div>

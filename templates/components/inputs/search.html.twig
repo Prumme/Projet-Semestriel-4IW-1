@@ -1,0 +1,35 @@
+{# HOW TO USE IT
+
+{% include 'components/inputs/search.html.twig' with {
+            'id': 'search' OPT,
+            'name': 'search' OPT,
+            'type': 'search' required,
+            'placeholder': 'Search...' OPT,
+            'icon':'search' OPT
+} %}
+
+/HOW TO USE IT #}
+
+<div class="flex flex-row items-center">
+    <input  
+        type="search"
+        name="{{ (name) | default('') }}"
+        class="!w-full border-0 border-b-2 border-secondary_light text-primary-500 focus:border-primary-500 focus:text-secondary-500 focus:ring-0"
+        id="{{ id | default('') }}"
+        required="{{ required | default('') }}"
+        placeholder="{{ placeholder | default('') }}"
+        value="{{ value | default('') }}"
+    >
+        <ion-icon name="search-outline" class="text-2xl"></ion-icon>
+    </input>
+</div>
+
+<style>
+
+::placeholder {
+    text-color: #21295C;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+</style>
