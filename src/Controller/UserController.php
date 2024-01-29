@@ -73,6 +73,31 @@ class UserController extends AbstractController
         ]);
     }
 
+
+    #[Route('/{id}/activate_owner', name: 'app_owner_creation', methods: ['GET', 'POST'])]
+    public function finish_owner(User $user, EntityManagerInterface $entityManager): Response
+    {
+
+        if(!in_array('ROLE_COMPANY_ADMIN',$user->getRoles())){
+            throw $this->createnotfoundexception();
+        }
+
+        if($user->isActivate()){
+            throw $this->createnotfoundexception();
+        }
+
+        $user->setActivate(true);
+
+        $entityManager->persist($user);
+
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Account Activate successfully');
+
+        return $this->redirectToRoute('app_login');
+
+    }
+
     #[Route('/forget_password', name: 'forget_password', methods: ['GET'])]
     public function forget_password(Request $request, EntityManagerInterface $entityManagerInterface): Response
     {
