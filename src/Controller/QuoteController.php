@@ -166,7 +166,6 @@ class QuoteController extends AbstractController
             $quoteSignature = $quoteService->createQuoteSignature($request);
             if(!$quoteSignature) throw new \Exception("Invalid signature");
             $entityManager->persist($quoteSignature);;
-            $quote->setHasBeenSigned(true);
             $quote->setSignature($quoteSignature);
             $entityManager->flush();
             $this->addFlash('success', 'The quote has been signed');

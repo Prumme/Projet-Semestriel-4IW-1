@@ -22,9 +22,6 @@ class Quote
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $expired_at = null;
 
-    #[ORM\Column]
-    private ?bool $has_been_signed = null;
-
     #[ORM\OneToMany(mappedBy: 'quote', targetEntity: Invoice::class)]
     private Collection $invoices;
 
@@ -80,15 +77,9 @@ class Quote
 
     public function getHasBeenSigned(): ?bool
     {
-        return $this->has_been_signed;
+        return $this->signature !== null;
     }
 
-    public function setHasBeenSigned(bool $has_been_signed): static
-    {
-        $this->has_been_signed = $has_been_signed;
-
-        return $this;
-    }
 
     public function getCustomer(): ?Customer
     {
