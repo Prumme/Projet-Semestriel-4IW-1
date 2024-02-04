@@ -25,6 +25,7 @@
 				</li>
 				{# BALANCE #}
 				<li class="w-full px-4">					
+					{# TODO: PUT THE CORRECT ROUTE IN THE path:  #}
 					{% include 'components/sidebar/sidebar_link.html.twig' with
 						{
 							'path': path('app_dashboard'),
@@ -37,62 +38,9 @@
 				<li class="w-full px-4">					
 					{% include 'components/sidebar/sidebar_link.html.twig' with
 						{
-							'path': path('app_company_index', {"id": app.user.company.id}),
+							'path': path('app_company_index_admin'),
 							'icon': 'business',
 							'title': 'Companies',
-						}
-					%}
-				</li>
-				{# PRODUCTS #}
-				<li
-					class="w-full px-4">
-					{% include 'components/sidebar/sidebar_link.html.twig' with
-						{
-							'path': path('app_product_index', {"company": app.user.company.id}),
-							'icon': 'pricetags',
-							'title': 'Products',
-						}
-					%}
-				</li>
-				{# CUSTOMERS #}
-				<li class="w-full px-4">
-					{% include 'components/sidebar/sidebar_link.html.twig' with
-						{
-							'path': path('app_customer_index', {"company": app.user.company.id}),
-							'icon': 'people-circle',
-							'title': 'Customers',
-						}
-					%}
-				</li>
-				{# INVOICES #}
-				<li
-					class="w-full px-4">
-					{# TODO: PUT THE CORRECT ROUTE IN THE path:  #}
-					{% include 'components/sidebar/sidebar_link.html.twig' with
-						{
-							'path': '#',
-							'icon': 'document-text',
-							'title': 'Invoices',
-						}
-					%}
-				</li>
-				{# QUOTES #}
-				<li class="w-full px-4">
-					{% include 'components/sidebar/sidebar_link.html.twig' with
-						{
-							'path': path('app_quote_index', {"company": app.user.company.id}),
-							'icon': 'cash',
-							'title': 'Quotes',
-						}
-					%}
-				</li>
-
-				<li class="w-full px-4">
-					{% include 'components/sidebar/sidebar_link.html.twig' with
-						{
-							'path':  path('app_company_user_index', {"company": app.user.company.id}),
-							'icon': 'people',
-							'title': 'Users',
 						}
 					%}
 				</li>
@@ -107,15 +55,6 @@
 			</ul>
 			{# PROFILE #}
 			<ul class="flex flex-col w-full h-full gap-3">
-				{# TODO: PUT THE CORRECT ROUTE IN THE path:  #}
-				<li class="w-full px-4">
-					{% include 'components/sidebar/sidebar_link.html.twig' with
-							{
-								'path': '#settings',
-								'icon': 'settings',
-								'title': 'Settings',
-							}
-						%}
 				<li class="w-full px-4">
 					{% include 'components/sidebar/sidebar_link.html.twig' with
 							{
