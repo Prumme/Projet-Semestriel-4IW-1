@@ -30,6 +30,9 @@ class Customer
     #[ORM\Column(length: 15, nullable: true)]
     private ?string $company_vat_number = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $email = null;
+
     #[ORM\Column(length: 30, nullable: true)]
     private ?string $tel = null;
 
@@ -108,10 +111,19 @@ class Customer
     public function setCompanyVatNumber(?string $company_vat_number): static
     {
         $this->company_vat_number = $company_vat_number;
-
         return $this;
     }
 
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(?string $email): static
+    {
+        $this->email = $email;
+        return $this;
+    }
 
     public function getTel(): ?string
     {

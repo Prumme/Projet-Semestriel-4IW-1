@@ -27,6 +27,7 @@ class CustomerType extends AbstractType
             ->add('company_vat_number', null, [
                 'label' => 'Company VAT Number'
             ])
+            ->add('email')
             ->add('tel');
     }
 
