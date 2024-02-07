@@ -17,21 +17,6 @@
         {# IO Icons #}
         <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
         <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-
-        <script>
-            function removeFlash(id) {
-                document.getElementById(id).remove();
-            }
-
-            addEventListener('DOMContentLoaded', () => {
-                const flash = document.querySelectorAll('[flash]');
-                flash.forEach((element) => {
-                    setTimeout(() => {
-                        element.remove();
-                    }, 3000);
-                });
-            });
-        </script>
     {% endblock %}
 
 </head>
@@ -44,8 +29,8 @@
         {% set sidebar =  'components/layouts/super_admin/sidebar.html.twig'%}
     {% elseif 'ROLE_COMPANY_ADMIN' in app.user.roles %}
         {% set sidebar =  'components/layouts/admin/sidebar.html.twig'%}
-    {% else %}
-        {% set sidebar =  'components/layouts/admin/sidebar.html.twig'%}
+    {% elseif 'ROLE_USER'  %}
+        {% set sidebar =  'components/layouts/user/sidebar.html.twig'%}
     {% endif %}
 
 

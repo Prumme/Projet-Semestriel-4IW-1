@@ -5,22 +5,26 @@
 {% block body %}
     <div class="flex flex-col gap-4">
         <h1>Edit {{ company.name }}</h1>
-        {{ include('components/buttons/button_link.html.twig',{
-            size:'sm',
-            bg:'secondary',
-            content:"Go back",
-            icon_left:"arrow-back-circle-outline",
-            link:path('app_company_index')
-        }) }}
+        {% if app.user.hasRole('ROLE_SUPER_ADMIN') %}
+            {{ include('components/buttons/button_link.html.twig',{
+                size:'sm',
+                bg:'secondary',
+                content:"Go back",
+                icon_left:"arrow-back-circle-outline",
+                link:path('app_company_index')
+            }) }}
+        {%  endif %}
         {% embed 'components/layouts/form_layout.html.twig' with {'content': 'Update', icon:"create-outline"} %}
             {% block footer %}
                 {% include('components/layouts/delete_form_layout.html.twig') with {
                     item: company,
                     action: path('app_company_delete', {id:company.id})
                 } %}
-                {{ include('components/buttons/button_link.html.twig',
-                    { size:'sm', content:"See users", bg:'secondary', link:path('app_company_user_index',{company:company.id}) })
-                }}
+                {% if app.user.hasRole('ROLE_SUPER_ADMIN') %}
+                    {{ include('components/buttons/button_link.html.twig',
+                        { size:'sm', content:"See users", bg:'secondary', link:path('app_company_user_index',{company:company.id}) })
+                    }}
+                {% endif %}
             {% endblock %}
         {% endembed %}
     </div>

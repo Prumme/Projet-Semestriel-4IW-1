@@ -39,6 +39,11 @@ class Quote
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?QuoteSignature $signature = null;
 
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $owner = null;
+
+
     public function __construct()
     {
         $this->has_been_signed = false;
@@ -193,6 +198,18 @@ class Quote
     public function setSignature(?QuoteSignature $signature): static
     {
         $this->signature = $signature;
+
+        return $this;
+    }
+
+    public function getOwner(): ?User
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?User $owner): static
+    {
+        $this->owner = $owner;
 
         return $this;
     }

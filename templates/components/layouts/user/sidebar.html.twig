@@ -25,7 +25,6 @@
 				</li>
 				{# BALANCE #}
 				<li class="w-full px-4">					
-					{# TODO: PUT THE CORRECT ROUTE IN THE path:  #}
 					{% include 'components/sidebar/sidebar_link.html.twig' with
 						{
 							'path': path('app_dashboard'),
@@ -34,19 +33,57 @@
 						}
 					%}
 				</li>
-				{# COMPANIES #}
-				<li class="w-full px-4">					
+				{# PRODUCTS #}
+				<li
+					class="w-full px-4">
 					{% include 'components/sidebar/sidebar_link.html.twig' with
 						{
-							'path': path('app_company_index'),
-							'icon': 'business',
-							'title': 'Companies',
+							'path': path('app_product_index', {"company": app.user.company.id}),
+							'icon': 'pricetags',
+							'title': 'Products',
 						}
 					%}
 				</li>
+				{# CUSTOMERS #}
+				<li class="w-full px-4">
+					{% include 'components/sidebar/sidebar_link.html.twig' with
+						{
+							'path': path('app_customer_index', {"company": app.user.company.id}),
+							'icon': 'people-circle',
+							'title': 'Customers',
+						}
+					%}
+				</li>
+				{# INVOICES #}
+				<li
+					class="w-full px-4">
+					{# TODO: PUT THE CORRECT ROUTE IN THE path:  #}
+					{% include 'components/sidebar/sidebar_link.html.twig' with
+						{
+							'path': '#',
+							'icon': 'document-text',
+							'title': 'Invoices',
+						}
+					%}
+				</li>
+				{# QUOTES #}
+				<li class="w-full px-4">
+					{% include 'components/sidebar/sidebar_link.html.twig' with
+						{
+							'path': path('app_quote_index', {"company": app.user.company.id}),
+							'icon': 'cash',
+							'title': 'Quotes',
+						}
+					%}
+				</li>
+
+				
 			</ul>
+			{# SETTINGS #}
+			<div class="flex-grow basis-full"></div>
 			{# INFORMATIONS #}
-			<ul class="flex flex-col w-full h-full gap-3">
+
+            <ul class="flex flex-col w-full h-full gap-3">
 				<li class="w-full px-4">
 					{% include 'components/sidebar/sidebar_title.html.twig' with {title: "Informations"} %}
 				</li>
@@ -60,15 +97,24 @@
 							}
 						%}
 				</li>
+                <li class="w-full px-4">
+					{% include 'components/sidebar/sidebar_link.html.twig' with
+							{
+								'path': '#settings',
+								'icon': 'settings',
+								'title': 'Settings',
+							}
+						%}
 			</ul>
+			
 			<div class="flex-grow basis-full"></div>
-			{# ACTIONS #}
+			{# PARAMETERS  #}
 			<ul class="flex flex-col w-full h-full gap-3">
 				<li class="w-full px-4">
 					{% include 'components/sidebar/sidebar_title.html.twig' with {title: "Actions"} %}
 				</li>
-				{# LOGOUT #}
-				<li class="w-full px-4">
+
+                <li class="w-full px-4">
 					{% include 'components/sidebar/sidebar_link.html.twig' with
 						{
 							'path': path('app_logout'),
@@ -77,7 +123,7 @@
 						}
 					%}
 				</li>
-			</ul>
+			</ul>		
 			{# LIGHT MODE #}
 			{# <li class="w-full px-4">
 				<div class="w-full py-2 pl-2 rounded-md">
