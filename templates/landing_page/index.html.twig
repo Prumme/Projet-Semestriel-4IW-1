@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 {% block title %}
-	Landing Page
+	Apagnan - Home
 {% endblock %}
 {% block content %}
 	<div class="mb-40 overflow-x-hidden overflow-y-hidden">
@@ -42,8 +42,7 @@
 				<div class="w-1/2 h-full relative">
 					<div class="absolute top-0 left-0">{% include 'svg/streaks.svg.twig' %}</div>
 					<div class="absolute bottom-0 right-0">{% include 'svg/streaks.svg.twig' %}</div>
-					<div class="absolute z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4/5 h-4/5 bg-white">card-caroussel</div>
-				</div>
+					{% include 'components/carrousel/carrousel.html.twig' %}
 			</section>
 
 			<section id="services" class="w-full flex flex-col items-center">

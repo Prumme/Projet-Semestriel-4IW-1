@@ -1,0 +1,27 @@
+<div>
+    <div class="absolute z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4/5 bg-[#FFFFFF] rounded-lg p-6 h-fit">
+        {% include 'components/cards/opinion_card.html.twig' with {profile_picture: '/images/profile_picture_1.png', content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris.'} %}
+    </div>
+    <div class="absolute z-10 top-80 left-20">
+        <div class="flex justify-center items-center gap-2">
+            {# Slider Indicators Unactive #}
+            <hr class="border-b-4 w-9 border-grey rounded-full">
+            {# Slider Indicators Active #}
+            <hr class="border-b-4 w-20 border-primary-500 rounded-full">
+            {# Slider Indicators Unactive #}
+            <hr class="border-b-4 w-9 border-grey rounded-full">
+            {# Slider Indicators Unactive #}
+            <hr class="border-b-4 w-9 border-grey rounded-full">
+            {# Slider Controls #}
+            <button  type="button" data-carousel-previous>
+                <ion-icon name="arrow-back-circle-outline" size="small"></ion-icon>
+            </button>
+            <button  type="button" data-carousel-next>
+                <ion-icon name="arrow-forward-circle-outline" size="small"></ion-icon>
+            </button>
+        </div>
+    </div>
+</div>
+
+
+
