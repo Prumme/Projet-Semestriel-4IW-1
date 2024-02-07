@@ -46,13 +46,14 @@ class CompanyVoter extends Voter
 
     private function canView(Company $company, User $user) : bool
     {
+        if($this->security->isGranted(AuthentificableRoles::ROLE_SUPER_ADMIN)) return true;
         return $user->getCompany() === $company;
     }
 
     private function canEdit(Company $company, User $user) : bool
     {
         if(!$this->security->isGranted(AuthentificableRoles::ROLE_COMPANY_ADMIN)) return false;
-        return $user->getCompany() === $company;
+        return $this->canView($company, $user);
     }
 
 }

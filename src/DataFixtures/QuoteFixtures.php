@@ -3,9 +3,9 @@
 namespace App\DataFixtures;
 
 use App\Entity\Quote;
-use App\DataFixtures\CustomerFixtures;
 use App\Entity\Customer;
 use App\Entity\QuoteSignature;
+use App\Entity\User;
 use App\Repository\CustomerRepository;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -20,21 +20,22 @@ class QuoteFixtures extends Fixture implements DependentFixtureInterface
     public function getDependencies(): array
     {
         return [
+            UserFixtures::class,
             CustomerFixtures::class,
         ];
     }
 
     public function load(ObjectManager $manager): void
     {
-        $quote = new Quote();
         $customers = $manager->getRepository(Customer::class)->findAll();
-
+        $users = $manager->getRepository(User::class)->findAll();
         $faker = \Faker\Factory::create();
         for ($i = 0; $i < 10; $i++) {
             $quote = new Quote();
             $quote->setEmitedAt($faker->dateTimeBetween('-1 years', 'now'));
             $quote->setExpiredAt($faker->dateTimeBetween('now', '+1 years'));
             $quote->setCustomer($customers[random_int(0, count($customers) - 1)]);
+            $quote->setOwner($users[random_int(0, count($users) - 1)]);
             $hasSignature = random_int(0, 1);
             if ($hasSignature) {
                 $signature = new QuoteSignature();
