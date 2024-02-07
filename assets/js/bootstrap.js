@@ -1,10 +1,12 @@
 import {Select} from "./Components/Select";
 import {Component} from "./Components/Component";
 import {SearchInput} from "./Components/SearchInput";
+import {SignatureDrawZone} from "./Components/SignatureDrawZone";
 
 export const COMPONENTS = {
     select : Select,
-    searchInput: SearchInput
+    searchInput: SearchInput,
+    signatureDrawZone: SignatureDrawZone
 }
 
 export default function bootstrap(){

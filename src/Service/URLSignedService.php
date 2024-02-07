@@ -22,23 +22,24 @@ class URLSignedService
     {
         try{
             return bin2hex(json_encode($tokenData));
-        }catch (Exception $e) {
+        }catch (\Exception $e) {
             throw new URLSignedException(URLSignedException::INVALID);
         }
     }
     public function decodeData($dataEncoded){
         try{
             return json_decode(hex2bin($dataEncoded),false);
-        }catch (Exception $e) {
+        }catch (\Exception $e) {
             throw new URLSignedException(URLSignedException::INVALID);
         }
     }
 
-    public function signURL($routeName,$routeParams,$tokenData = [],$expireDuration = '+12 hours'): string
+    public function signURL($routeName,$routeParams,$expireDuration = '+12 hours',$tokenData = [],$paramsOnly=false)
     {
         $expiredAt = (new \DateTime())->modify($expireDuration);
         $dataEncoded = $this->encodeData(['params'=>$routeParams,...$tokenData,'e'=>$expiredAt->getTimestamp()]);
         $token = $this->generateToken($dataEncoded);
+        if($paramsOnly) return [...$routeParams,'t' => $token, 'd' => $dataEncoded];
         return $this->router->generate($routeName, [...$routeParams,'t' => $token, 'd' => $dataEncoded]);
     }
 
@@ -47,7 +48,7 @@ class URLSignedService
         try{
             $validToken = $this->generateToken($dataEncoded);
             return $validToken == $token;
-        }catch (Exception $e) {
+        }catch (\Exception $e) {
             return false;
         }
     }

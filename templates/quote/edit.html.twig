@@ -29,7 +29,7 @@
                     {% endblock %}
                 {% endembed %}
             </div>
-            <iframe class="w-1/2"  id="preview" src="{{ path('app_quote_preview', {company:company.id, id:quote.id}) }}"></iframe>
+            <iframe class="w-1/2"  id="preview" src="{{ path('app_quote_preview', {company:company.id, id:quote.id,embeded:true}) }}"></iframe>
         </div>
     </div>
 {% endblock %}

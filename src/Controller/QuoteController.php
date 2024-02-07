@@ -137,9 +137,8 @@ class QuoteController extends AbstractController
                     'urlSigned' => $urlSigned,
                     'email' => $customerEmail,
                 ];
-
                 if ($urlSigned->isResent()) {
-                    $newUrl = $urlSignedService->signURL('app_quote_preview', ['id' => $quote->getId(), 'company' => $company->getId(),]);
+                    $newUrl = $urlSignedService->signURL('app_quote_preview', ['id' => $quote->getId(), 'company' => $company->getId()]);
                     $urlSignedService->sendEmail($customerEmail, $newUrl);
                     $renderData = [
                         ...$renderData,
@@ -149,9 +148,38 @@ class QuoteController extends AbstractController
                 return $this->render($urlSigned->getTemplate(), $renderData);
             }
         }
+        $signPostURLsigned = $urlSignedService->signURL('app_quote_sign', ['id' => $quote->getId(), 'company' => $company->getId()],"+1 hour");
         return $this->render('quote/preview.html.twig', [
             'quote' => $quote,
             'company' => $company,
+            'signPostURLsigned' => $signPostURLsigned,
+            'embeded' => $request->query->get('embeded',false),
         ]);
+    }
+
+    #[Route('/{id}/sign', name: 'app_quote_sign', methods: ['POST'])]
+    public function sign(Request $request, Quote $quote,Company $company, EntityManagerInterface $entityManager,QuoteService $quoteService,URLSignedService $urlSignedService): Response
+    {
+        $urlSignedService->verifyURL($request);
+        $previewURLSignedParams = $urlSignedService->signURL('app_quote_preview', ['id' => $quote->getId(), 'company' => $company->getId()],'+1 hours',[],true);
+        try{
+            $quoteSignature = $quoteService->createQuoteSignature($request);
+            if(!$quoteSignature) throw new \Exception("Invalid signature");
+            $entityManager->persist($quoteSignature);;
+            $quote->setSignature($quoteSignature);
+            $entityManager->flush();
+            $this->addFlash('success', 'The quote has been signed');
+            return $this->redirectToRoute('app_quote_preview', $previewURLSignedParams);
+        }catch(\Exception $e){
+            $this->addFlash('danger', 'The signature is not valid');
+            return $this->redirectToRoute('app_quote_preview', $previewURLSignedParams);
+        }
+    }
+
+    #[Route('/{id}/send', name: 'app_quote_send', methods: ['GET'])]
+    public function generatePreviewURL(Quote $quote,Company $company,URLSignedService $urlSignedService): string
+    {
+        $url = $urlSignedService->signURL('app_quote_preview', ['id' => $quote->getId(), 'company' => $company->getId()]);
+        die("<a href=\"$url\">test</a>");
     }
 }

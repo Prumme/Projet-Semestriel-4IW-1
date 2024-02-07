@@ -1,11 +1,11 @@
 [type="checkbox"]{
   @apply rounded cursor-pointer border-2 border-primary-500 focus:ring-0 checked:bg-primary-500 checked:focus:bg-primary-500;
 }
-form input{
+form:not(.no-style) input{
   font-size: calc(14 / 16 * 1rem);
 }
 
-form > div{
+form:not(.no-style)  > div{
   @apply flex flex-wrap;
 
 

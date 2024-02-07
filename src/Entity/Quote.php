@@ -22,9 +22,6 @@ class Quote
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $expired_at = null;
 
-    #[ORM\Column]
-    private ?bool $has_been_signed = null;
-
     #[ORM\OneToMany(mappedBy: 'quote', targetEntity: Invoice::class)]
     private Collection $invoices;
 
@@ -38,6 +35,9 @@ class Quote
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: true)]
     private ?BillingAddress $billingAddress = null;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?QuoteSignature $signature = null;
 
     public function __construct()
     {
@@ -77,15 +77,9 @@ class Quote
 
     public function getHasBeenSigned(): ?bool
     {
-        return $this->has_been_signed;
+        return $this->signature !== null;
     }
 
-    public function setHasBeenSigned(bool $has_been_signed): static
-    {
-        $this->has_been_signed = $has_been_signed;
-
-        return $this;
-    }
 
     public function getCustomer(): ?Customer
     {
@@ -182,6 +176,23 @@ class Quote
     public function setBillingAddress(?BillingAddress $billingAddress): static
     {
         $this->billingAddress = $billingAddress;
+
+        return $this;
+    }
+
+    public function getNumber():string
+    {
+        return str_pad($this->getId(), 5, "0", STR_PAD_LEFT);
+    }
+
+    public function getSignature(): ?QuoteSignature
+    {
+        return $this->signature;
+    }
+
+    public function setSignature(?QuoteSignature $signature): static
+    {
+        $this->signature = $signature;
 
         return $this;
     }
