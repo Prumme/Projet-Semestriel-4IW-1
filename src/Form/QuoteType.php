@@ -5,6 +5,8 @@ namespace App\Form;
 use App\Entity\BillingAddress;
 use App\Entity\Customer;
 use App\Entity\Quote;
+use App\Repository\CustomerRepository;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
@@ -21,6 +23,11 @@ class QuoteType extends AbstractType
         $builder
             ->add('customer', EntityType::class, [
                 'class' => Customer::class,
+                'query_builder' => function (CustomerRepository $repository) use ($options): QueryBuilder {
+                    return $repository->createQueryBuilder('c')
+                        ->where('c.company = :company')
+                        ->setParameter('company', $options['company']);
+                },
                 'choice_label' => 'identity',
                 'attr' => [
                     "class"=>"input-60",
@@ -40,6 +47,7 @@ class QuoteType extends AbstractType
             $builder->add('billingAddress', EntityType::class, [
                 'label' => 'Billing address',
                 'attr'=>[
+                    'id' => 'billing_address',
                     'icon'=> 'home',
                 ],
                 'class' => BillingAddress::class,
@@ -67,7 +75,6 @@ class QuoteType extends AbstractType
                     "class"=>"input-50",
                 ]
             ])
-            //->add('has_been_signed')
             ->add('billingRows', CollectionType::class, [
                 'entry_type' => BillingRowType::class,
                 'entry_options' => [
@@ -88,6 +95,7 @@ class QuoteType extends AbstractType
             'data_class' => Quote::class,
             'products' => [],
             'customer' => null,
+            'company' => null,
         ]);
     }
 }

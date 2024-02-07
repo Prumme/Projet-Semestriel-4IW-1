@@ -22,14 +22,13 @@ use App\Security\Voter\Attributes\CompanyVoterAttributes;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/company/{company}/quote')]
-// TODO : Add /company/{company}/quote to the route | All controllers add Company $company ONLY WHEN NEEDED
 class QuoteController extends AbstractController
 {
     #[Route('/', name: 'app_quote_index', methods: ['GET'])]
     #[IsGranted(CompanyVoterAttributes::CAN_VIEW_COMPANY, subject: 'company')]
     public function index(QuoteRepository $quoteRepository, Company $company): Response
     {
-        $quotes = $quoteRepository->findAll();
+        $quotes = $quoteRepository->findAllWithingCompany($company);
         $table = new QuoteTable($quotes, ["company" => $company]);
         return $this->render('quote/index.html.twig', [
             'table' => $table->createTable(),
@@ -53,10 +52,12 @@ class QuoteController extends AbstractController
                 'label' => $product->getName(),
             ], $products),
             'customer' => $customer,
+            'company' => $company,
         ]);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $quote->setOwner($this->getUser());
             $entityManager->persist($quote);
             $quoteService->syncBillingRows($quote);
 
@@ -92,6 +93,7 @@ class QuoteController extends AbstractController
                 'label' => $product->getName(),
             ], $products),
             'customer' => $customer,
+            'company' => $company,
         ]);
         $form->handleRequest($request);
 
