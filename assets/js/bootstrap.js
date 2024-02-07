@@ -1,12 +1,14 @@
-import {Select} from "./Components/Select";
-import {Component} from "./Components/Component";
-import {SearchInput} from "./Components/SearchInput";
-import {SignatureDrawZone} from "./Components/SignatureDrawZone";
+import { Carousel } from "./Components/Carousel";
+import { Component } from "./Components/Component";
+import { SearchInput } from "./Components/SearchInput";
+import { Select } from "./Components/Select";
+import { SignatureDrawZone } from "./Components/SignatureDrawZone";
 
 export const COMPONENTS = {
     select : Select,
     searchInput: SearchInput,
-    signatureDrawZone: SignatureDrawZone
+    signatureDrawZone: SignatureDrawZone,
+    carousel: Carousel,
 }
 
 export default function bootstrap(){
