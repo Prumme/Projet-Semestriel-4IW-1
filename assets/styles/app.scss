@@ -49,9 +49,14 @@
     --primary-darken: #337D70;
 
     --disabled: #BEDFD9;
+
+    --plain-darkmode: #1e1e1e;
+
+    --text-darkmode: #F2F4F8;
+
   }
 
-  [theme="secondary"]{
+  [theme="secondry"]{
     --white: #F2F4F8;
     --primary-50: #f8fcfb;
     --primary-100: #edf7f6;
@@ -88,6 +93,10 @@
     --primary-darken: #1E143B; //done
 
     --disabled: #BEDFD9;
+
+    --plain-darkmode: #1e1e1e;
+
+    --text-darkmode: #F2F4F8;
 
   }
 }

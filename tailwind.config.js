@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: "class",
   content: [
     "./assets/**/*.js",
     "./assets/**/*.scss",
@@ -55,6 +56,9 @@ module.exports = {
         secondary_light: "var(--secondary-light)",
         primary_darken: "var(--primary-darken)",
         disabled: "var(--disabled)",
+
+        "plain-darkmode": "var(--plain-darkmode)",
+        "text-darkmode": "var(--text-darkmode)",
       },
     },
   },
