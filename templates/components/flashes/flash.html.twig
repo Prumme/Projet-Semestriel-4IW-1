@@ -4,6 +4,21 @@
 
 /HOW TO USE IT #}
 
+<script>
+    function removeFlash(id) {
+        document.getElementById(id).remove();
+    }
+
+    addEventListener('DOMContentLoaded', () => {
+        const flash = document.querySelectorAll('[flash]');
+        flash.forEach((element) => {
+            setTimeout(() => {
+                element.remove();
+            }, 3000);
+        });
+    });
+</script>
+
 <div class="fixed bottom-12 right-6 flex flex-col-reverse z-50">
     {% for type, flasheMessages in app.flashes %}
         {% for message in flasheMessages %}

@@ -27,6 +27,8 @@
 
         <div class="h-full w-screen absolute top-0 flex justify-center items-center">
 		    {% block content %}{% endblock %}
+			
+			{% include 'components/flashes/flash.html.twig' %}
         </div>
 
 	</body>
