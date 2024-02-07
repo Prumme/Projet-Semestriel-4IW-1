@@ -39,7 +39,6 @@ export class Carousel extends Component {
 
     updateIndicators(index = 0) {
         this.indicators.forEach((indicator, i) => {
-            console.log(i, index)
             if (i === index) {
                 indicator.classList.add('!w-20','border-primary-500');
             } else {
