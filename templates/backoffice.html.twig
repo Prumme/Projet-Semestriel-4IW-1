@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE>
+<html theme="secondary">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -40,7 +40,7 @@
     
     {# SIDEBAR #}
 
-    {% if  'ROLE_SUPER_ADMIN' %}
+    {% if  'ROLE_SUPER_ADMIN' in app.user.roles %}
         {% set sidebar =  'components/layouts/super_admin/sidebar.html.twig'%}
     {% elseif 'ROLE_COMPANY_ADMIN' in app.user.roles %}
         {% set sidebar =  'components/layouts/admin/sidebar.html.twig'%}
