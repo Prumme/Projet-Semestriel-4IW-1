@@ -3,32 +3,34 @@ import { Component } from "./Components/Component";
 import { SearchInput } from "./Components/SearchInput";
 import { Select } from "./Components/Select";
 import { SignatureDrawZone } from "./Components/SignatureDrawZone";
+import { DarkMode } from "./Components/DarkMode";
+
 
 export const COMPONENTS = {
     select : Select,
     searchInput: SearchInput,
     signatureDrawZone: SignatureDrawZone,
     carousel: Carousel,
+  darkMode: DarkMode,
 }
 
-export default function bootstrap(){
-    initializeComponents()
-    initializeWatcher()
+export default function bootstrap() {
+  initializeComponents();
+  initializeWatcher();
 }
 
-function initializeComponents(){
-    console.log("[BOOSTRAP] initComponents")
-    window.$app = App.getInstance()
-    const components = document.querySelectorAll('[data-bind-component]')
-    components.forEach(component => {
-        const componentName = component.getAttribute('data-bind-component')
-        if(COMPONENTS[componentName]){
-            const componentInstance = new COMPONENTS[componentName](component)
-            $app.registerComponent(componentInstance)
-        }
-    })
-    console.log("[BOOSTRAP] initComponents done",$app)
-
+function initializeComponents() {
+  console.log("[BOOSTRAP] initComponents");
+  window.$app = App.getInstance();
+  const components = document.querySelectorAll("[data-bind-component]");
+  components.forEach((component) => {
+    const componentName = component.getAttribute("data-bind-component");
+    if (COMPONENTS[componentName]) {
+      const componentInstance = new COMPONENTS[componentName](component);
+      $app.registerComponent(componentInstance);
+    }
+  });
+  console.log("[BOOSTRAP] initComponents done", $app);
 }
 
 function initializeWatcher(){

@@ -20,12 +20,12 @@
         </th>
         {% endif %}
         {% for header in table['headers'] %}
-            <th class="text-left  font-semibold opacity-50 {{ header.class|default('') }}{{ hasGrouppedActions ? '' : ' pl-4 ' }}py-4">{{ header.title }}</th>
+            <th class="text-left font-semibold opacity-50 {{ header.class|default('') }}{{ hasGrouppedActions ? '' : ' pl-4 ' }} py-4 dark:text-text-darkmode dark:opacity-100">{{ header.title }}</th>
         {% endfor %}
         </thead>
         <tbody>
         {% for row in table['rows'] %}
-            <tr id="item-{{ row['item'].id }}" class="{% if loop.index0 is even %}bg-[#F4F5F8]{% endif %}">
+            <tr id="item-{{ row['item'].id }}" class="even:bg-[#F4F5F8] dark:even:bg-slate-700 dark:text-text-darkmode">
                 {% if hasGrouppedActions  %}
                 <td class="px-4">
                     {% include "components/inputs/checkbox.html.twig" with { onChange: "selectOne" ~ tableId ~"(this)" } %}
