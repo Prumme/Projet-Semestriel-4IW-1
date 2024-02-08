@@ -9,7 +9,6 @@ use App\Security\AuthentificableRoles;
 use App\Security\Voter\Attributes\CompanyVoterAttributes;
 use App\Table\CompanyTable;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +18,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('/company')]
 class CompanyController extends AbstractController
 {
-    #[Route('/', name: 'app_company_index_admin', methods: ['GET'])]
+    #[Route('/', name: 'app_company_index', methods: ['GET'])]
     #[IsGranted(AuthentificableRoles::ROLE_SUPER_ADMIN)]
     public function index_admin(CompanyRepository $companyRepository): Response
     {
@@ -30,16 +29,6 @@ class CompanyController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_company_index', methods: ['GET'])]
-    #[IsGranted(AuthentificableRoles::ROLE_COMPANY_ADMIN)]
-    public function index(CompanyRepository $companyRepository): Response
-    {
-        $companies = $companyRepository->findAll();
-        $table = new CompanyTable($companies);
-        return $this->render('company/index.html.twig', [
-            'table' => $table->createTable(),
-        ]);
-    }
 
     #[Route('/new', name: 'app_company_new', methods: ['GET', 'POST'])]
     #[IsGranted(AuthentificableRoles::ROLE_SUPER_ADMIN)]

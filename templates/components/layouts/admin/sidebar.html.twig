@@ -33,16 +33,6 @@
 						}
 					%}
 				</li>
-				{# COMPANIES #}
-				<li class="w-full px-4">					
-					{% include 'components/sidebar/sidebar_link.html.twig' with
-						{
-							'path': path('app_company_index', {"id": app.user.company.id}),
-							'icon': 'business',
-							'title': 'Companies',
-						}
-					%}
-				</li>
 				{# PRODUCTS #}
 				<li
 					class="w-full px-4">
@@ -125,6 +115,15 @@
 							}
 						%}
 				</li>
+				<li class="w-full px-4">
+					{% include 'components/sidebar/sidebar_link.html.twig' with
+						{
+							'path': path('app_company_edit', {"id": app.user.company.id}),
+							'icon': 'business',
+							'title': 'Company',
+						}
+					%}
+				</li>
 			</ul>
 			<div class="flex-grow basis-full"></div>
 			{# PARAMETERS  #}
@@ -144,16 +143,11 @@
 						}
 					%}
 				</li>
+				<li class="w-full px-4">
+					{% include 'components/buttons/button_darkmode.html.twig'%}
+				</li>
 			</ul>
-			{# LIGHT MODE #}
-			{# <li class="w-full px-4">
-				<div class="w-full py-2 pl-2 rounded-md">
-					<a href="#sun" class="flex items-center">
-						<ion-icon name="sunny" class="text-xl text-primary-600"></ion-icon>
-						<span class="ml-3 text-white text-xs">Light Mode</span>
-					</a>
-				</div>
-			</li> #}
+			
 		</div>
 	</div>
 </aside>

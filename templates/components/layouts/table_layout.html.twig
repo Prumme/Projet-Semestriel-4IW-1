@@ -1,4 +1,4 @@
 <div class="flex flex-col gap-6">
-    <h1>{{ title }}</h1>
+    <h1 class="dark:text-text-darkmode">{{ title }}</h1>
     {% include "components/tables/table.html.twig" with { table:table, onSelect: onSelect | default('') } %}
 </div>

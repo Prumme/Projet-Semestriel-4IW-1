@@ -1,11 +1,11 @@
 {# HOW TO USE IT
 
 {% include 'components/inputs/search.html.twig' with {
-            'id': 'search' OPT,
-            'name': 'search' OPT,
+            'id': 'search' --OPTIONAL,
+            'name': 'search' --OPTIONAL,
             'type': 'search' required,
-            'placeholder': 'Search...' OPT,
-            'icon':'search' OPT
+            'placeholder': 'Search...' --OPTIONAL,
+            'icon':'search' --OPTIONAL
 } %}
 
 /HOW TO USE IT #}
@@ -14,13 +14,15 @@
     <input  
         type="search"
         name="{{ (name) | default('') }}"
-        class="!w-full border-0 border-b-2 border-secondary_light text-primary-500 focus:border-primary-500 focus:text-secondary-500 focus:ring-0"
+        class="!w-full border-0 border-b-2 border-secondary_light text-primary-500 focus:border-primary-500 focus:text-secondary-500 focus:ring-0 bg-transparent dark:placeholder:text-text-darkmode dark:text-text-darkmode"
         id="{{ id | default('') }}"
         required="{{ required | default('') }}"
         placeholder="{{ placeholder | default('') }}"
         value="{{ value | default('') }}"
     >
-        <ion-icon name="search-outline" class="text-2xl"></ion-icon>
+        {% if (icon is defined) %}
+            <ion-icon name="search-outline" class="text-2xl"></ion-icon>
+        {% endif %}
     </input>
 </div>
 
