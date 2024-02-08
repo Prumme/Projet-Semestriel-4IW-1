@@ -6,6 +6,7 @@
     link: '#', -- OPTIONAL
     icon_left: 'icon', -- OPTIONAL
     icon_right: 'icon', -- OPTIONAL
+    gradient: true | false -- OPTIONAL
 } %} 
 #}
 
@@ -34,7 +35,11 @@
 
 {# /MORE #}
 
-<a href="{{ link | default('#') }}" class="w-min text-white text-{{ size | default('xl') }} bg-{{ bg | default('primary')}}-500 rounded-full px-5 py-2 hover:bg-{{ bg | default('primary')}}-600 duration-200 inline-flex items-center justify-center space-x-2.5">
+{% if gradient is not defined %}
+    {% set gradient = false %}
+{% endif %}
+
+<a href="{{ link | default('#') }}" class="w-min text-white text-{{ size | default('xl') }} bg-{{ bg | default('primary')}}-500 rounded-full px-5 py-2 hover:bg-{{ bg | default('primary')}}-600 duration-200 inline-flex items-center justify-center space-x-2.5  {{ gradient? 'bg-gradient-to-r from-primary-400 to-success-500':''}}">
     {% if icon_left is defined %}
         <ion-icon name="{{ icon_left }}"></ion-icon>
     {% endif %}

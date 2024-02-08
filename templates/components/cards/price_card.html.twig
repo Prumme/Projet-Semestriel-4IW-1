@@ -30,12 +30,12 @@
 
 {# /PATH #}
 
-	{% if bestSeller is not defined %}
-{% set bestSeller = false %}
+{% if bestSeller is not defined %}
+	{% set bestSeller = false %}
 {% endif %}
 
-	{% if regular_price is not defined %}
-{% set regular_price = 'month' %}
+{% if regular_price is not defined %}
+	{% set regular_price = 'month' %}
 {% endif %}
 
 {% set price = price | number_format(2, '.', ',') %}
@@ -62,6 +62,6 @@
 	</div>
 
 	<div class="font-thin">
-		{% include 'components/buttons/button_link.html.twig' with {link: link, content: 'Get Started', size: "md"} %}
+		{% include 'components/buttons/button_link.html.twig' with {link: link, content: 'Get Started', size: "md", gradient: true} %}
 	</div>
 </article>
