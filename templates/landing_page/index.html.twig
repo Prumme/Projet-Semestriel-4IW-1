@@ -40,8 +40,8 @@
 					{% include 'components/buttons/button_link.html.twig' with {content: 'Discover Our Offers', link: '/#ourOffers'} %}
 				</div>
 				<div class="w-1/2 h-full relative">
-					<div class="absolute top-0 left-0">{% include 'svg/streaks.svg.twig' %}</div>
-					<div class="absolute bottom-0 right-0">{% include 'svg/streaks.svg.twig' %}</div>
+					<div class="absolute top-0 left-0">{% include 'svg/streaks.svg.twig' with {color: 'var(--primary-500)'} %}</div>
+					<div class="absolute bottom-0 right-0">{% include 'svg/streaks.svg.twig' with {color: 'var(--primary-500)'} %}</div>
 					{% include 'components/carousel/carousel.html.twig' %}
 			</section>
 
@@ -49,19 +49,19 @@
 				<h2 class="text-4xl text-secondary-500 mb-[51px]">Unleash Terrifyingly  Features</h2>
 				<div class="flex justify-evenly space-x-32">
 					<article class="flex flex-col justify-end items-center text-center">
-						{% include 'svg/illustrations/email-notification.svg.twig' %}
+						{% include 'svg/illustrations/email-notification.svg.twig' with {color: 'var(--primary-500)'} %}
 						<h1 class="text-2xl whitespace-nowrap mt-10 mb-5">Email Notification</h1>
 						<p>Stay updated effortlessly with our seamless email notification system.</p>
 					</article>
 
 					<article class="flex flex-col justify-end items-center text-center">
-						{% include 'svg/illustrations/invoicing.svg.twig' %}
+						{% include 'svg/illustrations/invoicing.svg.twig' with {color: 'var(--primary-500)'} %}
 						<h1 class="text-2xl whitespace-nowrap mt-10 mb-5">Invoicing</h1>
 						<p>Simplify your billing process with our intuitive invoicing solutions.</p>
 					</article>
 
 					<article class="flex flex-col justify-end items-center text-center">
-						{% include 'svg/illustrations/online-payment.svg.twig' %}
+						{% include 'svg/illustrations/online-payment.svg.twig' with {color: 'var(--primary-500)'} %}
 						<h1 class="text-2xl whitespace-nowrap mt-10 mb-5">Online Payement</h1>
 						<p>Secure and convenient online payment methods for hassle-free transactions.</p>
 					</article>
@@ -98,7 +98,7 @@
 					{% include 'components/cards/price_card.html.twig' with {
                 title: "Personal",
                 bestSeller: false,
-                description: "Lorem ipsum dolor sit amet consectetur.",
+                description: "Choose for a personal plan",
                 advantages: ['Personalized Support', 'Access to Exclusive Content', 'Customizable Features'],
                 price: 9.99,
                 link: "#",
@@ -108,7 +108,7 @@
 					{% include 'components/cards/price_card.html.twig' with {
                 title: "Team",
                 bestSeller: true,
-                description: "Lorem ipsum dolor sit amet consectetur.",
+                description: "Choose a plan for a whole team",
                 advantages: ['Personalized Support', 'Access to Exclusive Content', 'Customizable Features'],
                 price: 49.99,
                 link: "#",
@@ -119,7 +119,7 @@
 					{% include 'components/cards/price_card.html.twig' with {
                 title: "Entreprise",
                 bestSeller: false,
-                description: "Lorem ipsum dolor sit amet consectetur.",
+                description: "Choose for a full professional support",
                 advantages: ['Personalized Support', 'Access to Exclusive Content', 'Customizable Features'],
                 price: 29.99,
                 link: "#",
@@ -127,8 +127,8 @@
 
             } %}
 
-					<div class="absolute top-0  z-0 right-1/2 -translate-x-8 -translate-y-4 opacity-80">{% include 'svg/streaks.svg.twig' with {color: '#49AB9A'} %}</div>
-					<div class="absolute z-20 bottom-0 left-1/2  opacity-80">{% include 'svg/streaks.svg.twig' with {color: '#49AB9A'} %}</div>
+					<div class="absolute top-0  z-0 right-1/2 -translate-x-8 -translate-y-4 opacity-80">{% include 'svg/streaks.svg.twig' with {color: 'var(--primary-500)'} %}</div>
+					<div class="absolute z-20 bottom-0 left-1/2  opacity-80">{% include 'svg/streaks.svg.twig' with {color: 'var(--primary-500)'} %}</div>
 				</div>
 
 			</section>
