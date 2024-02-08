@@ -1,0 +1,12 @@
+{% extends 'backoffice.html.twig' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block body %}
+    <h1>Profile</h1>
+    {% embed 'components/layouts/form_layout.html.twig' with {'content': 'Save', icon:"create-outline"} %}
+            
+    {% endembed %}
+
+   
+{% endblock %}
