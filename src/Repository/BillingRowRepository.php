@@ -21,6 +21,46 @@ class BillingRowRepository extends ServiceEntityRepository
         parent::__construct($registry, BillingRow::class);
     }
 
+    public function bestFiveProduct($company): array
+    {
+        return $this->createQueryBuilder('b')
+            ->select('b.product as label, SUM(b.quantity) as data')
+            ->join('b.quote_id', 'q')
+            ->join('q.owner', 'o')
+            ->where('o.company = :company')
+            ->setParameter('company', $company)
+            ->groupBy('b.product')
+            ->orderBy('data', 'DESC')
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function productSelled($company): array
+    {
+        return $this->createQueryBuilder('b')
+            ->select('b.product as label, SUM(b.quantity) as data')
+            ->join('b.quote_id', 'q')
+            ->join('q.owner', 'o')
+            ->where('o.company = :company')
+            ->setParameter('company', $company)
+            ->groupBy('b.product')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function totalEarned($company): array
+    {
+        return $this->createQueryBuilder('b')
+            ->select('SUM(b.price) as data')
+            ->join('b.quote_id', 'q')
+            ->join('q.owner', 'o')
+            ->where('o.company = :company')
+            ->setParameter('company', $company)
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return BillingRow[] Returns an array of BillingRow objects
 //     */

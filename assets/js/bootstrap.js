@@ -4,15 +4,17 @@ import { SearchInput } from "./Components/SearchInput";
 import { Select } from "./Components/Select";
 import { SignatureDrawZone } from "./Components/SignatureDrawZone";
 import { DarkMode } from "./Components/DarkMode";
-
+import { BarChart, DoughnutChart } from "./Components/Charts";
 
 export const COMPONENTS = {
-    select : Select,
-    searchInput: SearchInput,
-    signatureDrawZone: SignatureDrawZone,
-    carousel: Carousel,
+  select: Select,
+  searchInput: SearchInput,
+  signatureDrawZone: SignatureDrawZone,
+  carousel: Carousel,
+  barChart: BarChart,
   darkMode: DarkMode,
-}
+  doughnutChart: DoughnutChart,
+};
 
 export default function bootstrap() {
   initializeComponents();

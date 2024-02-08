@@ -2,5 +2,48 @@
 
 {% block title %}Company index{% endblock %}
 
+
+
+
+
 {% block body %}
+
+    <div class="mb-8">
+        {% include 'components/titles/title.html.twig' with {
+        text: 'Dashboard',
+        underline: true
+        }
+        %}
+    </div>
+
+    <div class="grid grid-cols-3 gap-6">
+        <div class="h-56 rounded-xl border border-primary-200 p-4">
+            <canvas data-bind-component="barChart" data-chart-dataset="{{ dataBestFiveProducts }}" data-chart-legend="# Bests Products Selled" class="w-full"></canvas>
+        </div>
+
+        <div class="h-56 rounded-xl border border-primary-200 p-4 flex justify-center items-center">
+        <canvas data-bind-component="doughnutChart" data-chart-dataset="{{ dataProductSelled }}"></canvas>
+        </div>
+
+        <div class="h-56 rounded-xl border border-primary-200 p-4 flex flex-col justify-center items-center">
+            <h2 class="text-primary-500 text-7xl">{{ dataTotalEarned }} €</h2>
+            <h3 class="text-primary-600 text-lg">Total earned</h3>
+        </div>
+
+        <div class="h-56 rounded-xl border border-primary-200 p-4 hover:border-primary-300 hover:scale-105 transition-all duration-300 cursor-pointer">
+            <div class="h-full w-full flex justify-center items-center">
+            <ion-icon name="add-circle-outline" class="text-primary-500 text-4xl"></ion-icon>
+            </div>
+        </div>
+
+        <div class="h-56 rounded-xl border border-primary-200 p-4">
+        </div>
+
+        <div class="h-56 rounded-xl border border-primary-200 p-4">
+        </div>
+
+        <div class="h-56 rounded-xl border border-primary-200 p-4">
+        </div>
+    </div>
+
 {% endblock %}
