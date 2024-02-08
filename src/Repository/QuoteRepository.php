@@ -25,35 +25,12 @@ class QuoteRepository extends ServiceEntityRepository
 
     public function findAllWithingCompany(Company $company)
     {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.company = :company')
+        return $this->createQueryBuilder('q')
+            ->select('q')
+            ->join('q.owner',"o")
+            ->where("o.company = :company")
             ->setParameter('company', $company)
             ->getQuery()
             ->getResult();
     }
-
-//    /**
-//     * @return Quote[] Returns an array of Quote objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('q')
-//            ->andWhere('q.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('q.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Quote
-//    {
-//        return $this->createQueryBuilder('q')
-//            ->andWhere('q.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

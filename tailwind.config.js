@@ -24,6 +24,7 @@ module.exports = {
           400: "var(--primary-400)",
           450: "var(--primary-450)",
           500: "var(--primary-500)",
+          550: "var(--primary-550)",
           600: "var(--primary-600)",
           700: "var(--primary-700)",
           750: "var(--primary-750)",

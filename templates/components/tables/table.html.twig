@@ -41,6 +41,10 @@
                     </td>
                 {% endfor %}
             </tr>
+            {% else %}
+            <tr>
+                <td colspan="{{ table['headers']|length }}" class="text-center py-4">No data available</td>
+            </tr>
         {% endfor %}
         </tbody>
     </table>
