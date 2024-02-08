@@ -15,6 +15,23 @@ export class ContextMenu extends Component {
     return this.element.querySelector('[data-type="activator"]');
   }
 
+  get menuPosition() {
+    let activator = this.activator;
+    let bounds = activator.getBoundingClientRect();
+    let position = {
+        top: bounds.top + bounds.height,
+        left: bounds.left,
+    }
+    //check if the menu is out of the screen
+    if (position.left + this._saveMenu.offsetWidth > window.innerWidth) {
+        position.left = window.innerWidth - this._saveMenu.offsetWidth - 10;
+    }
+    if (position.top + this._saveMenu.offsetHeight > window.innerHeight) {
+        position.top = window.innerHeight - this._saveMenu.offsetHeight - 10;
+    }
+    return position;
+  }
+
   onMount() {
     this.addClassToChildElements();
     this.registerListener(this.activator, "click", this.open.bind(this));
@@ -53,21 +70,31 @@ export class ContextMenu extends Component {
     }
   }
 
+
   open(event) {
+    if(this.isOpen) return this.close();
     this.deplaceMenuToTheRoot();
     this.isOpen = true;
-    let position = {
-      top: event..clientY,
-      left: event.clientX,
-    };
-    this._saveMenu.style.top = position.top + "px";
-    this._saveMenu.style.left = position.left + "px";
+    this._saveMenu.style.transform = "scaleY(0)"
+    this._saveMenu.style.transformOrigin = "center top";
+    this._saveMenu.style.transition = "transform 0.2s";
     this._saveMenu.classList.remove("hidden");
+    this._saveMenu.style.top = this.menuPosition.top + "px";
+    this._saveMenu.style.left = this.menuPosition.left + "px";
+    setTimeout(()=>{
+      this._saveMenu.style.transform = "scaleY(1)";
+    }, 100);
+
   }
 
   close() {
-    this.deplaceMenuToTheRoot(true);
     this.isOpen = false;
-    this._saveMenu.classList.add("hidden");
+    this._saveMenu.style.transformOrigin = "center top";
+    this._saveMenu.style.transition = "transform 0.2s";
+    this._saveMenu.style.transform = "scaleY(0)";
+    setTimeout(()=>{
+      this.deplaceMenuToTheRoot(true);
+      this._saveMenu.classList.add("hidden");
+    }, 200);
   }
 }

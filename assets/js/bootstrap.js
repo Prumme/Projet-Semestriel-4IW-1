@@ -4,6 +4,8 @@ import { SearchInput } from "./Components/SearchInput";
 import { Select } from "./Components/Select";
 import { SignatureDrawZone } from "./Components/SignatureDrawZone";
 import { DarkMode } from "./Components/DarkMode";
+import {ContextMenu} from "./Components/ContextMenu";
+import {MainSidebar} from "./Components/MainSidebar";
 
 export const COMPONENTS = {
   select: Select,
@@ -12,6 +14,7 @@ export const COMPONENTS = {
   carousel: Carousel,
   darkMode: DarkMode,
   contextMenu: ContextMenu,
+  mainSidebar:MainSidebar
 };
 export default function bootstrap() {
   initializeComponents();

@@ -16,19 +16,19 @@
         {% endif %}
         <div class="w-full overflow-x-auto">
             <table class="w-full min-w-[800px]">
-                <thead>
+                <thead class="border-t-2 border-primary-500">
                 {% if hasGrouppedActions  %}
                 <th class="text-left py-4 px-4">
                     {% include "components/inputs/checkbox.html.twig" with { onChange: "selectAll" ~ tableId ~"(this)" } %}
                 </th>
                 {% endif %}
                 {% for header in table['headers'] %}
-                    <th class="text-left  font-semibold opacity-50 {{ header.class|default('') }}{{ hasGrouppedActions ? '' : ' pl-4 ' }} py-4 dark:text-text-darkmode dark:opacity-100">{{ header.title }}</th>
+                    <th class="text-left font-semibold opacity-50 {{ header.class|default('') }}{{ hasGrouppedActions ? '' : ' pl-4 ' }} py-4 dark:text-text-darkmode dark:opacity-100">{{ header.title }}</th>
                 {% endfor %}
                 </thead>
                 <tbody>
                 {% for row in table['rows'] %}
-                    <tr id="item-{{ row['item'].id }}" class="even:bg-[#F4F5F8] dark:even:bg-slate-700 dark:text-text-darkmode">
+                    <tr id="item-{{ row['item'].id }}" class="odd:bg-[#F4F5F8] dark:odd:bg-slate-700 dark:text-text-darkmode">
                         {% if hasGrouppedActions  %}
                         <td class="px-4">
                             {% include "components/inputs/checkbox.html.twig" with { onChange: "selectOne" ~ tableId ~"(this)" } %}
@@ -46,10 +46,16 @@
                     </tr>
                     {% else %}
                     <tr>
-                        <td colspan="{{ table['headers']|length }}" class="text-center py-4">No data available</td>
+                        <td colspan="100" class="text-center py-4">No data available</td>
                     </tr>
                 {% endfor %}
                 </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="100" class="p-4 text-right text-primary bg-primary-50 border-t-2 border-primary-100">
+                        {{ table['rows'] | length }} {{ table['rows'] | length > 1 ? 'items' : 'item' }}
+                    </td>
+                </tfoot>
             </table>
         </div>
     </div>
