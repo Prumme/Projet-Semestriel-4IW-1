@@ -256,7 +256,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         if (null !== $profilePictureFile) {
 
-            $this->updatedAt = new \DateTimeImmutable();
+            $this->updatedAt = new \DateTime();
         }
 
     }
