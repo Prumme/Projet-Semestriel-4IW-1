@@ -32,20 +32,6 @@ function initializeComponents() {
   console.log("[BOOSTRAP] initComponents done", $app);
 }
 
-function initializeComponents() {
-  console.log("[BOOSTRAP] initComponents");
-  window.$app = App.getInstance();
-  const components = document.querySelectorAll("[data-bind-component]");
-  components.forEach((component) => {
-    const componentName = component.getAttribute("data-bind-component");
-    if (COMPONENTS[componentName]) {
-      const componentInstance = new COMPONENTS[componentName](component);
-      $app.registerComponent(componentInstance);
-    }
-  });
-  console.log("[BOOSTRAP] initComponents done", $app);
-}
-
 function initializeWatcher() {
   console.log("[BOOSTRAP] initWatcher");
   const app = App.getInstance();
