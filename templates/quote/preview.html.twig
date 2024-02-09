@@ -18,9 +18,11 @@
 
         <div class="mb-5 flex justify-between">
             <div>
-                <div>[COMPANY ADDRESS LINE]</div>
-                <div>[CITY, ZIP]</div>
-                <div>[PHONE]</div>
+                <div>{{ company.address.addressLine1 }}</div>
+                {% if company.address.addressLine2 is defined %}
+                    <div>{{  company.address.addressLine2 }}</div>
+                {% endif %}
+                <div>{{ company.address.zipCode }} {{  company.address.city }}</div>
                 <div>Siret : {{ company.siret }}</div>
                 <div>VAT number : {{ company.vatNumber }}</div>
             </div>
