@@ -2,13 +2,14 @@
 
 namespace App\Table;
 
+use App\Security\AuthentificableRoles;
 use App\Table\Core\Table;
-
 class UserCompanyTable extends Table{
-    protected array $neededData = ['company'];
+    protected array $neededData = ['company','connectedUser'];
     protected function buildTable() : void
     {
         $company = $this->data['company'];
+        $connectedUser = $this->data['connectedUser'];
 
         $this->setHeaders([
             [
@@ -22,7 +23,6 @@ class UserCompanyTable extends Table{
                 'key' => 'roles',
             ]
         ]);
-
         $this->setItemsActions([
             [
                 'content' => "Send onboarding email",
@@ -39,6 +39,7 @@ class UserCompanyTable extends Table{
             [
                 'content'=>'Edit',
                 'icon'=>'create',
+                'visible'=> fn($user)=> $connectedUser->getId() === $user->getId() || $connectedUser->hasRole(AuthentificableRoles::ROLE_COMPANY_ADMIN) && !$user->hasUpperRole($connectedUser),
                 "href"=> [
                     'path'=>'app_company_user_edit',
                     'params'=>[
@@ -50,6 +51,7 @@ class UserCompanyTable extends Table{
             [
                 'content'=>'Delete',
                 'icon'=>'trash',
+                'visible'=> fn($user)=> $connectedUser->getId() !== $user->getId() && $connectedUser->hasRole(AuthentificableRoles::ROLE_COMPANY_ADMIN) && !$user->hasUpperRole($connectedUser),
                 "href"=> [
                     'csrf'=> fn($item)=> 'delete' . $item->getId(),
                     'method'=>'post',
