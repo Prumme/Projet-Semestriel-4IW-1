@@ -21,11 +21,11 @@ class Quote
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Assert\LessThan(propertyPath: 'expired_at', message: 'La date d\'expiration doit être supérieure à la date d\'émission.')]
+    #[Assert\LessThan(propertyPath: 'expired_at', message: 'The date of issue must be less than the expiration date.')]
     private ?\DateTimeInterface $emited_at = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Assert\GreaterThan(propertyPath: 'emited_at', message: 'La date d\'expiration doit être supérieure à la date d\'émission.')]
+    #[Assert\GreaterThan(propertyPath: 'emited_at', message: 'The expiration date must be greater than the date of issue.')]
     private ?\DateTimeInterface $expired_at = null;
 
     #[ORM\OneToMany(mappedBy: 'quote', targetEntity: Invoice::class)]
