@@ -14,14 +14,7 @@
         {{ form_errors(form) }}
     </div>
 {% endblock %}
-{% block date_row %}
-    {% set classes = attr.class is defined ?  attr.class : '' %}
-    <div class="inline-block {{ classes }} ">
-        {{ form_label(form) }}
-        {{ form_widget(form) }}
-        {{ form_errors(form) }}
-    </div>
-{% endblock %}
+
 {% block button_row %}
     {% set classes = attr.class is defined ?  attr.class : '' %}
     <div class="inline-block flex justify-center items-end {{ classes }}">
@@ -35,9 +28,7 @@
         size: 'sm'
     }) }}
 {% endblock %}
-{% block date_widget %}
-   {{ form_widget(form) }}
-{% endblock %}
+
 
 {% block choice_widget %}
     {{ include('components/inputs/select.html.twig') }}
