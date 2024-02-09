@@ -22,6 +22,7 @@ class BillingRowType extends AbstractType
         $builder->add("unit", NumberType::class,[
         ]);
         $builder->add("price", NumberType::class,[
+            'mapped' => false,
         ]);
         $builder->add("vat", NumberType::class,[
         ]);

@@ -7,8 +7,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: QuoteRepository::class)]
+#[Assert\Callback([Quote::class, 'validateBillingRowsNotEmpty'])]
 class Quote
 {
     #[ORM\Id]
@@ -17,23 +21,27 @@ class Quote
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\LessThan(propertyPath: 'expired_at', message: 'The date of issue must be less than the expiration date.')]
     private ?\DateTimeInterface $emited_at = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\GreaterThan(propertyPath: 'emited_at', message: 'The expiration date must be greater than the date of issue.')]
     private ?\DateTimeInterface $expired_at = null;
 
     #[ORM\OneToMany(mappedBy: 'quote', targetEntity: Invoice::class)]
     private Collection $invoices;
 
     #[ORM\ManyToOne(targetEntity: Customer::class, inversedBy: 'quotes', cascade: ['remove'])]
-    #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'id', onDelete: 'CASCADE', nullable: false)]
+    #[Assert\NotNull(message: 'The customer is required.')]
     private ?Customer $customer = null;
-
-    #[ORM\OneToMany(mappedBy: 'quote_id', targetEntity: BillingRow::class,  cascade: ['persist'])]
+    #[ORM\OneToMany(mappedBy: 'quote_id', targetEntity: BillingRow::class,  cascade: ['persist', 'remove'])]
+    #[Assert\Valid]
     private Collection $billingRows;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: true)]
+    #[Assert\NotNull(message: 'The billing address is required.')]
     private ?BillingAddress $billingAddress = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
@@ -194,6 +202,10 @@ class Quote
     {
         return $this->signature;
     }
+    public function getIsSigned(): bool
+    {
+        return $this->signature !== null;
+    }
 
     public function setSignature(?QuoteSignature $signature): static
     {
@@ -212,6 +224,15 @@ class Quote
         $this->owner = $owner;
 
         return $this;
+    }
+
+    public static function validateBillingRowsNotEmpty(Quote $quote, ExecutionContextInterface $context): void
+    {
+        if ($quote->getBillingRows()->isEmpty()) {
+            $context->buildViolation('The quote must have at least one billing row.')
+                ->atPath('billingRows')
+                ->addViolation();
+        }
     }
 
 }

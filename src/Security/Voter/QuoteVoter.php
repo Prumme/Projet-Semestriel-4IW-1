@@ -45,8 +45,7 @@ class QuoteVoter extends Voter
      */
     public function canManage(Quote $quote, User $user): bool
     {
-        $company = $quote->getCustomer()->getReferenceCompany();
-
+        $company = $quote->getOwner()->getCompany();
         return $this->security->isGranted(CompanyVoterAttributes::CAN_VIEW_COMPANY, $company);
     }
 }

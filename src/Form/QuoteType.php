@@ -63,6 +63,7 @@ class QuoteType extends AbstractType
 
         $builder->add('emited_at',DateType::class,[
             "label" => "Emited at",
+            'widget' => 'single_text',
             'attr' => [
                 'icon'=> 'calendar',
                 "class"=>"input-50",
@@ -70,6 +71,7 @@ class QuoteType extends AbstractType
         ])
             ->add('expired_at',DateType::class,[
                 "label" => "Expired at",
+                'widget' => 'single_text',
                 'attr' => [
                     'icon'=> 'calendar',
                     "class"=>"input-50",

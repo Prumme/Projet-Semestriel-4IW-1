@@ -4,6 +4,10 @@ export class BillingRow{
         this.element = billingRowDOMElement;
         this.bindEvents()
         this.applyVAT()
+
+        let {price,total} = this.getInputs()
+        price.setAttribute('disabled',true)
+        total.setAttribute('disabled',true)
     }
 
     /**
@@ -51,7 +55,8 @@ export class BillingRow{
 
     applyVAT(){
         let inputs = this.getInputs()
-        let priceHT = inputs.price.value
+        let priceHT = inputs.unit.value * Math.round(inputs.quantity.value)
+        inputs.price.value = this.toValidAmmount(priceHT)
         inputs.total.value = this.toValidAmmount(priceHT * (1 + inputs.vat.value / 100))
     }
 
