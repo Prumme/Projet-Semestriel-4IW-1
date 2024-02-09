@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\BillingRowRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: BillingRowRepository::class)]
 class BillingRow
@@ -14,18 +15,23 @@ class BillingRow
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\NotNull(message: "product required.")]
     #[ORM\Column(length: 255)]
     private ?string $product = null;
 
+    #[Assert\NotNull(message: "Quantity required.")]
     #[ORM\Column]
     private ?int $quantity = null;
 
-    #[ORM\Column]
-    private ?int $unit = null;
-
+    /**
+     * @Assert\NotNull(message="Unit price required.")
+     */
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
-    private ?string $price = null;
+    private ?string $unit = null;
 
+    /**
+     * @Assert\NotNull(message="VAT required.")
+     */
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2)]
     private ?string $vat = null;
 
@@ -77,14 +83,7 @@ class BillingRow
 
     public function getPrice(): ?string
     {
-        return $this->price;
-    }
-
-    public function setPrice(string $price): static
-    {
-        $this->price = $price;
-
-        return $this;
+        return $this->unit * $this->quantity;
     }
 
     public function getVat(): ?string
