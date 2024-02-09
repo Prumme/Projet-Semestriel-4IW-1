@@ -5,11 +5,17 @@ HOW TO USE IT
     'content': 'Sign in',
     'icon': 'mail',
     'size': 'sm' --OPT
+    'gradient': true | boolen -- OPT
 } %}
 
 /HOW TO USE IT
 #}
-<button type="{{ type | default('button') }}" {% if disabled is defined and disabled != false %} disabled {% endif %} onclick="{{ handle | default('') }}" class="text-white text-{{ size | default('xl') }} bg-{{ bg | default('primary') }}-500 rounded-full px-5 py-2 hover:bg-{{ bg | default('primary')}}-600 duration-100 inline-flex items-center justify-center space-x-2.5 disabled:opacity-50">
+
+{% if gradient is not defined %}
+    {% set gradient = false %}
+{% endif %}
+
+<button type="{{ type | default('button') }}" onclick="{{ handle | default('') }}" class="text-white text-{{ size | default('xl') }} bg-{{ bg | default('primary') }}-500 rounded-full px-5 py-2 hover:bg-{{ bg | default('primary')}}-600 duration-100 inline-flex items-center justify-center space-x-2.5 {{ gradient? 'bg-gradient-to-r from-primary-400 to-success-500':''}}">
     <div class="inline-flex items-center gap-2">
         {% if(icon is defined) %}
             <ion-icon name="{{ icon }}"></ion-icon>

@@ -5,6 +5,7 @@
         'close_icon': true, 
         'type' : 'danger', -- OPTIONAL
         'size': 'sm', -- OPTIONAL
+        'gradient': true | false -- OPTIONAL
         } 
     %}
     All the parameters are optional, if you don't pass them, the default value will be used.
@@ -28,6 +29,10 @@
     {% set close_icon = false %}
 {% endif %}
 
+{% if gradient is not defined %}
+    {% set gradient = false %}
+{% endif %}
+
 {% set size_classes = {
     'xs': 'text-xs',
     'sm': 'text-sm',
@@ -35,7 +40,7 @@
     'xl': 'text-xl',
 } %}
 
-<div class="bg-{{ type | default('primary') }}-500 inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full text-white border-2 border-{{ type | default('primary') }}-500 {{ size_classes[size] }}">
+<div class="bg-{{ type | default('primary') }}-500 inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full text-white border-2 border-{{ type | default('primary') }}-500 {{ size_classes[size] }} {{ gradient? 'bg-gradient-to-r from-primary-400 to-success-500':''}}">
     {% if close_icon %}
         {% include 'svg/chips-pills/close.svg.twig' %}
     {% endif %}

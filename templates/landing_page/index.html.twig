@@ -41,7 +41,12 @@
 			<section id="reviews" class="w-full flex flex-col lg:flex-row h-[422px] space-x-0 lg:space-x-52">
                 <div class="flex flex-col justify-center items-center lg:items-start w-full lg:w-2/5 h-full font-thin">
 					<h2 class="mb-12 text-xl lg:text-4xl text-secondary-500 text-center lg:text-start">Over 30K+ Hunters Satisfied, Will You Be Next ?</h2>
-					{% include 'components/buttons/button_link.html.twig' with {content: 'Discover Our Offers', link: '/#ourOffers', size: 'lg'} %}
+					{% include 'components/buttons/button_link.html.twig' with {
+						content: 'Discover Our Offers', 
+						link: '/#ourOffers', 
+						size: 'lg', 
+						gradient: true 
+					} %}
 				</div>
 				{# REVIEWS #}
                 <div class="w-full lg:w-1/2 h-full relative">
@@ -81,7 +86,7 @@
 					<h2 class="text-xl lg:text-4xl text-secondary-500 text-center lg:text-start">Simplify Your Accounting</h2>
 					<p class="mb-12 mt-9 text-center lg:text-start">Our company is dedicated to streamlining and optimizing your financial processes, offering user-friendly tools and expert guidance. Experience hassle-free bookkeeping and efficient management, allowing you to focus on your core business.</p>
 					<div class="flex justify-center lg:justify-start items-center">
-						{% include 'components/buttons/button_link.html.twig' with {content: 'Know more'} %}
+						{% include 'components/buttons/button_link.html.twig' with {content: 'Know more', gradient: true} %}
 					</div>
 				</div>
 				<div class="w-[600px] h-[246px] bg-[#3B908D] rounded-md hidden md:block"></div>
@@ -94,7 +99,7 @@
 					<h2 class="text-xl lg:text-4xl text-secondary-500">Get Clarity in Your Payments</h2>
 					<p class="mb-12 mt-9 text-center lg:text-start">Our commitment is to provide transparency and efficiency in managing your transactions. Experience clear, concise payment processing that simplifies your financial operations and brings peace of mind to your business.</p>
 					<div class="flex justify-center lg:justify-start items-center">
-						{% include 'components/buttons/button_link.html.twig' with {content: 'Know more'} %}
+						{% include 'components/buttons/button_link.html.twig' with {content: 'Know more', gradient: true} %}
 					</div>
 				</div>
 			</section>
@@ -110,6 +115,7 @@
 						'close_icon': false, 
 						'type' : 'primary',
 						'size': 'xs',
+						gradient: true,
 						} 
 					%}
 				</div>
