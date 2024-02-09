@@ -15,24 +15,22 @@ class BillingRow
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Assert\NotNull(message: "product required.")]
     #[ORM\Column(length: 255)]
+    #[Assert\NotNull(message: "product required.")]
     private ?string $product = null;
 
-    #[Assert\NotNull(message: "Quantity required.")]
     #[ORM\Column]
+    #[Assert\NotNull(message: "Quantity required.")]
     private ?int $quantity = null;
 
-    /**
-     * @Assert\NotNull(message="Unit price required.")
-     */
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
+    #[Assert\NotNull(message: "Unit price required.")]
+    #[Assert\GreaterThan(value: 0, message: "Unit price must be positive value.")]
     private ?string $unit = null;
 
-    /**
-     * @Assert\NotNull(message="VAT required.")
-     */
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2)]
+    #[Assert\NotNull(message: "VAT required.")]
+    #[Assert\GreaterThan(value: 0, message: "VAT must be positive value.")]
     private ?string $vat = null;
 
     #[ORM\ManyToOne(inversedBy: 'billingRows', cascade: ['persist'])]

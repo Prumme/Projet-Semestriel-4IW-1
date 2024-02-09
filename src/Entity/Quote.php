@@ -10,10 +10,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @Assert\Callback({"App\Entity\Quote", "validateBillingRowsNotEmpty"})
- */
+
 #[ORM\Entity(repositoryClass: QuoteRepository::class)]
+#[Assert\Callback([Quote::class, 'validateBillingRowsNotEmpty'])]
 class Quote
 {
     #[ORM\Id]
@@ -21,36 +20,28 @@ class Quote
     #[ORM\Column]
     private ?int $id = null;
 
-    /**
-     * @Assert\LessThan(propertyPath="expiredAt", message="La date d'expiration doit être supérieure à la date d'émission.")
-     */
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\LessThan(propertyPath: 'expired_at', message: 'La date d\'expiration doit être supérieure à la date d\'émission.')]
     private ?\DateTimeInterface $emited_at = null;
 
-    /**
-     * @Assert\GreaterThan (propertyPath="emited_at", message="La date d'expiration doit être supérieure à la date d'émission.")
-     */
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\GreaterThan(propertyPath: 'emited_at', message: 'La date d\'expiration doit être supérieure à la date d\'émission.')]
     private ?\DateTimeInterface $expired_at = null;
 
     #[ORM\OneToMany(mappedBy: 'quote', targetEntity: Invoice::class)]
     private Collection $invoices;
 
-    /**
-     * @Assert\NotNull(message="The customer is mendatory.")
-     */
     #[ORM\ManyToOne(targetEntity: Customer::class, inversedBy: 'quotes', cascade: ['remove'])]
     #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'id', onDelete: 'CASCADE', nullable: false)]
+    #[Assert\NotNull(message: 'The customer is required.')]
     private ?Customer $customer = null;
     #[ORM\OneToMany(mappedBy: 'quote_id', targetEntity: BillingRow::class,  cascade: ['persist', 'remove'])]
     #[Assert\Valid]
     private Collection $billingRows;
 
-    /**
-     * @Assert\NotNull(message="Select a valid billing address.")
-     */
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: true)]
+    #[Assert\NotNull(message: 'The billing address is required.')]
     private ?BillingAddress $billingAddress = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
