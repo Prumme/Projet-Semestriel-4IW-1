@@ -30,7 +30,6 @@ class BillingAddress
     private ?string $address_line_2 = null;
 
     #[ORM\ManyToOne(targetEntity: Customer::class, cascade: ['remove'])]
-    #[ORM\JoinColumn(nullable: false)]
     private Customer $customer;
 
     private EntityManager $manager;

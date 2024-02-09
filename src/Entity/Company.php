@@ -36,6 +36,10 @@ class Company
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: Category::class)]
     private Collection $categories;
 
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?BillingAddress $address = null;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
@@ -155,6 +159,18 @@ class Company
                 $category->setCompany(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAddress(): ?BillingAddress
+    {
+        return $this->address;
+    }
+
+    public function setAddress(BillingAddress $address): static
+    {
+        $this->address = $address;
 
         return $this;
     }
