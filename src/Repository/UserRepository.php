@@ -41,7 +41,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->getEntityManager()->flush();
     }
 
-    public function findAllWithingCompany(Company $company)
+    public function findAllWithinCompany(Company $company)
     {
         return $this->createQueryBuilder('u')
             ->andWhere('u.company = :company')

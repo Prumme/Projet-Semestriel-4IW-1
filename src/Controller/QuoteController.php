@@ -29,7 +29,7 @@ class QuoteController extends AbstractController
     #[IsGranted(CompanyVoterAttributes::CAN_VIEW_COMPANY, subject: 'company')]
     public function index(QuoteRepository $quoteRepository, Company $company): Response
     {
-        $quotes = $quoteRepository->findAllWithingCompany($company);
+        $quotes = $quoteRepository->findAllWithinCompany($company);
         $table = new QuoteTable($quotes, ["company" => $company]);
         return $this->render('quote/index.html.twig', [
             'table' => $table->createTable(),
@@ -38,19 +38,19 @@ class QuoteController extends AbstractController
 
     #[Route('/new', name: 'app_quote_new', methods: ['GET', 'POST'])]
     #[IsGranted(CompanyVoterAttributes::CAN_VIEW_COMPANY, subject: 'company')]
-    public function new(Request $request, EntityManagerInterface $entityManager, Company $company,QuoteService $quoteService): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, Company $company, QuoteService $quoteService): Response
     {
-        $customer_id = !empty($_POST['quote']['customer']) ? $_POST['quote']['customer'] : $request->query->get('customer_id',null);
+        $customer_id = !empty($_POST['quote']['customer']) ? $_POST['quote']['customer'] : $request->query->get('customer_id', null);
         $customer = null;
-        if(isset($customer_id)) $customer = $entityManager->getRepository(Customer::class)->find($customer_id);
+        if (isset($customer_id)) $customer = $entityManager->getRepository(Customer::class)->find($customer_id);
 
         $quote = new Quote();
         $quote->setEmitedAt(new \DateTime());
         $quote->setExpiredAt((new \DateTime())->modify('+1 month'));
 
         $products = $entityManager->getRepository(Product::class)->findAll();
-        $form = $this->createForm(QuoteType::class, $quote,[
-            'products' => array_map(fn($product) => [
+        $form = $this->createForm(QuoteType::class, $quote, [
+            'products' => array_map(fn ($product) => [
                 'value' => json_encode($product->toArray()),
                 'label' => $product->getName(),
             ], $products),
@@ -66,7 +66,7 @@ class QuoteController extends AbstractController
 
             $entityManager->flush();
             $this->addFlash('success', 'Quote created successfully');
-            return $this->redirectToRoute('app_quote_edit',[
+            return $this->redirectToRoute('app_quote_edit', [
                 'id' => $quote->getId(),
                 'company' => $company->getId(),
             ]);
@@ -81,17 +81,17 @@ class QuoteController extends AbstractController
 
     #[Route('/{id}/edit', name: 'app_quote_edit', methods: ['GET', 'POST'])]
     #[IsGranted(QuoteVoterAttributes::CAN_MANAGE_QUOTE, subject: 'quote')]
-    public function edit(Request $request,Company $company, Quote $quote, EntityManagerInterface $entityManager,QuoteService $quoteService): Response
+    public function edit(Request $request, Company $company, Quote $quote, EntityManagerInterface $entityManager, QuoteService $quoteService): Response
     {
-        $customer_id = !empty($_POST['quote']['customer']) ? $_POST['quote']['customer'] : $request->query->get('customer_id',null);
+        $customer_id = !empty($_POST['quote']['customer']) ? $_POST['quote']['customer'] : $request->query->get('customer_id', null);
         $customer =  $quote->getCustomer();
-        if(isset($customer_id)){
+        if (isset($customer_id)) {
             $customer = $entityManager->getRepository(Customer::class)->find($customer_id);
         }
 
         $products = $entityManager->getRepository(Product::class)->findAll();
-        $form = $this->createForm(QuoteType::class, $quote,[
-            'products' => array_map(fn($product) => [
+        $form = $this->createForm(QuoteType::class, $quote, [
+            'products' => array_map(fn ($product) => [
                 'value' => json_encode($product->toArray()),
                 'label' => $product->getName(),
             ], $products),
@@ -101,7 +101,7 @@ class QuoteController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if($quote->getIsSigned()) throw new BadRequestHttpException("The quote has been signed, it cannot be edited");
+            if ($quote->getIsSigned()) throw new BadRequestHttpException("The quote has been signed, it cannot be edited");
             $quoteService->syncBillingRows($quote);
             $entityManager->flush();
             $this->addFlash('success', 'Quote edited successfully');
@@ -118,7 +118,7 @@ class QuoteController extends AbstractController
     #[IsGranted(QuoteVoterAttributes::CAN_MANAGE_QUOTE, subject: 'quote')]
     public function delete(Request $request, Quote $quote, EntityManagerInterface $entityManager): Response
     {
-        if($quote->getIsSigned()) throw new BadRequestHttpException("The quote has been signed, it cannot be deleted");
+        if ($quote->getIsSigned()) throw new BadRequestHttpException("The quote has been signed, it cannot be deleted");
         if ($this->isCsrfTokenValid('delete' . $quote->getId(), $request->request->get('_token'))) {
             $entityManager->remove($quote);
             $entityManager->flush();
@@ -130,14 +130,14 @@ class QuoteController extends AbstractController
 
 
     #[Route('/{id}/preview', name: 'app_quote_preview', methods: ['GET'])]
-    public function preview(Request $request, Quote $quote,Company $company, URLSignedService $urlSignedService): Response
+    public function preview(Request $request, Quote $quote, Company $company, URLSignedService $urlSignedService): Response
     {
-        if(!$urlSignedService->isURLSigned($request)) $this->denyAccessUnlessGranted(QuoteVoterAttributes::CAN_MANAGE_QUOTE,$quote);
-        else{
+        if (!$urlSignedService->isURLSigned($request)) $this->denyAccessUnlessGranted(QuoteVoterAttributes::CAN_MANAGE_QUOTE, $quote);
+        else {
             try {
                 $urlSignedService->verifyURL($request);
-            }catch (URLSignedException $e){
-                if(!$e->hasExpired()) throw $e;
+            } catch (URLSignedException $e) {
+                if (!$e->hasExpired()) throw $e;
                 $urlSigned = $e->getUrlSigned();
                 $customerEmail = $quote->getCustomer()->getEmail();
                 $renderData = [
@@ -155,29 +155,29 @@ class QuoteController extends AbstractController
                 return $this->render($urlSigned->getTemplate(), $renderData);
             }
         }
-        $signPostURLsigned = $urlSignedService->signURL('app_quote_sign', ['id' => $quote->getId(), 'company' => $company->getId()],"+1 hour");
+        $signPostURLsigned = $urlSignedService->signURL('app_quote_sign', ['id' => $quote->getId(), 'company' => $company->getId()], "+1 hour");
         return $this->render('quote/preview.html.twig', [
             'quote' => $quote,
             'company' => $company,
             'signPostURLsigned' => $signPostURLsigned,
-            'embeded' => $request->query->get('embeded',false),
+            'embeded' => $request->query->get('embeded', false),
         ]);
     }
 
     #[Route('/{id}/sign', name: 'app_quote_sign', methods: ['POST'])]
-    public function sign(Request $request, Quote $quote,Company $company, EntityManagerInterface $entityManager,QuoteService $quoteService,URLSignedService $urlSignedService): Response
+    public function sign(Request $request, Quote $quote, Company $company, EntityManagerInterface $entityManager, QuoteService $quoteService, URLSignedService $urlSignedService): Response
     {
         $urlSignedService->verifyURL($request);
-        $previewURLSignedParams = $urlSignedService->signURL('app_quote_preview', ['id' => $quote->getId(), 'company' => $company->getId()],'+1 hours',[],true);
-        try{
+        $previewURLSignedParams = $urlSignedService->signURL('app_quote_preview', ['id' => $quote->getId(), 'company' => $company->getId()], '+1 hours', [], true);
+        try {
             $quoteSignature = $quoteService->createQuoteSignature($request);
-            if(!$quoteSignature) throw new \Exception("Invalid signature");
+            if (!$quoteSignature) throw new \Exception("Invalid signature");
             $entityManager->persist($quoteSignature);;
             $quote->setSignature($quoteSignature);
             $entityManager->flush();
             $this->addFlash('success', 'The quote has been signed');
             return $this->redirectToRoute('app_quote_preview', $previewURLSignedParams);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->addFlash('danger', 'The signature is not valid');
             return $this->redirectToRoute('app_quote_preview', $previewURLSignedParams);
         }
@@ -185,9 +185,9 @@ class QuoteController extends AbstractController
 
     #[Route('/{id}/ask-signature', name: 'app_quote_ask_signature', methods: ['POST'])]
     #[IsGranted(QuoteVoterAttributes::CAN_MANAGE_QUOTE, subject: 'quote')]
-    public function askSignature(Quote $quote,Company $company,URLSignedService $urlSignedService): string
+    public function askSignature(Quote $quote, Company $company, URLSignedService $urlSignedService): string
     {
-        if($quote->getIsSigned()) throw new BadRequestHttpException("The quote has been signed");
+        if ($quote->getIsSigned()) throw new BadRequestHttpException("The quote has been signed");
         $signedUrl = $urlSignedService->signURL('app_quote_preview', ['id' => $quote->getId(), 'company' => $company->getId()]);
         $urlSignedService->sendEmail($quote->getCustomer()->getEmail(), $signedUrl);
         die($signedUrl);

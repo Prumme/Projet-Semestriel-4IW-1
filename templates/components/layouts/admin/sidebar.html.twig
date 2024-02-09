@@ -6,7 +6,8 @@
 	</button>
 
 	<aside id="default-sidebar" class="absolute top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:relative sm:translate-x-0" aria-label="Sidebar">
-		<div class="h-full px-3 py-1 overflow-y-auto bg-primary-750">
+		<div
+			class="h-full px-3 py-1 overflow-y-auto bg-primary-750">
 			{# LOGO #}
 			<div class="w-full h-full inline-flex flex-col items-start px-2 py-2">
 
@@ -19,7 +20,8 @@
 					</button>
 				</div>
 				{# SIDEBAR #}
-				<ul class="flex flex-col w-full h-full gap-3">
+				<ul
+					class="flex flex-col w-full h-full gap-3">
 					{# DASHBOARD #}
 					<li class="w-full px-4">
 						{% include 'components/sidebar/sidebar_title.html.twig' with {title: "Dashboard"} %}
@@ -36,8 +38,7 @@
 						%}
 					</li>
 					{# PRODUCTS #}
-					<li
-						class="w-full px-4">
+					<li class="w-full px-4">
 						{% include 'components/sidebar/sidebar_link.html.twig' with
 							{
 								'path': path('app_product_index', {"company": app.user.company.id}),
@@ -59,12 +60,10 @@
 						%}
 					</li>
 					{# INVOICES #}
-					<li
-						class="w-full px-4">
-						{# TODO: PUT THE CORRECT ROUTE IN THE path:  #}
+					<li class="w-full px-4">
 						{% include 'components/sidebar/sidebar_link.html.twig' with
 							{
-								'path': '#',
+								'path': path('app_invoice_index', {"company": app.user.company.id}),
 								'icon': 'document-text',
 								'title': 'Invoices',
 							}
@@ -102,16 +101,17 @@
 					</li>
 				</ul>
 				{# PROFILE #}
-				<ul class="flex flex-col w-full h-full gap-3">
+				<ul
+					class="flex flex-col w-full h-full gap-3">
 					{# TODO: PUT THE CORRECT ROUTE IN THE path:  #}
-					<li class="w-full px-4">
-						{% include 'components/sidebar/sidebar_link.html.twig' with
+					<li class="w-full px-4">{% include 'components/sidebar/sidebar_link.html.twig' with
 								{
 									'path': '#settings',
 									'icon': 'settings',
 									'title': 'Settings',
 								}
 							%}
+					</li>
 					<li class="w-full px-4">
 						{% include 'components/sidebar/sidebar_link.html.twig' with
 								{
@@ -150,11 +150,7 @@
 							}
 						%}
 					</li>
-					<li class="w-full px-4">
-						{% include 'components/buttons/button_darkmode.html.twig'%}
-					</li>
 				</ul>
-
 			</div>
 		</div>
 	</aside>
