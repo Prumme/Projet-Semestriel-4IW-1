@@ -34,7 +34,7 @@ class BillingRow
     private ?string $vat = null;
 
     #[ORM\ManyToOne(inversedBy: 'billingRows', cascade: ['persist'])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Quote $quote_id = null;
 
 
