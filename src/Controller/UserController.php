@@ -16,6 +16,7 @@ use Symfony\Component\Form\FormError;
 use App\Helper\URL;
 use App\Service\EmailService;
 use App\Data\TemplatesList;
+use App\Entity\Quote;
 use App\Form\UserType;
 
 #[Route('/user')]
@@ -38,6 +39,7 @@ class UserController extends AbstractController
     {
         $user = $this->getUser();
         $company = $user->getCompany();
+        $quotes = $entityManager->getRepository(Quote::class)->findBy(['owner' => $user->getId()]);
 
         $form = $this->createForm(UserType::class, $user, [
             'show_roles' => false,
@@ -56,6 +58,7 @@ class UserController extends AbstractController
             'user' => $user,
             'company' => $company,
             'form' => $form,
+            'quotes'=> $quotes
         ]);
         
     }

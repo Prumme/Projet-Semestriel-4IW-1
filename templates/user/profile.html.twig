@@ -4,9 +4,43 @@
 
 {% block body %}
     <h1>Profile</h1>
-    {% embed 'components/layouts/form_layout.html.twig' with {'content': 'Save', icon:"create-outline"} %}
-            
-    {% endembed %}
+    <div class="flex flex-row gap-7">
+        <div class="w-64 mt-5">
+            {% embed 'components/layouts/form_layout.html.twig' with {'content': 'Save', icon:"create-outline"} %}
+                    
+            {% endembed %}
+        </div>
+        <div class="flex flex-col">
+            <div>
+                <h2>My Quotes</h2>
+                {% if quotes is not empty %}
+                    <ul>
+                        {% for quote in quotes %}
+                            <a href="{{ path('app_quote_edit', {'company': company.id, 'id': quote.id}) }}">
+                            <li>{{ quote.emitedAt.format('Ymd') ~ quote.id }}</li>
+                            </a>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No quotes found</p>
+                {% endif %}
+            </div>
+            <div>
+                <h2>My Invoices</h2>
+                {# {% if invoices is not empty %}
+                    <ul>
+                        {% for invoice in invoices %}
+                            <li>{{ invoice.emitedAt.format('Ymd') ~ invoice.id }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No invoices found</p>
+                {% endif %} #}
+                <p>No invoices found</p>
+            </div>
+        </div>
+
+    </div>
 
    
 {% endblock %}

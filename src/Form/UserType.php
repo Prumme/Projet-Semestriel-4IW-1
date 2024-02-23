@@ -15,17 +15,17 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+        ->add('profilePictureFile', VichImageType::class, [
+            'label' => '',
+            'required' => false,
+            'allow_delete' => true,
+            'delete_label' => 'Remove profile picture',
+            'download_uri' => true,
+            'image_uri' => true,
+        ])
             ->add('email')
             ->add('firstname')
-            ->add('lastname')
-            ->add('profilePictureFile', VichImageType::class, [
-                'label' => 'Profile picture',
-                'required' => false,
-                'allow_delete' => true,
-                'delete_label' => 'Remove profile picture',
-                'download_uri' => true,
-                'image_uri' => true,
-            ]);
+            ->add('lastname');
 
         if ($options['show_roles']) {
             $builder->add('roles',  ChoiceType::class, [
