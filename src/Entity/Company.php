@@ -37,7 +37,7 @@ class Company
     private Collection $categories;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: true)]
+    #[ORM\JoinColumn(nullable: false)]
     private ?BillingAddress $address = null;
 
     public function __construct()
