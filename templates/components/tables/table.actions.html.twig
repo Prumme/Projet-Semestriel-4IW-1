@@ -1,4 +1,4 @@
-
+{% if actions|length > 0 %}
 {% embed 'components/contextMenu/context-menu.html.twig' %}
     {% block activator %}
         <ion-icon name="ellipsis-vertical" class="text-secondary-500 cursor-pointer text-xl"></ion-icon>
@@ -19,3 +19,4 @@
         {% endfor %}
     {% endblock %}
 {% endembed %}
+{% endif %}

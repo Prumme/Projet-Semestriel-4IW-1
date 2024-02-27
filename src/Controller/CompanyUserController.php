@@ -32,17 +32,18 @@ class CompanyUserController extends AbstractController
     }
 
     #[Route('/', name: 'app_company_user_index', methods: ['GET'])]
-    #[IsGranted(CompanyVoterAttributes::CAN_VIEW_COMPANY, subject: 'company')]
+    #[IsGranted(CompanyVoterAttributes::CAN_EDIT_COMPANY, subject: 'company')]
     public function index(Company $company, UserRepository $userRepository): Response
     {
         $users = $userRepository->findAllWithingCompany($company);
-        $table = new UserCompanyTable($users, ["company" => $company]);
+        $table = new UserCompanyTable($users, ["company" => $company,'connectedUser'=>$this->getUser()]);
         return $this->render('company_user/index.html.twig', [
             'table' => $table->createTable(),
         ]);
     }
 
     #[Route('/delete', name: 'app_company_user_mass_delete', methods: ['GET'])]
+    #[IsGranted(CompanyVoterAttributes::CAN_EDIT_COMPANY, subject: 'company')]
     public function massDelete(Request $request, Company $company, EntityManagerInterface $entityManager)
     {
         $selectedStr = $request->query->get('selected');

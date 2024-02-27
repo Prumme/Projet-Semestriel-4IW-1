@@ -44,13 +44,13 @@ class UserVoter extends Voter
 
     private function canView(User $resource, User $user) : bool
     {
+        if(!$this->security->isGranted(AuthentificableRoles::ROLE_COMPANY_ADMIN)) return false;
         return $user->getCompany() === $resource->getCompany();
     }
 
     private function canEdit(User $resource, User $user) : bool
     {
-        if($user === $resource) return true;
-        if(!$this->security->isGranted(AuthentificableRoles::ROLE_COMPANY_ADMIN)) return false;
+        if($resource->hasUpperRole($user)) return false;
         return $this->canView($resource, $user);
     }
 
