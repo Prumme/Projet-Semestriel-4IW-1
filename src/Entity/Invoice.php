@@ -15,6 +15,18 @@ class Invoice
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column(type: 'string', length: 4)]
+    private ?string $number = null;
+
+    #[ORM\Column(type: 'string', length: 20)]
+    private ?string $status = null;
+
+    #[ORM\Column(type: 'datetime')]
+    private ?\DateTimeInterface $emitted_at = null;
+
+    #[ORM\Column(type: 'datetime')]
+    private ?\DateTimeInterface $expired_at = null;
+
     #[ORM\ManyToMany(targetEntity: Upload::class, inversedBy: 'invoices')]
     private Collection $uploads;
 
@@ -33,6 +45,54 @@ class Invoice
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getInvoiceNumber(): ?string
+    {
+        return $this->number;
+    }
+
+    public function setInvoiceNumber(?string $number): static
+    {
+        $this->number = $number;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?string $status): static
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getEmittedAt(): ?\DateTimeInterface
+    {
+        return $this->emitted_at;
+    }
+
+    public function setEmittedAt(?\DateTimeInterface $emitted_at): static
+    {
+        $this->emitted_at = $emitted_at;
+
+        return $this;
+    }
+
+    public function getExpiredAt(): ?\DateTimeInterface
+    {
+        return $this->expired_at;
+    }
+
+    public function setExpiredAt(?\DateTimeInterface $expired_at): static
+    {
+        $this->expired_at = $expired_at;
+
+        return $this;
     }
 
     /**

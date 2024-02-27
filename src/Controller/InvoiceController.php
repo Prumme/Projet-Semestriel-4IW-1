@@ -18,7 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class InvoiceController extends AbstractController
 {
     #[Route('/', name: 'app_invoice_index', methods: ['GET'])]
-    public function index(QuoteRepository $quoteRepository, InvoiceRepository $invoiceRepository, Company $company): Response
+    public function index(QuoteRepository $quoteRepository, Company $company): Response
     {
         $invoices = $quoteRepository->findAllWithinCompany($company);
         $table = new InvoiceTable($invoices, ["company" => $company]);
@@ -46,6 +46,7 @@ class InvoiceController extends AbstractController
             'form' => $form,
         ]);
     }
+
 
     #[Route('/{id}', name: 'app_invoice_show', methods: ['GET'])]
     public function show(Invoice $invoice): Response

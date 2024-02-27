@@ -38,10 +38,10 @@ class InvoiceTable extends Table
                 'content' => 'See Invoice',
                 'icon' => 'eye',
                 "href" => [
-                    'path' => 'app_invoice_edit',
+                    'path' => 'app_invoice_show',
                     'params' => [
-                        'id' => fn ($item) => $item->getId(),
                         'company' => $company->getId(),
+                        'id' => fn ($item) => $item->getId(),
                     ]
                 ],
             ],
