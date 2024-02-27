@@ -39,8 +39,8 @@ class Quote
     #[Assert\Valid]
     private Collection $billingRows;
 
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: true)]
+    #[ORM\ManyToOne(targetEntity: BillingAddress::class, inversedBy: 'quotes', cascade: ['persist'])]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     #[Assert\NotNull(message: 'The billing address is required.')]
     private ?BillingAddress $billingAddress = null;
 
@@ -48,7 +48,7 @@ class Quote
     private ?QuoteSignature $signature = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'SET NULL')]
     private ?User $owner = null;
 
     #[ORM\OneToMany(mappedBy: 'quote', targetEntity: QuoteDiscount::class, cascade: ['persist'],orphanRemoval: true)]

@@ -52,7 +52,6 @@ class CustomerVoter extends Voter
 
     private function canEdit(Customer $customer, User $user) : bool
     {
-        if(!$this->security->isGranted(AuthentificableRoles::ROLE_COMPANY_ADMIN)) return false;
         return $this->canView($customer, $user);
     }
 

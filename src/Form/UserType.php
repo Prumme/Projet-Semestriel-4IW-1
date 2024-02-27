@@ -14,7 +14,25 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email')
+            ->add('firstname',null,[
+                'attr'=>[
+                    'icon'=>'person',
+                    'class'=>'input-50',
+                    'placeholder'=>'John'
+                ]
+            ])
+            ->add('lastname',null,[
+                'attr'=>[
+                    'class'=>'input-50',
+                    'placeholder'=>'Doe'
+                ]
+            ])
+            ->add('email',null,[
+                'attr'=>[
+                    'icon'=>'at-circle',
+                    'placeholder'=>'john.doe@email.com'
+                ]
+            ])
             ->add('roles',  ChoiceType::class, [
                 'choices' => [
                     'ROLE_USER' => AuthentificableRoles::ROLE_USER,
@@ -22,9 +40,8 @@ class UserType extends AbstractType
                 ],
                 'multiple' => true,
                 'placeholder' => 'Choose a role',
-            ])
-            ->add('firstname')
-            ->add('lastname');
+            ]);
+
     }
 
     public function configureOptions(OptionsResolver $resolver): void
