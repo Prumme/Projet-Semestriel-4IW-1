@@ -5,10 +5,11 @@ namespace App\Service;
 use App\Entity\Quote;
 use App\Entity\QuoteSignature;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class QuoteService
 {
-    public function __construct(){}
+    public function __construct(private ValidatorInterface $validator){}
 
     public function cleanBillingRowsDiscounts(Quote &$quote): void
     {
