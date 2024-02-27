@@ -92,6 +92,47 @@
     --disabled: #BEDFD9;
 
   }
+
+  [theme="halloween"]{
+    --white: #F2F4F8;
+    --primary-50: #f8fcfb;
+    --primary-100: #edf7f6;
+    --primary-200: #febc9d;
+    --primary-300: #ff9868;
+    --primary-400: #f77d45;
+    --primary-450: #f76a29;
+    --primary-500: #ff580A;
+    --primary-550: #d94b0a;
+    --primary-600: #c24309;
+    --primary-700: #993709;
+    --primary-750: #792c08;
+    --primary-800: #5b2207;
+    --primary-900: #3d1706;
+    --primary-950: #2a1004;
+
+    --secondary-400: #21295C;
+    --secondary-500: #1E143B;
+    --secondary-600: #32766b;
+
+    --danger-500: #F34E29;
+
+    --success-500: #6d33a4;
+
+    --warning-500: #FFD339;
+
+    --info-500: #BBDEF0;
+
+    --black: #1E1E1E;
+
+    --green-blue: #2e7881;
+
+    --secondary-light: #21295C;
+    
+    --primary-darken: #1E143B; //done
+
+    --disabled: #BEDFD9;
+
+  }
 }
 
 @layer components {

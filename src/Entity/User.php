@@ -61,6 +61,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?string $profilePictureName = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $theme = null;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
@@ -259,6 +262,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             $this->updatedAt = new \DateTime();
         }
 
+    }
+
+    public function getTheme(): ?string
+    {
+        return $this->theme;
+    }
+
+    public function setTheme(?string $theme): static
+    {
+        $this->theme = $theme;
+
+        return $this;
     }
 
 

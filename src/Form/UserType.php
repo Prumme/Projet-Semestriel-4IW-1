@@ -25,7 +25,16 @@ class UserType extends AbstractType
         ])
             ->add('email')
             ->add('firstname')
-            ->add('lastname');
+            ->add('lastname')
+            ->add('theme', ChoiceType::class, [
+                'choices' => [
+                    'Default' => 'default',
+                    'beyond violet' => 'secondary',
+                    'Halloween' => 'halloween',
+                ],
+                'placeholder' => 'Choose a theme',
+            ]);
+
 
         if ($options['show_roles']) {
             $builder->add('roles',  ChoiceType::class, [
