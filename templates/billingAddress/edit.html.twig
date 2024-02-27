@@ -1,34 +1,31 @@
 {% extends 'backoffice.html.twig' %}
 
-{% block title %}Edit Customer
+{% block title %}
+	Edit Billing Address
 {% endblock %}
 
 {% block body %}
 	<div class="flex flex-col gap-4">
-		<h1>Edit
-			{{ customer.firstname }}
-			{{customer.lastname}}</h1>
+		<h1>Edit Billing address</h1>
 		{{ include('components/buttons/button_link.html.twig',{
             size:'sm',
             bg:'secondary',
             content:"Go back",
             icon_left:"arrow-back-circle-outline",
-            link:path('app_customer_index', {company:company.id})
+            link:path('app_customer_edit', {company:company.id,id:customer.id})
         }) }}
 		{% embed 'components/layouts/form_layout.html.twig' with {'content': 'Update', icon:"create-outline"} %}
 			{% block footer %}
                 {% include('components/layouts/action_form_layout.html.twig') with {
                     item: customer,
 					csrf_id:'delete',
-					confirm:"Are you sure you want to delete this customer? This action cannot be undone.",
+					confirm:"Are you sure you want to delete this billing address? This action cannot be undone.",
 					content:'Delete',
 					icon:'trash-outline',
 					bg:'danger',
-                    action: path('app_customer_delete', {company:company.id, id:customer.id}),
+                    action: path('app_customer_address_delete', {company:company.id, customer:customer.id ,id:address.id}),
                 } %}
 			{% endblock %}
 		{% endembed %}
-
-		{% include "components/tables/table.html.twig" with { table:billingAddressTable } %}
 	</div>
 {% endblock %}
