@@ -31,6 +31,7 @@
 								'path': path('app_dashboard'),
 								'icon': 'bar-chart',
 								'title': 'Balance',
+								'active_route': ['app_dashboard']
 							}
 						%}
 					</li>
@@ -42,6 +43,7 @@
 								'path': path('app_product_index', {"company": app.user.company.id}),
 								'icon': 'pricetags',
 								'title': 'Products',
+								'active_route': ['app_product_index', 'app_product_new', 'app_product_edit']
 							}
 						%}
 					</li>
@@ -52,6 +54,7 @@
 								'path': path('app_customer_index', {"company": app.user.company.id}),
 								'icon': 'people-circle',
 								'title': 'Customers',
+								'active_route': ['app_customer_index', 'app_customer_new', 'app_customer_edit']
 							}
 						%}
 					</li>
@@ -74,6 +77,7 @@
 								'path': path('app_quote_index', {"company": app.user.company.id}),
 								'icon': 'cash',
 								'title': 'Quotes',
+								'active_route': ['app_quote_index', 'app_quote_new', 'app_quote_edit']
 							}
 						%}
 					</li>
@@ -84,6 +88,7 @@
 								'path':  path('app_company_user_index', {"company": app.user.company.id}),
 								'icon': 'people',
 								'title': 'Users',
+								'active_route': ['app_company_user_index', 'app_company_user_new', 'app_company_user_edit']
 							}
 						%}
 					</li>
@@ -122,6 +127,7 @@
 								'path': path('app_company_edit', {"id": app.user.company.id}),
 								'icon': 'business',
 								'title': 'Company',
+								'active_route': ['app_company_edit']
 							}
 						%}
 					</li>

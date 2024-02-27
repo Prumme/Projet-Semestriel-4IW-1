@@ -4,6 +4,7 @@
 		<span class="sr-only">Open sidebar</span>
 		<ion-icon name="menu-outline" class="text-xl"></ion-icon>
 	</button>
+		
 
 	<aside id="default-sidebar" class="absolute top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:relative sm:translate-x-0" aria-label="Sidebar">
 		<div class="h-full px-3 py-1 overflow-y-auto bg-primary-750">
@@ -25,12 +26,14 @@
 						{% include 'components/sidebar/sidebar_title.html.twig' with {title: "Dashboard"} %}
 					</li>
 					{# BALANCE #}
+					
 					<li class="w-full px-4">
 						{% include 'components/sidebar/sidebar_link.html.twig' with
 							{
 								'path': path('app_dashboard'),
 								'icon': 'bar-chart',
 								'title': 'Balance',
+								 'arctive_route': ['app_dashboard']
 							}
 						%}
 					</li>
@@ -42,6 +45,7 @@
 								'path': path('app_product_index', {"company": app.user.company.id}),
 								'icon': 'pricetags',
 								'title': 'Products',
+								'active_route': ['app_product_index', 'app_product_new', 'app_product_edit']
 							}
 						%}
 					</li>
@@ -52,6 +56,7 @@
 								'path': path('app_customer_index', {"company": app.user.company.id}),
 								'icon': 'people-circle',
 								'title': 'Customers',
+								'active_route': ['app_customer_index', 'app_customer_new', 'app_customer_edit']
 							}
 						%}
 					</li>
@@ -74,6 +79,7 @@
 								'path': path('app_quote_index', {"company": app.user.company.id}),
 								'icon': 'cash',
 								'title': 'Quotes',
+								'active_route': ['app_quote_index', 'app_quote_new', 'app_quote_edit']
 							}
 						%}
 					</li>
