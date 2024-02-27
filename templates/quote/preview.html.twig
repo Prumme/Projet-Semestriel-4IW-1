@@ -1,6 +1,6 @@
 {# make quote pdf html #}
-{{ encore_entry_link_tags('app_css') }}
-{{ encore_entry_script_tags('app') }}
+{% extends "empty.html.twig" %}
+{% block content %}
 <div class="page-container">
     <div id="loader-container" class="flex w-full h-full items-center justify-center">
         {{ include('components/loader/loader.html.twig',{
@@ -96,7 +96,14 @@
                             {{ billingRow.unit | format_currency('EUR') }}
                         </td>
                         <td class="border-x border-primary-500 p-1 text-right">
-                            {{ billingRow.total | format_currency('EUR') }}
+
+                            {% if billingRow.hasDiscount %}
+                                <div class="text-xs">{{ billingRow.total | format_currency('EUR') }}</div>
+                                {% for discount in billingRow.allDiscounts %}
+                                    <div class="text-xs text-red-500">-{{ discount.formated }}</div>
+                                {% endfor %}
+                            {% endif %}
+                            {{ billingRow.totalWithDiscount | format_currency('EUR') }}
                         </td>
                         <td class="border-x border-primary-500 p-1 text-right">
                             {{ billingRow.vat }} %
@@ -111,9 +118,21 @@
                 <tr>
                     <td colspan="4" class="border border-primary-500"></td>
                     <td class="border-l border-b p-2 border-primary-500" >
+                        {% if quote.hasDiscounts %}
+                            Subtotal before discounts
+                            {% for discount in quote.discountsDetails %}
+                                <div class="text-xs text-red-500"> Discount -{{ discount.label }}</div>
+                            {% endfor %}
+                        {% endif %}
                         Subtotal
                     </td>
                     <td class="border-r border-b p-2 border-primary-500 text-right">
+                        {% if quote.hasDiscounts %}
+                            {{ quote.totalRowScoped | format_currency('EUR') }}
+                            {% for discount in quote.discountsDetails %}
+                                <div class="text-xs text-red-500">  {{ discount.total | format_currency('EUR') }}</div>
+                            {% endfor %}
+                        {% endif %}
                         {{ quote.total | format_currency('EUR') }}
                     </td>
                 </tr>
@@ -202,3 +221,5 @@
         justify-content: space-between;
     }
 </style>
+
+    {% endblock %}

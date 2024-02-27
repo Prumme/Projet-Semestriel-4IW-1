@@ -35,7 +35,7 @@ class Quote
     #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'id', onDelete: 'CASCADE', nullable: false)]
     #[Assert\NotNull(message: 'The customer is required.')]
     private ?Customer $customer = null;
-    #[ORM\OneToMany(mappedBy: 'quote_id', targetEntity: BillingRow::class,  cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(mappedBy: 'quote_id', targetEntity: BillingRow::class,  cascade: ['persist'], orphanRemoval: true)]
     #[Assert\Valid]
     private Collection $billingRows;
 
@@ -51,12 +51,15 @@ class Quote
     #[ORM\JoinColumn(nullable: false)]
     private ?User $owner = null;
 
+    #[ORM\OneToMany(mappedBy: 'quote', targetEntity: QuoteDiscount::class, cascade: ['persist'],orphanRemoval: true)]
+    private Collection $discounts;
 
     public function __construct()
     {
         $this->has_been_signed = false;
         $this->billingRows = new ArrayCollection();
         $this->invoices = new ArrayCollection();
+        $this->discounts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -157,22 +160,29 @@ class Quote
     public function removeBillingRow(BillingRow $billingRow): static
     {
         if ($this->billingRows->removeElement($billingRow)) {
-            // set the owning side to null (unless already changed)
             if ($billingRow->getQuoteId() === $this) {
                 $billingRow->setQuoteId(null);
             }
         }
-
         return $this;
     }
 
     public  function getTotal(){
         $total = 0;
         foreach ($this->getBillingRows() as $billingRow) {
-            $total += $billingRow->getTotal();
+            $total += $billingRow->getTotalWithDiscount();
         }
         return $total;
     }
+
+    public function getTotalRowScoped(){
+        $total = 0;
+        foreach ($this->getBillingRows() as $billingRow) {
+            $total += $billingRow->getTotalWithDiscountRowScoped();
+        }
+        return $total;
+    }
+
     public function getTotalWithVAT(){
         $total = 0;
         foreach ($this->getBillingRows() as $billingRow) {
@@ -233,6 +243,56 @@ class Quote
                 ->atPath('billingRows')
                 ->addViolation();
         }
+    }
+
+    public function addDiscount(QuoteDiscount $discount): static
+    {
+        if (!$this->discounts->contains($discount)) {
+            $this->discounts->add($discount);
+            $discount->setQuote($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDiscount(QuoteDiscount $discount): static
+    {
+        if ($this->discounts->removeElement($discount)) {
+            if ($discount->getQuote() === $this) {
+                $discount->setQuote(null);
+            }
+        }
+        return $this;
+    }
+
+    public function getDiscounts(): Collection
+    {
+        return $this->discounts;
+    }
+
+    public function getDiscountsDetails() : array
+    {
+        $total = $this->getTotalRowScoped();
+        $discounts = $this->getDiscounts();
+        $discountsDetails = [];
+        foreach ($discounts as $discount) {
+            $totalAtTheMoment = $total;
+            if($discount->getDiscount()->getType() == Discount::TYPE_PERCENTAGE){
+                $totalAtTheMoment -= $total * $discount->getDiscount()->getValue() / 100;
+            }else{
+                $totalAtTheMoment -= $discount->getDiscount()->getValue();
+            }
+            $discountsDetails[] = [
+                'label' => $discount->getDiscount()->getFormated(),
+                'total' => $totalAtTheMoment,
+            ];
+        }
+        return $discountsDetails;
+    }
+
+    public function hasDiscounts(): bool
+    {
+        return !$this->discounts->isEmpty();
     }
 
 }
