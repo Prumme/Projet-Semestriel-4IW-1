@@ -15,7 +15,7 @@ class Invoice
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: 'string', length: 4)]
+    #[ORM\Column(type: 'string', length: 11)]
     private ?string $number = null;
 
     #[ORM\Column(type: 'string', length: 20)]
@@ -35,16 +35,20 @@ class Invoice
         return $this->id;
     }
 
-    public function getNumber(): ?string
+    public function getInvoiceNumber(): ?string
     {
         return $this->number;
     }
 
-    public function setNumber(?string $number): static
+    public function setInvoiceNumber(Quote $quote): static
     {
-        $number = str_pad($number, 4, '0', STR_PAD_LEFT);
+        $currentYear = date('Y');
 
-        $this->number = $number;
+        $uniqueNumber = $quote->getId();
+
+        $invoiceNumber = "n°{$currentYear}-" . str_pad($uniqueNumber, 4, '0', STR_PAD_LEFT);
+
+        $this->number = $invoiceNumber;
 
         return $this;
     }

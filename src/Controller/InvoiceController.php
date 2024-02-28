@@ -39,16 +39,16 @@ class InvoiceController extends AbstractController
 
         $invoice = new Invoice();
         $invoice->setQuote($quote);
-        $number = $quote->getId();
-        $invoice->setNumber($number);
+        $invoice->setInvoiceNumber($quote);
         $invoice->setStatus('unpaid');
         $invoice->setEmittedAt(new \DateTime());
         $invoice->setExpiredAt((new \DateTime())->modify('+1 month'));
 
+
         $entityManager->persist($invoice);
         $entityManager->flush();
 
-        $this->addFlash('success', 'Invoice' . $number . ' created successfully');
+        $this->addFlash('success', 'Invoice created successfully!');
 
         return $this->redirectToRoute('app_invoice_index', [
             'company' => $company->getId(),
