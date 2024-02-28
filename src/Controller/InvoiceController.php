@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Quote;
 use App\Entity\Company;
 use App\Entity\Invoice;
 use App\Form\InvoiceType;
@@ -27,26 +28,32 @@ class InvoiceController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_invoice_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/generate-invoice/{quote}', name: 'app_generate_invoice', methods: ['POST'])]
+    public function generateInvoice(EntityManagerInterface $entityManager, Quote $quote, Company $company)
     {
-        $invoice = new Invoice();
-        $form = $this->createForm(InvoiceType::class, $invoice);
-        $form->handleRequest($request);
+        $quote = $entityManager->getRepository(Quote::class)->find($quote);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($invoice);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_invoice_index', [], Response::HTTP_SEE_OTHER);
+        if (!$quote) {
+            throw $this->createNotFoundException('The quote does not exist.');
         }
 
-        return $this->render('invoice/new.html.twig', [
-            'invoice' => $invoice,
-            'form' => $form,
-        ]);
-    }
+        $invoice = new Invoice();
+        $invoice->setQuote($quote);
+        $number = $quote->getId();
+        $invoice->setNumber($number);
+        $invoice->setStatus('unpaid');
+        $invoice->setEmittedAt(new \DateTime());
+        $invoice->setExpiredAt((new \DateTime())->modify('+1 month'));
 
+        $entityManager->persist($invoice);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Invoice' . $number . ' created successfully');
+
+        return $this->redirectToRoute('app_invoice_index', [
+            'company' => $company->getId(),
+        ], Response::HTTP_SEE_OTHER);
+    }
 
     #[Route('/{id}', name: 'app_invoice_show', methods: ['GET'])]
     public function show(Invoice $invoice): Response

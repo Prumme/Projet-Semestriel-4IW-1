@@ -31,7 +31,7 @@ class InvoiceType extends AbstractType
             ])
             ->add('quote', EntityType::class, [
                 'class' => Quote::class,
-                'choice_label' => 'id', // ou tout autre champ de Quote que vous voulez afficher
+                'choice_label' => 'id',
                 'required' => false,
             ]);
     }

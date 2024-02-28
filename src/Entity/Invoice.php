@@ -27,33 +27,23 @@ class Invoice
     #[ORM\Column(type: 'datetime')]
     private ?\DateTimeInterface $expired_at = null;
 
-    #[ORM\ManyToMany(targetEntity: Upload::class, inversedBy: 'invoices')]
-    private Collection $uploads;
-
     #[ORM\ManyToOne(inversedBy: 'invoices')]
     private ?Quote $quote = null;
-
-    #[ORM\OneToMany(mappedBy: 'invoice', targetEntity: Payment::class)]
-    private Collection $payments;
-
-    public function __construct()
-    {
-        $this->uploads = new ArrayCollection();
-        $this->payments = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getInvoiceNumber(): ?string
+    public function getNumber(): ?string
     {
         return $this->number;
     }
 
-    public function setInvoiceNumber(?string $number): static
+    public function setNumber(?string $number): static
     {
+        $number = str_pad($number, 4, '0', STR_PAD_LEFT);
+
         $this->number = $number;
 
         return $this;
@@ -95,30 +85,6 @@ class Invoice
         return $this;
     }
 
-    /**
-     * @return Collection<int, Upload>
-     */
-    public function getUploads(): Collection
-    {
-        return $this->uploads;
-    }
-
-    public function addUpload(Upload $upload): static
-    {
-        if (!$this->uploads->contains($upload)) {
-            $this->uploads->add($upload);
-        }
-
-        return $this;
-    }
-
-    public function removeUpload(Upload $upload): static
-    {
-        $this->uploads->removeElement($upload);
-
-        return $this;
-    }
-
     public function getQuote(): ?Quote
     {
         return $this->quote;
@@ -127,36 +93,6 @@ class Invoice
     public function setQuote(?Quote $quote): static
     {
         $this->quote = $quote;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Payment>
-     */
-    public function getPayments(): Collection
-    {
-        return $this->payments;
-    }
-
-    public function addPayment(Payment $payment): static
-    {
-        if (!$this->payments->contains($payment)) {
-            $this->payments->add($payment);
-            $payment->setInvoice($this);
-        }
-
-        return $this;
-    }
-
-    public function removePayment(Payment $payment): static
-    {
-        if ($this->payments->removeElement($payment)) {
-            // set the owning side to null (unless already changed)
-            if ($payment->getInvoice() === $this) {
-                $payment->setInvoice(null);
-            }
-        }
 
         return $this;
     }

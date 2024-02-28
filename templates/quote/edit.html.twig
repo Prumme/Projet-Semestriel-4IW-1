@@ -46,7 +46,7 @@
                                 content:'Generate invoice',
                                 icon:'document-text-outline',
                                 disabled: not quote.isSigned,
-                                action: path('app_quote_ask_signature', {company:company.id, id:quote.id}),
+                                action: path('app_generate_invoice', {company:company.id, quote:quote.id}),
                             } %}
                         {% endif %}
 
