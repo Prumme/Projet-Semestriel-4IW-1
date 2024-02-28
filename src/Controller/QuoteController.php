@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Data\TemplatesList;
 use App\Entity\Customer;
 use App\Entity\Product;
 use App\Entity\Quote;
@@ -146,7 +147,10 @@ class QuoteController extends AbstractController
                 ];
                 if ($urlSigned->isResent()) {
                     $newUrl = $urlSignedService->signURL('app_quote_preview', ['id' => $quote->getId(), 'company' => $company->getId()]);
-                    $urlSignedService->sendEmail($customerEmail, $newUrl);
+                    $urlSignedService->sendEmail($quote->getCustomer()->getEmail(), TemplatesList::SIGNED_URL_EXPIRED,[
+                        "link"=> $_ENV['IP'] . $newUrl,
+                        "name"=>$quote->getCustomer()->getFirstname(),
+                    ]);
                     $renderData = [
                         ...$renderData,
                         'sended' => true,
@@ -185,11 +189,14 @@ class QuoteController extends AbstractController
 
     #[Route('/{id}/ask-signature', name: 'app_quote_ask_signature', methods: ['POST'])]
     #[IsGranted(QuoteVoterAttributes::CAN_MANAGE_QUOTE, subject: 'quote')]
-    public function askSignature(Quote $quote,Company $company,URLSignedService $urlSignedService): string
+    public function askSignature(Quote $quote,Company $company,URLSignedService $urlSignedService): Response
     {
         if($quote->getIsSigned()) throw new BadRequestHttpException("The quote has been signed");
         $signedUrl = $urlSignedService->signURL('app_quote_preview', ['id' => $quote->getId(), 'company' => $company->getId()]);
-        $urlSignedService->sendEmail($quote->getCustomer()->getEmail(), $signedUrl);
-        die($signedUrl);
+        $urlSignedService->sendEmail($quote->getCustomer()->getEmail(), TemplatesList::NEW_QUOTE_OPENED,[
+            "link"=> $_ENV['IP'] . $signedUrl,
+            "name"=>$quote->getCustomer()->getFirstname(),
+        ]);
+        return $this->redirectToRoute('app_quote_edit', ['id' => $quote->getId(), 'company' => $company->getId()]);
     }
 }
