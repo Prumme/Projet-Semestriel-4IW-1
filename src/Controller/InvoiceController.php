@@ -2,11 +2,14 @@
 
 namespace App\Controller;
 
+use App\Helper\URL;
 use App\Entity\Quote;
 use App\Entity\Company;
 use App\Entity\Invoice;
 use App\Form\InvoiceType;
+use App\Data\TemplatesList;
 use App\Table\InvoiceTable;
+use App\Service\EmailService;
 use App\Repository\QuoteRepository;
 use App\Repository\InvoiceRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -18,14 +21,26 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 #[Route('/company/{company}/invoice')]
 class InvoiceController extends AbstractController
 {
+
+    private $sendinblueService;
+    private $urlHelper;
+
+    public function __construct(EmailService $sendinblueService, URL $urlHelper)
+    {
+        $this->sendinblueService = $sendinblueService;
+        $this->urlHelper = $urlHelper;
+    }
+    
     #[Route('/', name: 'app_invoice_index', methods: ['GET'])]
     public function index(QuoteRepository $quoteRepository, Company $company): Response
     {
+        // return all invoices of the company
         $invoices = $quoteRepository->findAllWithinCompany($company);
         $table = new InvoiceTable($invoices, ["company" => $company]);
         return $this->render('invoice/index.html.twig', [
             'table' => $table->createTable(),
         ]);
+        
     }
 
     #[Route('/generate-invoice/{quote}', name: 'app_generate_invoice', methods: ['POST'])]
@@ -40,13 +55,25 @@ class InvoiceController extends AbstractController
         $invoice = new Invoice();
         $invoice->setQuote($quote);
         $invoice->setInvoiceNumber($quote);
-        $invoice->setStatus('unpaid');
+        $invoice->setStatus('awaiting_payment');
         $invoice->setEmittedAt(new \DateTime());
         $invoice->setExpiredAt((new \DateTime())->modify('+1 month'));
 
-
         $entityManager->persist($invoice);
         $entityManager->flush();
+
+        // EMAIL CONFIGURATION
+        $to = $quote->getCustomer()->getEmail();
+        $templateId = TemplatesList::NEW_INVOICE;
+        $user = $quote->getCustomer()->getIdentity();
+        $url = $this->urlHelper->generateUrl('app_invoice_show', ['invoice' => $invoice->getId(), 'company' => $company->getId()]);
+
+        $templateVariables = [
+            'name' => $user,
+            'link' => $url,
+        ];
+
+        $this->sendinblueService->sendEmailWithTemplate($to, $templateId, $templateVariables);
 
         $this->addFlash('success', 'Invoice created successfully!');
 
