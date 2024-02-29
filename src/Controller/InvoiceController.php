@@ -12,6 +12,7 @@ use App\Table\InvoiceTable;
 use App\Service\EmailService;
 use App\Repository\QuoteRepository;
 use App\Repository\InvoiceRepository;
+use App\Service\InvoiceService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,7 +22,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 #[Route('/company/{company}/invoice')]
 class InvoiceController extends AbstractController
 {
-
     private $sendinblueService;
     private $urlHelper;
 
@@ -44,7 +44,7 @@ class InvoiceController extends AbstractController
     }
 
     #[Route('/generate-invoice/{quote}', name: 'app_generate_invoice', methods: ['POST'])]
-    public function generateInvoice(EntityManagerInterface $entityManager, Quote $quote, Company $company)
+    public function generateInvoice(EntityManagerInterface $entityManager, Quote $quote, Company $company, InvoiceService $invoiceService)
     {
         $quote = $entityManager->getRepository(Quote::class)->find($quote);
 
@@ -54,7 +54,7 @@ class InvoiceController extends AbstractController
 
         $invoice = new Invoice();
         $invoice->setQuote($quote);
-        $invoice->setInvoiceNumber($quote);
+        $invoice->setInvoiceNumber($invoiceService, $quote);
         $invoice->setStatus('awaiting_payment');
         $invoice->setEmittedAt(new \DateTime());
         $invoice->setExpiredAt((new \DateTime())->modify('+1 month'));

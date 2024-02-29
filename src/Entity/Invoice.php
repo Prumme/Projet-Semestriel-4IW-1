@@ -2,10 +2,9 @@
 
 namespace App\Entity;
 
-use App\Repository\InvoiceRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Service\InvoiceService;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\InvoiceRepository;
 
 #[ORM\Entity(repositoryClass: InvoiceRepository::class)]
 class Invoice
@@ -40,11 +39,17 @@ class Invoice
         return $this->number;
     }
 
-    public function setInvoiceNumber(Quote $quote): static
+    public function setInvoiceNumber(InvoiceService $invoiceService, Quote $quote): static
     {
         $currentYear = date('Y');
 
-        $uniqueNumber = $quote->getId();
+        $lastInvoiceNumber = $invoiceService->getLastInvoiceNumber();
+
+        if ($lastInvoiceNumber !== null) {
+            $uniqueNumber = $lastInvoiceNumber + 1;
+        } else {
+            $uniqueNumber = 1;
+        }
 
         $invoiceNumber = "n°{$currentYear}-" . str_pad($uniqueNumber, 4, '0', STR_PAD_LEFT);
 
