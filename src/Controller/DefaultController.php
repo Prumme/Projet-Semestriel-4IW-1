@@ -58,4 +58,12 @@ class DefaultController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    #[Route('/design_guide', name: 'app_design_guide')]
+    public function designGuide(): Response
+    {
+        return $this->render('default/design_guide.html.twig', [
+            'controller_name' => 'DefaultController',
+        ]);
+    }
 }
