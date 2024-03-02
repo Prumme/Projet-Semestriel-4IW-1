@@ -11,6 +11,7 @@ use App\Entity\User;
 use App\Exception\URLSignedException;
 use App\Form\QuoteType;
 use App\Security\Voter\Attributes\UserVoterAttributes;
+use App\Form\QuoteFilterType;
 use App\Service\QuoteService;
 use App\Service\URLSignedService;
 use App\Table\QuoteTable;
@@ -24,18 +25,33 @@ use App\Security\Voter\Attributes\QuoteVoterAttributes;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use App\Security\Voter\Attributes\CompanyVoterAttributes;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Data\QuoteSearch;
 
 #[Route('/company/{company}/quote')]
 class QuoteController extends AbstractController
 {
     #[Route('/', name: 'app_quote_index', methods: ['GET'])]
     #[IsGranted(CompanyVoterAttributes::CAN_VIEW_COMPANY, subject: 'company')]
-    public function index(QuoteRepository $quoteRepository, Company $company): Response
+    public function index(Request $request, QuoteRepository $quoteRepository, Company $company): Response
     {
-        $quotes = $quoteRepository->findAllWithinCompany($company);
+        
+        $filterData = new QuoteSearch();
+        $filterForm  = $this->createForm(QuoteFilterType::class, $filterData, [
+            'company' => $company,
+        ]);
+        $filterForm->handleRequest($request);
+        $quotes = $quoteRepository->filtered($company, $filterData);
+
+     
+        // $quotes = $quoteRepository->findAllWithinCompany($company);
+        
         $table = new QuoteTable($quotes, ["company" => $company]);
+
+
+
         return $this->render('quote/index.html.twig', [
             'table' => $table->createTable(),
+            'form' => $filterForm->createView()
         ]);
     }
 
