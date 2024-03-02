@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\Data\QuoteSearch;
@@ -42,8 +43,13 @@ class QuoteFilterType extends AbstractType
                     'Signed' => 'signed',
                 ],
                 'placeholder' => 'Choose a status',
+            ])
+            ->add('submit', SubmitType::class, [
+                'label' => 'Filter',
+                'attr' => [
+                    'icon'=> 'filter'
+                ]
             ]);
-        
     }
 
 

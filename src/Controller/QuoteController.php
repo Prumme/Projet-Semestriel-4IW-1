@@ -41,14 +41,7 @@ class QuoteController extends AbstractController
         ]);
         $filterForm->handleRequest($request);
         $quotes = $quoteRepository->filtered($company, $filterData);
-
-     
-        // $quotes = $quoteRepository->findAllWithinCompany($company);
-        
         $table = new QuoteTable($quotes, ["company" => $company]);
-
-
-
         return $this->render('quote/index.html.twig', [
             'table' => $table->createTable(),
             'form' => $filterForm->createView()

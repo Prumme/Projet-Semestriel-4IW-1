@@ -5,8 +5,5 @@ Quote index
 {% endblock %}
 
 {% block body %}
-	{{ form_start(form, { 'method': 'GET'}) }}
-	<button class="btn">{{ button_label|default('Save') }}</button>
-	{{ form_end(form) }}
-	{% include 'components/layouts/table_layout.html.twig' with {title:"Quotes", table:table} %}
+	{% include 'components/layouts/table_layout.html.twig' with {title:"Quotes", table:table,filters:form} %}
 {% endblock %}
