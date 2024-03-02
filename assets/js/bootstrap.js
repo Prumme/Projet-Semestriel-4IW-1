@@ -4,6 +4,7 @@ import { SearchInput } from "./Components/SearchInput";
 import { Select } from "./Components/Select";
 import { SignatureDrawZone } from "./Components/SignatureDrawZone";
 import { DarkMode } from "./Components/DarkMode";
+import { BarChart, LineChart } from "./Components/Charts";
 import {ContextMenu} from "./Components/ContextMenu";
 import {MainSidebar} from "./Components/MainSidebar";
 
@@ -12,10 +13,13 @@ export const COMPONENTS = {
   searchInput: SearchInput,
   signatureDrawZone: SignatureDrawZone,
   carousel: Carousel,
+  barChart: BarChart,
+  lineChart: LineChart,
   darkMode: DarkMode,
   contextMenu: ContextMenu,
   mainSidebar:MainSidebar
 };
+
 export default function bootstrap() {
   initializeComponents();
   initializeWatcher();

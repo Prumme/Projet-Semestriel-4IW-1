@@ -21,6 +21,59 @@ class BillingRowRepository extends ServiceEntityRepository
         parent::__construct($registry, BillingRow::class);
     }
 
+    public function monthlyNetIncome($company): array
+    {
+        $queryBuilder = $this->createQueryBuilder('b')
+            ->select('SUM(b.price) as net_income')
+            ->join('b.quote_id', 'q')
+            ->join('q.owner', 'o')
+            ->where('o.company = :company')
+            ->andWhere('q.signature IS NOT NULL')
+            ->andWhere('q.emited_at BETWEEN :start AND :end');
+
+        $result['thisMonth'] = $queryBuilder
+            ->getQuery()
+            ->setParameter('company', $company)
+            ->setParameter('start', new \DateTime('first day of this month'))
+            ->setParameter('end', new \DateTime('last day of this month'))
+            ->getSingleScalarResult();
+
+        $result['lastMonth'] = $queryBuilder
+            ->getQuery()
+            ->setParameter('company', $company)
+            ->setParameter('start', new \DateTime('first day of last month'))
+            ->setParameter('end', new \DateTime('last day of last month'))
+            ->getSingleScalarResult();
+        
+        if($result['lastMonth'] == 0) {
+            $result['evolution_rate_percentage'] = 100;
+        }
+        else{
+            $result['evolution_rate_percentage'] = number_format(($result['thisMonth'] - $result['lastMonth']) / abs($result['lastMonth']) * 100, 2);
+        }
+
+        return $result;
+        
+    }
+
+    public function getBestSellers($company): array
+    {
+        $queryBuilder = $this->createQueryBuilder('b')
+            ->select('b.product as product_name, SUM(b.quantity) as total_quantity')
+            ->join('b.quote_id', 'q')
+            ->join('q.owner', 'o')
+            ->where('o.company = :company')
+            ->groupBy('b.product')
+            ->orderBy('total_quantity', 'DESC')
+            ->setMaxResults(5);
+
+        $result = $queryBuilder
+            ->getQuery()
+            ->setParameter('company', $company)
+            ->getResult();
+        return $result;
+    }
+
 //    /**
 //     * @return BillingRow[] Returns an array of BillingRow objects
 //     */

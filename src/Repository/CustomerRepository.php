@@ -32,4 +32,14 @@ class CustomerRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function countAllWithingCompany(Company $company)
+    {
+        return $this->createQueryBuilder('c')
+            ->select('COUNT(c.id) as customers_count')
+            ->where('c.company = :company')
+            ->setParameter('company', $company)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
 }
