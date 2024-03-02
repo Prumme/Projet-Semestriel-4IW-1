@@ -61,9 +61,9 @@ class QuoteController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $quote->setOwner($this->getUser());
+            $quoteService->cleanBillingRowsDiscounts($quote);
+            $quoteService->cleanQuoteDiscounts($quote);
             $entityManager->persist($quote);
-            $quoteService->syncBillingRows($quote);
-
             $entityManager->flush();
             $this->addFlash('success', 'Quote created successfully');
             return $this->redirectToRoute('app_quote_edit',[
@@ -99,10 +99,10 @@ class QuoteController extends AbstractController
             'company' => $company,
         ]);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             if($quote->getIsSigned()) throw new BadRequestHttpException("The quote has been signed, it cannot be edited");
-            $quoteService->syncBillingRows($quote);
+            $quoteService->cleanBillingRowsDiscounts($quote);
+            $quoteService->cleanQuoteDiscounts($quote);
             $entityManager->flush();
             $this->addFlash('success', 'Quote edited successfully');
         }

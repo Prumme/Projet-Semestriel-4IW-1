@@ -2,32 +2,35 @@
 
 namespace App\Service;
 
-use App\Entity\BillingRow;
 use App\Entity\Quote;
 use App\Entity\QuoteSignature;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class QuoteService
 {
-    public function __construct(private EntityManagerInterface $entityManager, private ValidatorInterface $validator)
-    {
-    }
+    public function __construct(private ValidatorInterface $validator){}
 
-    public function syncBillingRows(Quote $quote): void
+    public function cleanBillingRowsDiscounts(Quote &$quote): void
     {
-        $current_billing_rows =  $this->entityManager->getRepository(BillingRow::class)->findBy(['quote_id' => $quote->getId()]);
         foreach ($quote->getBillingRows() as $billingRow) {
-            if(!$billingRow->getQuoteId())
-                $billingRow->setQuoteId($quote);
-        }
-        foreach ($current_billing_rows as $current_billing_row) {
-            if (!$quote->getBillingRows()->contains($current_billing_row)) {
-                $this->entityManager->remove($current_billing_row);
+            if($billingRow->getDiscount()) {
+                $discount = $billingRow->getDiscount();
+                if(empty($discount->getValue())) $billingRow->setDiscount(null);
             }
         }
-        $this->entityManager->flush();
+    }
+
+    public function cleanQuoteDiscounts(Quote &$quote): void
+    {
+        foreach ($quote->getDiscounts() as $quoteDiscount) {
+            if($quoteDiscount->getDiscount()) {
+                $discount = $quoteDiscount->getDiscount();
+                if(empty($discount->getValue())) {
+                    $quote->removeDiscount($quoteDiscount);
+                }
+            }else $quote->removeDiscount($quoteDiscount);
+        }
     }
 
     public function checkIfValidSignatureDataURI($signatureURI = null): bool
