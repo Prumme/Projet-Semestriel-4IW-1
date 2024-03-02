@@ -5,5 +5,5 @@ Quote index
 {% endblock %}
 
 {% block body %}
-	{% include 'components/layouts/table_layout.html.twig' with {title:"Quotes", table:table} %}
+	{% include 'components/layouts/table_layout.html.twig' with {title:"Quotes", table:table,filters:form} %}
 {% endblock %}

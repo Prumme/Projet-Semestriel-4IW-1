@@ -30,9 +30,37 @@ class QuoteRepository extends ServiceEntityRepository
             ->select('q')
             ->join('q.owner',"o")
             ->where("o.company = :company")
-            ->setParameter('company', $company)
-            ->getQuery()
-            ->getResult();
+            ->setParameter('company', $company);
+    }
+
+    public function filtered(Company $company, $filters)
+    {
+
+        $qb = $this->findAllWithinCompany($company);
+
+        if(!empty($filters->customer)){
+            $qb->join('q.customer', 'c')
+            ->andWhere('c.id = :customer')
+            ->setParameter('customer', $filters->customer);
+        }
+
+        if(!empty($filters->status)){
+            if($filters->status == "none"){
+
+            }
+
+            if($filters->status == "draft"){
+                $qb->andWhere("q.signature IS NULL");
+            }
+
+            if($filters->status == "signed"){
+                $qb->andWhere("q.signature IS NOT NULL");
+            }
+
+        }
+        
+
+        return $qb->getQuery()->getResult();
     }
 
     public function monthlyQuotesCount($company): array
