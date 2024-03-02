@@ -1,134 +1,159 @@
 {% extends 'base.html.twig' %}
+
 {% block title %}
 	Apagnan - Home
 {% endblock %}
+
 {% block content %}
 	<div class="mb-40 overflow-x-hidden overflow-y-hidden">
-		<section
-			class="relative mb-32">
+		<section class="relative mb-32">
 			{# streaks in top left  #}
 			<div class="absolute z-20 opacity-10 -translate-y-3/4 translate-x-3/4">{% include 'svg/streaks.svg.twig' with {color: '#EFEFEF'} %}</div>
 			<div class="absolute z-20 opacity-10 -translate-y-1/2 translate-x-3">{% include 'svg/streaks.svg.twig' with {color: '#EFEFEF'} %}</div>
 
 			{# streaks in middle right  #}
-			<div class="absolute z-20 opacity-10 top-1/2 -translate-y-1/2  right-1/2">{% include 'svg/streaks.svg.twig' with {color: '#EFEFEF'} %}</div>
+			<div class="absolute z-20 opacity-10 top-1/2 -translate-y-1/2  right-1/2">{% include 'svg/streaks.svg.twig' with {color: '#EFEFEF'} %}</div> 
 			<div class="absolute z-20 opacity-10 top-1/2 -translate-y-1/2 translate-x-32  right-1/2">{% include 'svg/streaks.svg.twig' with {color: '#EFEFEF'} %}</div>
 
 			{# streaks in bottom left  #}
 			<div class="absolute z-20 bottom-0 opacity-10 translate-y-full translate-x-3/4">{% include 'svg/streaks.svg.twig' with {color: '#EFEFEF'} %}</div>
 			<div class="absolute z-20 bottom-0 opacity-10 translate-y-full translate-x-1/4">{% include 'svg/streaks.svg.twig' with {color: '#EFEFEF'} %}</div>
 
-			<div class="absolute top-1/2 -translate-y-[675px] left-0 -translate-x-[10%] z-10">{% include 'svg/background-landing-page.svg.twig' %}</div>
+			<div class="absolute top-[-37rem] lg:top-1/2 lg:-translate-y-[675px] left-[-30rem] lg:left-0 lg:-translate-x-[10%] z-10">{% include 'svg/background-landing-page.svg.twig' %}</div>
 
-			<div class="absolute top-1/2 -translate-y-1/2 right-0 translate-x-[30%] z-10">{% include 'svg/exemple-card-landing-page.svg.twig' %}</div>
+			<div class="absolute hidden xl:block top-1/2 -translate-y-1/2 right-0 translate-x-[30%] z-10">{% include 'svg/exemple-card-landing-page.svg.twig' %}</div>
 
-			<div class="relative ml-24 mt-40 w-1/2 flex flex-col z-30">
-				<h1 class="text-white">Simplify Your Billing, Stay Focused on Your Ghostly Pursuits</h1>
-				<p class="mt-8 mb-14 text-white">Start Earning More with Ghostbusters SaaS Billing. Click below to get started!</p>
-				<div class="flex w-full items-end space-x-12">
-					<input class="w-full" type="text"/>
+			<div class="relative ml-5 lg:ml-24 mt-9 lg:mt-40 w-full lg:w-1/2 flex flex-col z-30">
+				<h1 class="text-lg lg:text-3xl text-white">Simplify Your Billing, Stay Focused on Your Ghostly Pursuits</h1>
+				<p class="mt-8 mb-14 text-xs lg:text-base text-white">Start Earning More with Ghostbusters SaaS Billing. Click below to get started!</p>
+				<div class="flex flex-col lg:flex-row w-fit lg:w-full items-start lg:items-end space-x-12 space-y-5 lg:space-y-0">
+					 <input  
+						type="search"
+						class="!w-full lg:w-1/2 border-0 border-b-2 border-white text-white-500 focus:border-primary-500 focus:text-secondary-500 focus:ring-0 bg-transparent placeholder-white"
+						placeholder="Enter your email address"
+					></input>
 					{% include 'components/buttons/button_link.html.twig' with {content: 'Get Started Now', icon_right: 'arrow-forward-circle-outline'} %}
-				</div>
+				</div>	
 			</div>
 		</section>
 
-		<div class="mx-24 space-y-32">
-			<section id="reviews" class="w-full  flex justify-between h-[422px]">
-				<div class="flex flex-col justify-center w-2/5 h-full font-thin">
-					<h2 class="mb-[51px] text-4xl text-secondary-500">Over 30K+ Hunters Satisfied, Will You Be Next ?</h2>
-					{# <p>With a track record of satisfaction from over 30,000 hunters, join our community and experience the same level of fulfillment. Will you be the next satisfied member to benefit from our expertise, resources, and support? Join us now and embark on your successful hunting journey!</p> #}
-					{% include 'components/buttons/button_link.html.twig' with {content: 'Discover Our Offers', link: '/#ourOffers'} %}
+		<div class="mx-5 lg:mx-24 space-y-32">
+			<section id="reviews" class="w-full flex flex-col lg:flex-row h-[422px] space-x-0 lg:space-x-52">
+                <div class="flex flex-col justify-center items-center lg:items-start w-full lg:w-2/5 h-full font-thin">
+					<h2 class="mb-12 text-xl lg:text-4xl text-secondary-500 text-center lg:text-start">Over 30K+ Hunters Satisfied, Will You Be Next ?</h2>
+					{% include 'components/buttons/button_link.html.twig' with {
+						content: 'Discover Our Offers', 
+						link: '/#ourOffers', 
+						size: 'lg', 
+						gradient: true 
+					} %}
 				</div>
-				<div class="w-1/2 h-full relative">
-					<div class="absolute top-0 left-0">{% include 'svg/streaks.svg.twig' %}</div>
-					<div class="absolute bottom-0 right-0">{% include 'svg/streaks.svg.twig' %}</div>
-					{% include 'components/carousel/carousel.html.twig' %}
+				{# REVIEWS #}
+                <div class="w-full lg:w-1/2 h-full relative">
+                    <div class="absolute top-0 left-0">{% include 'svg/streaks.svg.twig' with {color: 'var(--primary-500)'} %}</div>
+                    <div class="absolute bottom-0 right-0">{% include 'svg/streaks.svg.twig' with {color: 'var(--primary-500)'} %}</div>
+                    {% include 'components/carousel/carousel.html.twig' %}
+            </section>
+
+			{# SERVICES #}
+			<section id="services" class="flex flex-col w-full justify-center items-center">
+				<h2 class="text-xl lg:text-4xl text-secondary-500 mb-9 lg:mb-24 text-center">Unleash Terrifyingly  Features</h2>
+				<div class="flex flex-col lg:flex-row gap-3 space-y-6 lg:space-y-0">
+					{# EMAIL #}
+					<article class="flex flex-col justify-end items-center text-center">
+						{% include 'svg/illustrations/email-notification.svg.twig' with {color: 'var(--primary-500)'} %}
+						<h1 class="text-sm lg:text-2xl whitespace-nowrap mt-10 mb-5">Email Notification</h1>
+						<p class="text-xs lg:text-base">Stay updated effortlessly with our seamless email notification system.</p>
+					</article>
+					{# INVOICE #}
+					<article class="flex flex-col justify-end items-center text-center">
+						{% include 'svg/illustrations/invoicing.svg.twig' with {color: 'var(--primary-500)'} %}
+						<h1 class="text-sm lg:text-2xl whitespace-nowrap mt-10 mb-5">Invoicing</h1>
+						<p class="text-xs lg:text-base">Secure and convenient online payment methods for hassle-free transactions.</p>
+					</article>
+					{# ONLINE PAYMENT #}
+					<article class="flex flex-col justify-end items-center text-center">
+						{% include 'svg/illustrations/online-payment.svg.twig' with {color: 'var(--primary-500)'} %}
+						<h1 class="text-sm lg:text-2xl whitespace-nowrap mt-10 mb-5">Online Payement</h1>
+						<p class="text-xs lg:text-base">Secure and convenient online payment methods for hassle-free transactions.</p>
+					</article>					
+				</div>
 			</section>
 
-			<section id="services" class="w-full flex flex-col items-center">
-				<h2 class="text-4xl text-secondary-500 mb-[51px]">Unleash Terrifyingly  Features</h2>
-				<div class="flex justify-evenly space-x-32">
-					<article class="flex flex-col justify-end items-center text-center">
-						{% include 'svg/illustrations/email-notification.svg.twig' %}
-						<h1 class="text-2xl whitespace-nowrap mt-10 mb-5">Email Notification</h1>
-						<p>Stay updated effortlessly with our seamless email notification system.</p>
-					</article>
-
-					<article class="flex flex-col justify-end items-center text-center">
-						{% include 'svg/illustrations/invoicing.svg.twig' %}
-						<h1 class="text-2xl whitespace-nowrap mt-10 mb-5">Invoicing</h1>
-						<p>Simplify your billing process with our intuitive invoicing solutions.</p>
-					</article>
-
-					<article class="flex flex-col justify-end items-center text-center">
-						{% include 'svg/illustrations/online-payment.svg.twig' %}
-						<h1 class="text-2xl whitespace-nowrap mt-10 mb-5">Online Payement</h1>
-						<p>Secure and convenient online payment methods for hassle-free transactions.</p>
-					</article>
-				</div>
-			</section>
-
+			{# ADVANTAGES #}
 			<section id="advantages" class="w-full flex justify-between">
-				<div class="w-1/2">
-					<h2 class="text-4xl text-secondary-500">Simplify Your Accounting</h2>
-					<p class="mb-12 mt-9">Our company is dedicated to streamlining and optimizing your financial processes, offering user-friendly tools and expert guidance. Experience hassle-free bookkeeping and efficient management, allowing you to focus on your core business.</p>
-					{% include 'components/buttons/button_link.html.twig' with {content: 'Know more'} %}
+				<div class="w-full lg:w-1/2 items-center">
+					<h2 class="text-xl lg:text-4xl text-secondary-500 text-center lg:text-start">Simplify Your Accounting</h2>
+					<p class="mb-12 mt-9 text-center lg:text-start">Our company is dedicated to streamlining and optimizing your financial processes, offering user-friendly tools and expert guidance. Experience hassle-free bookkeeping and efficient management, allowing you to focus on your core business.</p>
+					<div class="flex justify-center lg:justify-start items-center">
+						{% include 'components/buttons/button_link.html.twig' with {content: 'Know more', gradient: true} %}
+					</div>
 				</div>
-				<div class="w-[600px] h-[246px] bg-[#3B908D] rounded-md"></div>
+				<div class="w-[600px] h-[246px] bg-[#3B908D] rounded-md hidden md:block"></div>
 			</section>
 
-			<section id="pricing" class="w-full flex justify-between">
-				<div class="w-[600px] h-[246px] bg-[#3B908D] rounded-md"></div>
-				<div class="w-1/2">
-					<h2 class="text-4xl text-secondary-500">Get Clarity in Your Payments</h2>
-					<p class="mb-12 mt-9">Our commitment is to provide transparency and efficiency in managing your transactions. Experience clear, concise payment processing that simplifies your financial operations and brings peace of mind to your business.</p>
-					{% include 'components/buttons/button_link.html.twig' with {content: 'Know more'} %}
+			{# CLARITY #}
+			<section id="clarity" class="w-full flex justify-between">
+				<div class="w-[600px] h-[246px] bg-[#3B908D] rounded-md hidden md:block"></div>
+				<div class="w-full lg:w-1/2 items-center">
+					<h2 class="text-xl lg:text-4xl text-secondary-500">Get Clarity in Your Payments</h2>
+					<p class="mb-12 mt-9 text-center lg:text-start">Our commitment is to provide transparency and efficiency in managing your transactions. Experience clear, concise payment processing that simplifies your financial operations and brings peace of mind to your business.</p>
+					<div class="flex justify-center lg:justify-start items-center">
+						{% include 'components/buttons/button_link.html.twig' with {content: 'Know more', gradient: true} %}
+					</div>
 				</div>
 			</section>
 
-			<section id="ourOffers" class="mb-32 w-full flex flex-col items-center">
-				<h2 class="text-4xl text-secondary-500 mb-[51px]">Our Pricing</h2>
-				<div class="flex relative space-x-14">
-					<a href="#" class="text-primary-500 underline">Monthly</a>
-					<a href="#">Annualy</a>
-					<span class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-[110%] text-xs text-white bg-primary-500 px-4 py-2 rounded-full">Save up 20%</span>
+			{# PRICING #}
+			<section id="pricing" class="mb-32 w-full flex flex-col items-center">
+				<h2 class="text-xl lg:text-4xl text-secondary-500 mb-8 lg:mb-12">Our Pricing</h2>
+				<div class="flex flex-row lg:flex-row justify-center items-center relative space-x-3 lg:space-x-14">
+					<a href="#" class="text-sm lg:text-base text-primary-500 underline">Monthly</a>
+					<a href="#" class="text-sm lg:text-base">Annualy</a>
+					{% include 'components/chips-pills/pill.html.twig' with {
+						'label': 'Save up 20%',
+						'close_icon': false, 
+						'type' : 'primary',
+						'size': 'xs',
+						gradient: true,
+						} 
+					%}
 				</div>
 
-				<div class="relative p-20 flex space-x-16">
+				<div class="relative p-20 flex flex-col lg:flex-row space-x-0 lg:space-x-16 space-y-14 lg:space-y-0">
 					{% include 'components/cards/price_card.html.twig' with {
-                title: "Personal",
-                bestSeller: false,
-                description: "Lorem ipsum dolor sit amet consectetur.",
-                advantages: ['Personalized Support', 'Access to Exclusive Content', 'Customizable Features'],
-                price: 9.99,
-                link: "#",
-				max: 1,
-            } %}
-
-					{% include 'components/cards/price_card.html.twig' with {
-                title: "Team",
-                bestSeller: true,
-                description: "Lorem ipsum dolor sit amet consectetur.",
-                advantages: ['Personalized Support', 'Access to Exclusive Content', 'Customizable Features'],
-                price: 49.99,
-                link: "#",
-				max: 3,
-
-            } %}
+						title: "Personal",
+						bestSeller: false,
+						description: "Choose for a personal plan",
+						advantages: ['Personalized Support', 'Access to Exclusive Content', 'Customizable Features'],
+						price: 9.99,
+						link: "#",
+						max: 1,
+					} %}
 
 					{% include 'components/cards/price_card.html.twig' with {
-                title: "Entreprise",
-                bestSeller: false,
-                description: "Lorem ipsum dolor sit amet consectetur.",
-                advantages: ['Personalized Support', 'Access to Exclusive Content', 'Customizable Features'],
-                price: 29.99,
-                link: "#",
-				max: 2,
+						title: "Team",
+						bestSeller: true,
+						description: "Choose a plan for a whole team",
+						advantages: ['Personalized Support', 'Access to Exclusive Content', 'Customizable Features'],
+						price: 49.99,
+						link: "#",
+						max: 3,
+					} %}
 
-            } %}
+					{% include 'components/cards/price_card.html.twig' with {
+						title: "Entreprise",
+						bestSeller: false,
+						description: "Choose for a full professional support",
+						advantages: ['Personalized Support', 'Access to Exclusive Content', 'Customizable Features'],
+						price: 29.99,
+						link: "#",
+						max: 2,
 
-					<div class="absolute top-0  z-0 right-1/2 -translate-x-8 -translate-y-4 opacity-80">{% include 'svg/streaks.svg.twig' with {color: '#49AB9A'} %}</div>
-					<div class="absolute z-20 bottom-0 left-1/2  opacity-80">{% include 'svg/streaks.svg.twig' with {color: '#49AB9A'} %}</div>
+					} %}
+
+					<div class="absolute top-0 z-0 right-1/2 -translate-x-8 -translate-y-4 opacity-80">{% include 'svg/streaks.svg.twig' with {color: 'var(--primary-500)'} %}</div>
+					<div class="absolute z-20 bottom-0 left-1/2  opacity-80">{% include 'svg/streaks.svg.twig' with {color: 'var(--primary-500)'} %}</div>
 				</div>
 
 			</section>

@@ -30,21 +30,24 @@
 
 {# /PATH #}
 
-	{% if bestSeller is not defined %}
-{% set bestSeller = false %}
+{% if bestSeller is not defined %}
+	{% set bestSeller = false %}
 {% endif %}
 
-	{% if regular_price is not defined %}
-{% set regular_price = 'month' %}
+{% if regular_price is not defined %}
+	{% set regular_price = 'month' %}
 {% endif %}
 
 {% set price = price | number_format(2, '.', ',') %}
 
-	<article class="relative bg-[#fff] rounded-md flex flex-col justify-center items-center p-6 space-y-6 text-secondary-500 z-10 shadow-[#D2D8E9] {{ bestSeller?'shadow-lg -translate-y-5':''}}"> {% if bestSeller %}
-		<div class="absolute top-3 left-3 px-3 py-1 text-xs text-white font-light tracking-wide bg-gradient-to-l from-primary-500 to-primary-300 rounded-full">
+<article class="relative bg-[#fff] rounded-md flex flex-col justify-center items-center p-6 space-y-6 text-secondary-500 z-10 shadow-[#D2D8E9] {{ bestSeller?'shadow-lg -translate-y-5':''}}"> 
+	
+	{% if bestSeller %}
+		<div class="absolute top-3 left-3 px-3 py-1 text-xs text-white font-light tracking-wide bg-gradient-to-l from-primary-500 to-success-500 rounded-full">
 			Best-seller
 		</div>
 	{% endif %}
+
 	<h1 class="">{{ title | default('') }}</h1>
 	<h2 class=" font-thin text-sm">{{ description | default('') }}</h2>
 	<hr class="border-[#D9D9D9] border w-full ">
@@ -59,6 +62,6 @@
 	</div>
 
 	<div class="font-thin">
-		{% include 'components/buttons/button_link.html.twig' with {link: link, content: 'Get Started', size: "md"} %}
+		{% include 'components/buttons/button_link.html.twig' with {link: link, content: 'Get Started', size: "md", gradient: true} %}
 	</div>
 </article>

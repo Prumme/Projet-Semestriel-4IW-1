@@ -50,6 +50,11 @@
     --primary-darken: #337D70;
 
     --disabled: #BEDFD9;
+
+    --plain-darkmode: #1e1e1e;
+
+    --text-darkmode: #F2F4F8;
+
   }
 
   [theme="secondary"]{
@@ -90,6 +95,10 @@
     --primary-darken: #1E143B; //done
 
     --disabled: #BEDFD9;
+
+    --plain-darkmode: #1e1e1e;
+
+    --text-darkmode: #F2F4F8;
 
   }
 
@@ -153,4 +162,49 @@
   .nav-unactive-link:hover ion-icon {
     @apply text-white;
   }
+}
+
+#quote_billingRows{
+  padding: 0.75em;
+  background: #f1f1f16e;
+  border: 1px solid rgb(229, 229, 229);
+  .input, [type="text"]{
+    background-color: transparent !important;
+  }
+}
+.billing-row-grid{
+  display: grid;
+  grid-template-columns: 3fr repeat(5, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 0.75em;
+  align-items: center;
+
+  //get the first element with id ending by discount_value
+  [id$="discount_value"]{
+    grid-area: 2 / 2 / 3 / 6;
+    align-self: flex-end;
+  }
+  + .billing-row-grid{
+    margin-top: 1.5em;
+    padding-top: 1.5em;
+    border-top: 1px solid rgb(229, 229, 229);
+  }
+}
+
+#quote_discounts{
+  display: flex;
+  flex-direction: column;
+  gap: 0.75em;
+
+  > div {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.75em;
+    align-items: center;
+    .input, [type="text"]{
+      background-color: transparent !important;
+    }
+  }
+
+
 }

@@ -40,6 +40,10 @@ class Company
     #[ORM\Column(length: 255)]
     #[Gedmo\Slug(fields: ['name'])]
     private ?string $slug = null;
+    
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?BillingAddress $address = null;
 
     public function __construct()
     {
@@ -172,6 +176,16 @@ class Company
     public function setSlug(string $slug): static
     {
         $this->slug = $slug;
+    }
+    
+    public function getAddress(): ?BillingAddress
+    {
+        return $this->address;
+    }
+
+    public function setAddress(BillingAddress $address): static
+    {
+        $this->address = $address;
 
         return $this;
     }

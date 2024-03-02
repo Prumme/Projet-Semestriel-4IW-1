@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use App\Security\AuthentificableRoles;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -118,6 +119,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function hasRole($role): bool
     {
         return in_array($role, $this->getRoles());
+    }
+
+    public function hasUpperRole(User $comparedUser) : bool
+    {
+        $roles = $this->getRoles();
+        $comparedRoles = $comparedUser->getRoles();
+        $rolesIndex = array_map(fn($role) => array_search($role, AuthentificableRoles::hierarchy()), $roles);
+        $comparedRolesIndex = array_map(fn($role) => array_search($role, AuthentificableRoles::hierarchy()), $comparedRoles);
+        $minRoleIndex = min($rolesIndex);
+        $comparedMinRoleIndex = min($comparedRolesIndex);
+        return $minRoleIndex < $comparedMinRoleIndex;
     }
 
     /**

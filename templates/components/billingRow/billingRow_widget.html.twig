@@ -1,5 +1,5 @@
 
-<div onclick="discoverBillingRow(event)" onfocus="discoverBillingRow(event)" tabindex="1" class="flex gap-2 py-2" data-billing-row="true">
+<div onclick="discoverBillingRow(event)" onfocus="discoverBillingRow(event)" tabindex="1" class="billing-row-grid" data-billing-row="true">
     {% set products = form.vars.products %}
     {% for child in form %}
         {% if child.vars.name == 'product' %}
@@ -40,4 +40,3 @@
         window.handleSearchSelectedProduct = handleSearchSelectedProduct
     </script>
 </div>
-

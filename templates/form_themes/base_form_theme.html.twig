@@ -14,14 +14,7 @@
         {{ form_errors(form) }}
     </div>
 {% endblock %}
-{% block date_row %}
-    {% set classes = attr.class is defined ?  attr.class : '' %}
-    <div class="inline-block {{ classes }} ">
-        {{ form_label(form) }}
-        {{ form_widget(form) }}
-        {{ form_errors(form) }}
-    </div>
-{% endblock %}
+
 {% block button_row %}
     {% set classes = attr.class is defined ?  attr.class : '' %}
     <div class="inline-block flex justify-center items-end {{ classes }}">
@@ -35,9 +28,7 @@
         size: 'sm'
     }) }}
 {% endblock %}
-{% block date_widget %}
-   {{ form_widget(form) }}
-{% endblock %}
+
 
 {% block choice_widget %}
     {{ include('components/inputs/select.html.twig') }}
@@ -50,10 +41,12 @@
     {{ form_label(form) }}
     {{ include('form_themes/collection_adding_script.html.twig',{uniqueId:uniqueId}) }}
     </div>
+    {%set lastChild = form.children|last %}
+    {% set lastChildName = lastChild.vars.name | default("0")  %}
     {{ form_widget(form,{
         'attr':{
             'data-collection-unique-id': uniqueId,
-            'data-next-index': form.children|length
+            'data-next-index': (lastChildName | number_format) + 1
         }
     }) }}
     {{ form_errors(form) }}
@@ -66,6 +59,22 @@
 
 {% block billing_row_widget %}
     {{ include('components/billingRow/billingRow_widget.html.twig') }}
+{% endblock %}
+
+{% block quote_discount_row %}
+    {{ form_widget(form) }}
+    {{ form_errors(form) }}
+{% endblock %}
+
+{% block quote_discount_widget %}
+  <div>
+      {% for child in form %}
+          {{ form_row(child) }}
+      {% endfor %}
+      <div>
+          {{ include('form_themes/collection_delete_script.html.twig') }}
+      </div>
+  </div>
 {% endblock %}
 
 

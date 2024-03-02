@@ -26,11 +26,10 @@
     ] 
 %}
 
-<div data-bind-component="carousel">
-    <div class="absolute z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4/5 bg-[#FFFFFF] rounded-lg p-6 h-fit">
+<div data-bind-component="carousel" class="w-full">
+    <div class="absolute z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full bg-[#FFFFFF] rounded-lg p-6 h-fit">
         {% for index, review in paranormalReviews %}
-            <div class="review-card
-            {% if index != 0 %}hidden{% endif %}">
+            <div class="review-card {% if index != 0 %}hidden{% endif %}">
                 {% include 'components/cards/review_card.html.twig' with {
                     profile_picture: review.profile_picture,
                     name: review.name,
@@ -40,7 +39,7 @@
             </div>
         {% endfor %}
     </div>
-    <div class="absolute z-10 top-80 left-20">
+    <div class="absolute z-10 top-48 lg:top-80 left-0 lg:left-20 w-full lg:w-auto">
         <div class="flex justify-center items-center gap-2">
             {# Slider Indicators #}
             {% for _ in paranormalReviews %} 
@@ -56,3 +55,4 @@
         </div>
     </div>
 </div>
+
