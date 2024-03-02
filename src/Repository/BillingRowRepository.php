@@ -24,7 +24,7 @@ class BillingRowRepository extends ServiceEntityRepository
     public function monthlyNetIncome($company): array
     {
         $queryBuilder = $this->createQueryBuilder('b')
-            ->select('SUM(b.price) as net_income')
+            ->select('SUM(b.unit * b.quantity) as net_income')
             ->join('b.quote_id', 'q')
             ->join('q.owner', 'o')
             ->where('o.company = :company')
