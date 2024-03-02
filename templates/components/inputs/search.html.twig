@@ -1,29 +1,30 @@
 {# HOW TO USE IT
 
 {% include 'components/inputs/search.html.twig' with {
-            'id': 'search' --OPTIONAL,
-            'name': 'search' --OPTIONAL,
+            'id': 'search' OPT,
+            'name': 'search' OPT,
             'type': 'search' required,
-            'placeholder': 'Search...' --OPTIONAL,
-            'icon':'search' --OPTIONAL
+            'placeholder': 'Search...' OPT,
+            'icon':'search' OPT
 } %}
 
 /HOW TO USE IT #}
 
-<div class="flex flex-row items-center">
+<div data-bind-component="searchBar" class="relative flex flex-row items-center">
     <input  
         type="search"
         name="{{ (name) | default('') }}"
-        class="!w-full border-0 border-b-2 border-secondary_light text-primary-500 focus:border-primary-500 focus:text-secondary-500 focus:ring-0 bg-transparent dark:placeholder:text-text-darkmode dark:text-text-darkmode"
+        class="!w-full border-0 border-b-2 border-secondary_light text-primary-500 focus:border-primary-500 focus:text-secondary-500 focus:ring-0"
         id="{{ id | default('') }}"
         required="{{ required | default('') }}"
         placeholder="{{ placeholder | default('') }}"
         value="{{ value | default('') }}"
     >
-        {% if (icon is defined) %}
-            <ion-icon name="search-outline" class="text-2xl"></ion-icon>
-        {% endif %}
+        <ion-icon name="search-outline" class="text-2xl"></ion-icon>
     </input>
+    <div class="hidden absolute top-full left-0 right-0 max-h-[200px] bg-white shadow-primary-200 shadow rounded z-10 overflow-y-auto search-results">
+        
+    </div>
 </div>
 
 <style>
@@ -35,3 +36,11 @@
 }
 
 </style>
+
+<script>
+
+const setTimeout = window.setTimeout;
+
+</script>
+
+
