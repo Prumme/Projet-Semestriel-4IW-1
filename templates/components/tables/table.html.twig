@@ -2,10 +2,17 @@
 {% set hasActions = table.actions is defined ? table.actions != null : false  %}
 {% set hasGrouppedActions = table.groupedActions is defined ? table.groupedActions != null : false  %}
 <div id="{{ tableId }}" class="flex  flex-col gap-2">
-    {% if hasActions %}
-    <div class="table_actions flex justify-end gap-x-4">
+    {% if hasActions or filters %}
+    <div class="table_actions flex items-center gap-x-4">
+        <div class="flex-1 w-full">
+            {% if filters %}
+                {{ form(filters, {attr:{class:"filter-form"}}) }}
+            {% endif %}
+        </div>
         {% for action in table.actions %}
-            {% include 'components/buttons/button_link.html.twig' with {size:"sm", icon_left:action.icon, content: action.content, link: path(action.href.path,action.href.params)} %}
+            <div class="justify-self-end">
+                {% include 'components/buttons/button_link.html.twig' with {size:"sm", icon_left:action.icon, content: action.content, link: path(action.href.path,action.href.params)} %}
+            </div>
         {% endfor %}
     </div>
     {% endif %}

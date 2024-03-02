@@ -1,7 +1,5 @@
 <div class="flex flex-col gap-6">
     <h1 class="dark:text-text-darkmode">{{ title }}</h1>
-    {% if filters is defined%}
-        {{ form(filters, {attr:{class:"filter-form"}}) }}
-    {% endif %}
-    {% include "components/tables/table.html.twig" with { table:table, onSelect: onSelect | default('') } %}
+    {% set filters = filters is defined ? filters : null %}
+    {% include "components/tables/table.html.twig" with { table:table, filters: filters, onSelect: onSelect | default('') } %}
 </div>

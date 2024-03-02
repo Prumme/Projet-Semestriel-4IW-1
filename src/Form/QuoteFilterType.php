@@ -37,8 +37,9 @@ class QuoteFilterType extends AbstractType
         ])
             ->add('status', ChoiceType::class,
             [
+                'label' => false,
+                'required' => false,
                 'choices' => [
-                    'No filter' => 'none',
                     'Draft' => 'draft',
                     'Signed' => 'signed',
                 ],
