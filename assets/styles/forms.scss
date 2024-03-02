@@ -11,10 +11,8 @@ form:not(.no-style){
 form:not(.no-style) input{
   font-size: calc(14 / 16 * 1rem);
 }
-
 form:not(.no-style)  > div{
   @apply flex flex-wrap;
-
 
   --gap-y : 25px; // make scss var
   --gap-y-demi : calc(var(--gap-y) / 2);
@@ -23,11 +21,23 @@ form:not(.no-style)  > div{
 
   gap: var(--gap-y) var(--gap-x);
   padding-bottom: var(--gap-y);
-
   /* Generate input group sizes available */
   /* All the other elements have to take the whole row size */
   > *:not(:where([class^="input-"],button,a)){
     flex : 0 0 100%;
+  }
+
+  &.filter-form{
+    gap: 0.75em;
+    padding-bottom: unset ;
+    flex-direction: row;
+      align-items: center;
+    & > * {
+      flex: 1 1 auto !important;
+    }
+    .justify-center{
+      justify-content: flex-start  !important;
+    }
   }
 
   $sizes: (

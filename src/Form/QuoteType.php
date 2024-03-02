@@ -28,13 +28,12 @@ class QuoteType extends AbstractType
                         ->where('c.company = :company')
                         ->setParameter('company', $options['company']);
                 },
-
                 'choice_label' => 'identity',
                 'attr' => [
                     "class"=>"input-60",
                     "icon"=> "people",
-                    'placeholder' => 'Your firstname'
-                ]
+                ],
+                'placeholder' => 'Select a customer'
             ])
             ->add('add_customer',ButtonType::class,[
                 'label' => 'Add a customer',
@@ -47,6 +46,7 @@ class QuoteType extends AbstractType
         if(isset($options['customer'])){
             $builder->add('billingAddress', EntityType::class, [
                 'label' => 'Billing address',
+                'placeholder' => 'Select a billing address',
                 'attr'=>[
                     'id' => 'billing_address',
                     'icon'=> 'home',

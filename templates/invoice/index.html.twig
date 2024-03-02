@@ -5,6 +5,5 @@
 {% endblock %}
 
 {% block body %}
-	{{ form(filterForm) }}
-	{% include 'components/layouts/table_layout.html.twig' with {title:"Invoices", table:table} %}
+	{% include 'components/layouts/table_layout.html.twig' with {title:"Invoices", table:table,filters:filterForm} %}
 {% endblock %}
