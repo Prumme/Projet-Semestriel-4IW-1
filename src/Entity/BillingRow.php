@@ -33,7 +33,8 @@ class BillingRow
     #[Assert\GreaterThan(value: 0, message: "VAT must be positive value.")]
     private ?string $vat = null;
 
-    #[ORM\ManyToOne(inversedBy: 'billingRows', cascade: ['persist'])]
+    #[ORM\ManyToOne(targetEntity: Quote::class, inversedBy: 'billingRows', cascade: ['persist'])]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private ?Quote $quote_id = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'],orphanRemoval: true)]

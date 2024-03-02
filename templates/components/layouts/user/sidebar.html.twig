@@ -63,10 +63,9 @@
 					{# INVOICES #}
 					<li
 						class="w-full px-4">
-						{# TODO: PUT THE CORRECT ROUTE IN THE path:  #}
 						{% include 'components/sidebar/sidebar_link.html.twig' with
 							{
-								'path': '#',
+								'path': path('app_invoice_index', {"company": app.user.company.id}),
 								'icon': 'document-text',
 								'title': 'Invoices',
 							}
@@ -130,13 +129,7 @@
 							}
 						%}
 					</li>
-					<li class="w-full px-4">
-						{% include 'components/buttons/button_darkmode.html.twig'%}
-					</li>
 				</ul>
-
-
-
 			</div>
 		</div>
 	</aside>

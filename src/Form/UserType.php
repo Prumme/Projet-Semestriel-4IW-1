@@ -8,32 +8,36 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class UserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('firstname',null,[
-                'attr'=>[
-                    'icon'=>'person',
-                    'class'=>'input-50',
-                    'placeholder'=>'John'
-                ]
-            ])
-            ->add('lastname',null,[
-                'attr'=>[
-                    'class'=>'input-50',
-                    'placeholder'=>'Doe'
-                ]
-            ])
-            ->add('email',null,[
-                'attr'=>[
-                    'icon'=>'at-circle',
-                    'placeholder'=>'john.doe@email.com'
-                ]
-            ])
-            ->add('roles',  ChoiceType::class, [
+        ->add('profilePictureFile', VichImageType::class, [
+            'label' => '',
+            'required' => false,
+            'allow_delete' => true,
+            'delete_label' => 'Remove profile picture',
+            'download_uri' => true,
+            'image_uri' => true,
+        ])
+            ->add('email')
+            ->add('firstname')
+            ->add('lastname')
+            ->add('theme', ChoiceType::class, [
+                'choices' => [
+                    'Default' => 'default',
+                    'beyond violet' => 'secondary',
+                    'Halloween' => 'halloween',
+                ],
+                'placeholder' => 'Choose a theme',
+            ]);
+
+
+        if ($options['show_roles']) {
+            $builder->add('roles',  ChoiceType::class, [
                 'choices' => [
                     'ROLE_USER' => AuthentificableRoles::ROLE_USER,
                     'ROLE_COMPANY_ADMIN' => AuthentificableRoles::ROLE_COMPANY_ADMIN,
@@ -41,13 +45,16 @@ class UserType extends AbstractType
                 'multiple' => true,
                 'placeholder' => 'Choose a role',
             ]);
-
+        }
+        
+        
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'show_roles' => true,
         ]);
     }
 }

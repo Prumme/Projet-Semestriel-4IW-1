@@ -24,7 +24,7 @@ class CustomerController extends AbstractController
     #[IsGranted(CompanyVoterAttributes::CAN_VIEW_COMPANY, subject: 'company')]
     public function index(Company $company, CustomerRepository $customerRepository): Response
     {
-        $customers = $customerRepository->findAllWithingCompany($company);
+        $customers = $customerRepository->findAllWithinCompany($company);
         $table = new CustomersTable($customers, ['company' => $company]);
         return $this->render('customer/index.html.twig', [
             'table' => $table->createTable(),

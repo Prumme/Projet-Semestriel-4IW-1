@@ -24,7 +24,7 @@ class QuoteRepository extends ServiceEntityRepository
     }
 
 
-    public function findAllWithingCompany(Company $company)
+    public function findAllWithinCompany(Company $company)
     {
         return $this->createQueryBuilder('q')
             ->select('q')

@@ -47,7 +47,7 @@ module.exports = {
           500: "var(--success-500)",
         },
         warning: {
-          500: "var(--success-500)",
+          500: "var(--warning-500)",
         },
         info: {
           500: "var(--info-500)",

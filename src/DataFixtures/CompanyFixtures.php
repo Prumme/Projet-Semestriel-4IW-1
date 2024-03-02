@@ -20,7 +20,7 @@ class CompanyFixtures extends Fixture
 
         $address = new BillingAddress($manager);
         $address->setCity($faker->city);
-        $address->setZipCode($faker->postcode);
+        $address->setZipCode((int) $faker->postcode);
         $address->setCountryCode($faker->countryCode);
         $address->setAddressLine1($faker->streetAddress);
         if($faker->boolean(20)) {

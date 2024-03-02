@@ -85,7 +85,7 @@
             <tbody class="border border-primary-500">
 
                 {% for billingRow in quote.billingRows %}
-                    <tr>
+                    <tr class="align-top">
                         <td class="border-x border-primary-500 p-1">
                             {{ billingRow.product }}
                         </td>
@@ -98,7 +98,7 @@
                         <td class="border-x border-primary-500 p-1 text-right">
 
                             {% if billingRow.hasDiscount %}
-                                <div class="text-xs">{{ billingRow.total | format_currency('EUR') }}</div>
+                                <div class="text-xs pt-2">{{ billingRow.total | format_currency('EUR') }}</div>
                                 {% for discount in billingRow.allDiscounts %}
                                     <div class="text-xs text-red-500">-{{ discount.formated }}</div>
                                 {% endfor %}
