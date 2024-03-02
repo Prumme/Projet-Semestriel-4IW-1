@@ -1,6 +1,6 @@
 {% block form_row %}
     {% set classes = attr.class is defined ?  attr.class : '' %}
-    {% set inputClasses =  "w-full px-0 py-2.5 border-0 border-b-2 border-primary-500 text-primary-500 focus:border-secondary-500  disabled:text-disabled focus:text-secondary-500 focus:ring-0 " %}
+    {% set inputClasses =  "w-full px-0 py-2.5 border-0 border-b-2 border-primary-500 dark:bg-[#282828] dark:text-white text-primary-500 focus:border-secondary-500  disabled:text-disabled focus:text-secondary-500 focus:ring-0 " %}
     <div class="inline-block {{ classes }}"
             {% if form.vars.id is defined %}
                 id="{{ form.vars.id }}"

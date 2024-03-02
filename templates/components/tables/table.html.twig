@@ -35,7 +35,7 @@
                 </thead>
                 <tbody>
                 {% for row in table['rows'] %}
-                    <tr id="item-{{ row['item'].id }}" class="odd:bg-[#F4F5F8] hover:bg-primary-100 hover:cursor-pointer dark:odd:bg-slate-700 dark:text-text-darkmode">
+                    <tr id="item-{{ row['item'].id }}" class="odd:bg-[#F4F5F8] hover:bg-primary-100 hover:cursor-pointer dark:odd:bg-[#282828] hover:dark:bg-[#181818] dark:text-text-darkmode">
                         {% if hasGrouppedActions  %}
                         <td class="px-4">
                             {% include "components/inputs/checkbox.html.twig" with { onChange: "selectOne" ~ tableId ~"(this)" } %}
@@ -59,7 +59,7 @@
                 </tbody>
                 <tfoot>
                 <tr>
-                    <td colspan="100" class="p-4 text-right text-primary bg-primary-50 border-t-2 border-primary-100">
+                    <td colspan="100" class="p-4 text-right text-primary bg-primary-50 dark:bg-[#282828] dark:text-white border-t-2 border-primary-100">
                         {{ table['rows'] | length }} {{ table['rows'] | length > 1 ? 'items' : 'item' }}
                     </td>
                 </tfoot>

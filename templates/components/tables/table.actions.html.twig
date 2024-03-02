@@ -1,7 +1,7 @@
 {% if actions|length > 0 %}
 {% embed 'components/contextMenu/context-menu.html.twig' %}
     {% block activator %}
-        <ion-icon name="ellipsis-vertical" class="text-secondary-500 cursor-pointer text-xl"></ion-icon>
+        <ion-icon name="ellipsis-vertical" class="text-secondary-500 dark:text-[#FFFFFF] cursor-pointer text-xl"></ion-icon>
     {% endblock %}
     {% block items  %}
           {% for action in actions %}
