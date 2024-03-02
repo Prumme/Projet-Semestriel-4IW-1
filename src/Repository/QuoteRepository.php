@@ -98,7 +98,7 @@ class QuoteRepository extends ServiceEntityRepository
     public function getAvgQuotePrice($company): array
     {
         $qb = $this->createQueryBuilder('q')
-            ->select('q.id AS quote_id', 'SUM(br.price) AS total_amount')
+            ->select('q.id AS quote_id', 'SUM(br.unit * br.quantity) AS total_amount')
             ->leftJoin('q.billingRows', 'br')
             ->join('q.owner', 'o')
             ->where('o.company = :company')
@@ -144,10 +144,19 @@ class QuoteRepository extends ServiceEntityRepository
             $prevCount++;
         }
 
-        $data['prev_avg_quote_price'] = $prevAvgQuotePrice / $prevCount;
+        if($prevCount == 0) {
+            $data['prev_avg_quote_price'] = 0;
+        }
+        else {
+            $data['prev_avg_quote_price'] = $prevAvgQuotePrice / $prevCount;
+        }
 
-        $data['evolution_rate_percentage'] = number_format(($data['avg_quote_price'] - $data['prev_avg_quote_price']) / abs($data['prev_avg_quote_price']) * 100, 2);
-
+        if($data['prev_avg_quote_price'] == 0) {
+            $data['evolution_rate_percentage'] = 100;
+        }
+        else{
+            $data['evolution_rate_percentage'] = number_format(($data['avg_quote_price'] - $data['prev_avg_quote_price']) / abs($data['prev_avg_quote_price']) * 100, 2);
+        }
         return $data;
         
     }
@@ -155,7 +164,7 @@ class QuoteRepository extends ServiceEntityRepository
     public function topFiveQuotes($company): array
     {
         $qb = $this->createQueryBuilder('q')
-            ->select('q.id AS quote_id', 'SUM(br.price) AS total_amount', 'c.company_name AS customer_name', 'o.firstname AS owner_first_name', 'UPPER(o.lastname) AS owner_last_name', 'q.emited_at AS date')
+            ->select('q.id AS quote_id', 'SUM(br.unit * br.quantity) AS total_amount', 'c.company_name AS customer_name', 'o.firstname AS owner_first_name', 'UPPER(o.lastname) AS owner_last_name', 'q.emited_at AS date')
             ->leftJoin('q.billingRows', 'br')
             ->join('q.owner', 'o')
             ->join('q.customer', 'c')
@@ -180,7 +189,7 @@ class QuoteRepository extends ServiceEntityRepository
     public function getSignedQuoteValuesByDay($company): array
     {
         $qb = $this->createQueryBuilder('q')
-            ->select("q.emited_at AS day", 'SUM(br.price) AS total_amount')
+            ->select("q.emited_at AS day", 'SUM(br.unit * br.quantity) AS total_amount')
             ->join('q.billingRows', 'br')
             ->join('q.owner', 'o')
             ->where('o.company = :company')
@@ -204,7 +213,7 @@ class QuoteRepository extends ServiceEntityRepository
     public function getAllQuoteValuesByDay($company): array
     {
         $qb = $this->createQueryBuilder('q')
-            ->select("q.emited_at AS day", 'SUM(br.price) AS total_amount')
+            ->select("q.emited_at AS day", 'SUM(br.unit * br.quantity) AS total_amount')
             ->join('q.billingRows', 'br')
             ->join('q.owner', 'o')
             ->where('o.company = :company')
