@@ -7,5 +7,7 @@ class TemplatesList {
     const FORGET_PASSWORD = 3;
     const WELCOME_EMAIL_OWNER = 4;
     const CONTACT_US = 5;
+    const NEW_QUOTE_OPENED = 6;
+    const SIGNED_URL_EXPIRED = 7;
     const NEW_INVOICE = 8;
 }

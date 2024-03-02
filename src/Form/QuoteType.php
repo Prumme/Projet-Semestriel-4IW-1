@@ -88,6 +88,18 @@ class QuoteType extends AbstractType
                 'label' => "Billing rows",
                 'allow_add' => true,
                 'allow_delete' => true,
+                'by_reference' => false,
+            ])
+            ->add('discounts', CollectionType::class, [
+                'entry_type' => QuoteDiscountType::class,
+                'entry_options' => [],
+                'attr'=>[
+                    'icon'=> 'pricetag',
+                ],
+                'label' => "Discounts",
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
             ]);
     }
 
