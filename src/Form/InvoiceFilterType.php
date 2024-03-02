@@ -10,7 +10,6 @@ use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -46,7 +45,7 @@ class InvoiceFilterType extends AbstractType
                         ->where('c.company = :company')
                         ->setParameter('company', $options['company']);
                 },
-                'placeholder' => 'Choose a customer'
+                'placeholder' => 'Select a customer'
             ])
             ->add('status', ChoiceType::class, [
                 'required' => false,
@@ -56,7 +55,8 @@ class InvoiceFilterType extends AbstractType
                     'Paid' => Invoice::STATUS_PAID,
                     'Unpaid' => Invoice::STATUS_UNPAID,
                     'Cancelled' => Invoice::STATUS_CANCELLED
-                ]
+                ],
+                'placeholder' => 'Select a status'
             ])
             ->add('quote', HiddenType::class, [
                 'required' => false
@@ -64,7 +64,7 @@ class InvoiceFilterType extends AbstractType
             ->add('submit', SubmitType::class, [
                 'label' => 'Filter',
                 'attr' => [
-                    'class' => 'btn btn-primary'
+                    'icon'=> 'filter'
                 ]
             ]);
 
