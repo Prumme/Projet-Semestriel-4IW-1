@@ -9,11 +9,17 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\HttpFoundation\File\File;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
+#[Vich\Uploadable]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+
+    use Traits\TimestampableTrait;
+    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -49,6 +55,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Product::class)]
     private Collection $products;
+
+    #[Vich\UploadableField(mapping: 'profile_picture', fileNameProperty: 'profilePictureName')]
+    private ?File $profilePictureFile = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?string $profilePictureName = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $theme = null;
 
     public function __construct()
     {
@@ -233,5 +248,45 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function getProfilePictureFile(): ?File
+    {
+        return $this->profilePictureFile;
+    }
+
+    public function getprofilePictureName(): ?string
+    {
+        return $this->profilePictureName;
+    }
+
+    public function setProfilePictureName(?string $profilePictureName): void
+    {
+        $this->profilePictureName = $profilePictureName;
+
+    }
+
+    public function setProfilePictureFile(?File $profilePictureFile = null): void
+    {
+        $this->profilePictureFile = $profilePictureFile;
+
+        if (null !== $profilePictureFile) {
+
+            $this->updatedAt = new \DateTime();
+        }
+
+    }
+
+    public function getTheme(): ?string
+    {
+        return $this->theme;
+    }
+
+    public function setTheme(?string $theme): static
+    {
+        $this->theme = $theme;
+
+        return $this;
+    }
+
 
 }
