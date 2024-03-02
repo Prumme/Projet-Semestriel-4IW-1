@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use PhpParser\Node\Stmt\Function_;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 class Category
@@ -27,6 +28,10 @@ class Category
 
     #[ORM\ManyToOne(inversedBy: 'categories')]
     private ?Company $company = null;
+
+    #[ORM\Column(length: 255)]
+    #[Gedmo\Slug(fields: ['name'])]
+    private ?string $slug = null;
 
     public function __construct()
     {
@@ -102,6 +107,18 @@ class Category
     public function setCompany(?Company $company): static
     {
         $this->company = $company;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
 
         return $this;
     }

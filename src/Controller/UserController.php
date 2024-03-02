@@ -16,7 +16,8 @@ use Symfony\Component\Form\FormError;
 use App\Helper\URL;
 use App\Service\EmailService;
 use App\Data\TemplatesList;
-
+use App\Entity\Quote;
+use App\Form\UserType;
 
 #[Route('/user')]
 class UserController extends AbstractController
@@ -31,6 +32,38 @@ class UserController extends AbstractController
         $this->sendinblueService = $sendinblueService;
         $this->urlHelper = $urlHelper;
         $this->passwordEncoder = $passwordEncoder;
+    }
+
+    #[Route('/me', name: 'app_user_profile', methods: ['GET', 'POST'])]    
+    public function show_profile(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        if(!$this->getUser()){
+            return $this->redirectToRoute('app_login');
+        }
+        $user = $this->getUser();
+        $company = $user->getCompany();
+        $quotes = $entityManager->getRepository(Quote::class)->findBy(['owner' => $user->getId()]);
+
+        $form = $this->createForm(UserType::class, $user, [
+            'show_roles' => false,
+        ]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            $this->addFlash('success', 'User Edited Successfully');
+
+            return $this->redirectToRoute('app_user_profile');
+        }
+
+        return $this->render('user/profile.html.twig', [
+            'user' => $user,
+            'company' => $company,
+            'form' => $form,
+            'quotes'=> $quotes
+        ]);
+        
     }
 
     #[Route('/{id}/activate', name: 'app_user_creation', methods: ['GET', 'POST'])]
