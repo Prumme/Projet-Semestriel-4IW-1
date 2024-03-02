@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Data\InvoiceSearch;
 use App\Exception\URLSignedException;
+use App\Form\InvoiceFilterType;
 use App\Helper\URL;
 use App\Entity\Quote;
 use App\Entity\Company;
@@ -36,11 +38,16 @@ class InvoiceController extends AbstractController
     #[Route('/', name: 'app_invoice_index', methods: ['GET'])]
     public function index(Request $request, InvoiceRepository $invoiceRepository, Company $company): Response
     {
-        $quoteQuery = $request->query->get('quote',null);
-        $invoices = $invoiceRepository->findAllWithinCompany($company, $quoteQuery);
+        $filterData = new InvoiceSearch();
+        $filterForm  = $this->createForm(InvoiceFilterType::class, $filterData, [
+            'company' => $company,
+        ]);
+        $filterForm->handleRequest($request);
+        $invoices = $invoiceRepository->filtered($company, $filterData);
         $table = new InvoiceTable($invoices, ["company" => $company]);
         return $this->render('invoice/index.html.twig', [
             'table' => $table->createTable(),
+            'filterForm' => $filterForm->createView(),
         ]);
         
     }

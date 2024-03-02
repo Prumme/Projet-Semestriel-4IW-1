@@ -28,6 +28,7 @@ class QuoteType extends AbstractType
                         ->where('c.company = :company')
                         ->setParameter('company', $options['company']);
                 },
+
                 'choice_label' => 'identity',
                 'attr' => [
                     "class"=>"input-60",

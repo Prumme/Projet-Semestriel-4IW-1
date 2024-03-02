@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Data\InvoiceSearch;
 use App\Entity\Company;
 use App\Entity\Invoice;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -31,18 +32,35 @@ class InvoiceRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
-    public function findAllWithinCompany(Company $company,$quote = null)
-    {
-        $query =  $this->createQueryBuilder('q')
-            ->select('q')
-            ->join("q.quote","qu")
-            ->join('qu.owner',"o")
-            ->where("o.company = :company")
+    private function getQueryForCompany(Company $company){
+        return $this->createQueryBuilder('i')
+            ->join('i.quote', 'q')
+            ->join('q.owner', 'o')
+            ->where('o.company = :company')
             ->setParameter('company', $company);
-        if($quote){
-            $query->andWhere("q.quote = :quote")
-                ->setParameter('quote', $quote);
+    }
+    public function filtered(Company $company, InvoiceSearch $filter){
+        $query = $this->getQueryForCompany($company);
+
+        if(!empty($filter->customer)){
+
+            $query
+                ->join('q.customer', 'c')
+                ->andWhere('c.id = :customer')
+                ->setParameter('customer', $filter->customer);
         }
+
+        if(!empty($filter->quote)){
+            $query
+                ->andWhere('q.id = :quote')
+                ->setParameter('quote', $filter->quote);
+        }
+
+        if(!empty($filter->status)){
+            $query->andWhere('i.status = :status')
+                ->setParameter('status', $filter->status);
+        }
+
         return $query->getQuery()->getResult();
     }
 }
