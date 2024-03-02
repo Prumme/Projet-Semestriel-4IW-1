@@ -44,7 +44,7 @@ class CustomerFixtures extends Fixture implements DependentFixtureInterface
         $faker = \Faker\Factory::create();
         $billingAddress = new BillingAddress($manager);
         $billingAddress->setCity($faker->city);
-        $billingAddress->setZipCode((string) $faker->numberBetween(10000, 99999));
+        $billingAddress->setZipCode($faker->numberBetween(10000, 99999));
         $billingAddress->setCountryCode($faker->countryCode);
         $billingAddress->setAddressLine1($faker->streetAddress);
 

@@ -28,7 +28,7 @@
                 </thead>
                 <tbody>
                 {% for row in table['rows'] %}
-                    <tr id="item-{{ row['item'].id }}" class="odd:bg-[#F4F5F8] dark:odd:bg-slate-700 dark:text-text-darkmode">
+                    <tr id="item-{{ row['item'].id }}" class="odd:bg-[#F4F5F8] hover:bg-primary-100 hover:cursor-pointer dark:odd:bg-slate-700 dark:text-text-darkmode">
                         {% if hasGrouppedActions  %}
                         <td class="px-4">
                             {% include "components/inputs/checkbox.html.twig" with { onChange: "selectOne" ~ tableId ~"(this)" } %}

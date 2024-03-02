@@ -1,17 +1,14 @@
 <header class="flex w-full h-fit justify-end items-center gap-8 px-8 dark:bg-plain-darkmode dark:text-text-darkmode">
-    <div class="w-64 py-2 gap-2">
-            {% include 'components/inputs/search.html.twig' with {
+	<div class="w-64 py-2 gap-2">
+		{% include 'components/inputs/search.html.twig' with {
                 'id': 'search',
                 'name': 'search',
                 'type': 'search',
                 'placeholder': 'Search for a quote, invoice...',
                 'icon':'search-outline'
             } %}
-    </div>
-    <div class="">
-        {% include 'components/buttons/button.html.twig' with {
-            'type': 'button',
-            'icon': 'cog-outline', 
-        } %}
-    </div>
+	</div>
+	<div class="">
+		{% include 'components/buttons/button_darkmode.html.twig'%}
+	</div>
 </header>

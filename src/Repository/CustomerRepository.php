@@ -22,7 +22,7 @@ class CustomerRepository extends ServiceEntityRepository
         parent::__construct($registry, Customer::class);
     }
 
-    public function findAllWithingCompany(Company $company)
+    public function findAllWithinCompany(Company $company)
     {
         return $this->createQueryBuilder('c')
             ->select('c')

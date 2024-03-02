@@ -1,6 +1,7 @@
 <div>
+    {% set status = item.status %}
 	{% include 'components/chips-pills/chip.html.twig' with {
-		label: item.hasBeenSigned ? 'Signed' : 'Not signed',
-		type: item.hasBeenSigned ? 'primary' : 'danger'
+		label: status['label'],
+		type: status['color']
 	} %}
 </div>

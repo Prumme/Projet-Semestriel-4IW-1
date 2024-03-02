@@ -14,7 +14,11 @@ class QuoteTable extends Table
 
         $this->setHeaders([
             [
-                'title' => 'Identity',
+                'title' => 'Quote',
+                'key' => 'formattedNumber',
+            ],
+            [
+                'title' => 'Customer',
                 'component' => 'quote/customer_identity_cell.html.twig',
                 'key' => 'customer',
             ],
@@ -29,9 +33,9 @@ class QuoteTable extends Table
                 'key' => 'expiredAt',
             ],
             [
-                'title' => 'Has Been Signed',
+                'title' => 'Status',
                 'component' => 'quote/has_been_signed.html.twig',
-                'key' => 'hasBeenSigned',
+                'key' => 'status',
             ]
         ]);
 
@@ -57,6 +61,19 @@ class QuoteTable extends Table
                     'params' => [
                         'id' => fn ($item) => $item->getId(),
                         'company' => $company->getId(),
+                    ]
+                ],
+            ]
+        ]);
+
+        $this->setGroupedActions([
+            [
+                'content'=>"delete",
+                'icon'=>'trash',
+                'href'=>[
+                    'path'=>'app_quote_mass_delete',
+                    'params'=>[
+                        'company'=> $company->getId(),
                     ]
                 ],
             ]

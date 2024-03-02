@@ -1,0 +1,15 @@
+<div>
+	{% set color =
+        item.status == "awaiting_payment" ? 'info'
+        : item.status == "paid" ? 'primary'
+        : item.status == 'unpaid' ? 'danger' : 'secondary'
+    %}
+	{% set label =
+        item.status == "awaiting_payment" ? 'Awaiting payement'
+        : item.status == "paid" ? 'Paid'
+        : item.status == 'unpaid' ? 'Not paid' : 'Cancelled'  %}
+	{% include 'components/chips-pills/chip.html.twig' with {
+		label: label,
+		type: color
+	} %}
+</div>
