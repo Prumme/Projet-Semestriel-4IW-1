@@ -8,6 +8,7 @@ use App\Form\CustomerType;
 use App\Repository\CustomerRepository;
 use App\Security\Voter\Attributes\CompanyVoterAttributes;
 use App\Security\Voter\Attributes\CustomerVoterAttributes;
+use App\Table\CustomersBillingAddressTable;
 use App\Table\CustomersTable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -58,20 +59,12 @@ class CustomerController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_customer_show', methods: ['GET'])]
-    #[IsGranted(CustomerVoterAttributes::CAN_VIEW_CUSTOMER, subject: 'customer')]
-    public function show(Company $company, Customer $customer): Response
-    {
-        return $this->render('customer/show.html.twig', [
-            'customer' => $customer,
-            'company' => $company,
-        ]);
-    }
-
     #[Route('/{id}/edit', name: 'app_customer_edit', methods: ['GET', 'POST'])]
     #[IsGranted(CustomerVoterAttributes::CAN_EDIT_CUSTOMER, subject: 'customer')]
     public function edit(Request $request, Company $company, Customer $customer, EntityManagerInterface $entityManager): Response
     {
+
+        $billingAddressTable = new CustomersBillingAddressTable($customer->getBillingAddresses()->toArray(), ['customer' => $customer, 'company' => $company]);
         $form = $this->createForm(CustomerType::class, $customer);
         $form->handleRequest($request);
 
@@ -89,6 +82,7 @@ class CustomerController extends AbstractController
             'customer' => $customer,
             'company' => $company,
             'form' => $form,
+            'billingAddressTable' => $billingAddressTable->createTable(),
         ]);
     }
 

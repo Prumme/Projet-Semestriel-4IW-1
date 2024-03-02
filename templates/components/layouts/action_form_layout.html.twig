@@ -1,0 +1,11 @@
+<form method="post" action="{{ action }}" {% if confirm is defined %} onsubmit="return confirm('{{ confirm }}');" {% endif %}>
+	<input type="hidden" name="_token" value="{{ csrf_token(csrf_id ~ item.id) }}">
+	{{ include('components/buttons/button.html.twig',{
+        size:'sm',
+        type:'submit',
+        bg:bg|default('secondary'),
+        content:content,
+        icon:icon,
+		disabled:disabled|default(false),
+    }) }}
+</form>

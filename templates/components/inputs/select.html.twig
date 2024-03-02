@@ -1,4 +1,4 @@
-<div data-bind-component="select" {{ form.vars.multiple ? 'data-multiple' }} data-placeholder="{{ form.vars.placeholder | default("Séléctionner") }}" id="{{ form.vars.id  }}" tabindex="1" class="relative w-full p-2.5 rounded border-2 border-primary-500 text-primary-500 cursor-pointer hover:focus:border-secondary-500 hover:focus:text-secondary-500">
+<div data-bind-component="select" {{ form.vars.multiple ? 'data-multiple' }} data-placeholder="{{ form.vars.placeholder | default("Séléctionner") }}" id="{{ form.vars.id  }}" tabindex="1" class="relative w-full p-2.5 mt-2 rounded border-2 border-primary-500 text-primary-500 cursor-pointer hover:focus:border-secondary-500 hover:focus:text-secondary-500">
     {% set name =  form.vars.full_name %}
     {% set type = form.vars.multiple ? 'checkbox' : 'radio' %}
     <div class="flex justify-between items-center">

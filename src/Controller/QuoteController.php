@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Data\TemplatesList;
 use App\Entity\Customer;
 use App\Entity\Product;
 use App\Entity\Quote;
@@ -15,6 +16,7 @@ use App\Repository\QuoteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Security\Voter\Attributes\QuoteVoterAttributes;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -44,6 +46,8 @@ class QuoteController extends AbstractController
         if(isset($customer_id)) $customer = $entityManager->getRepository(Customer::class)->find($customer_id);
 
         $quote = new Quote();
+        $quote->setEmitedAt(new \DateTime());
+        $quote->setExpiredAt((new \DateTime())->modify('+1 month'));
 
         $products = $entityManager->getRepository(Product::class)->findAll();
         $form = $this->createForm(QuoteType::class, $quote,[
@@ -58,9 +62,9 @@ class QuoteController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $quote->setOwner($this->getUser());
+            $quoteService->cleanBillingRowsDiscounts($quote);
+            $quoteService->cleanQuoteDiscounts($quote);
             $entityManager->persist($quote);
-            $quoteService->syncBillingRows($quote);
-
             $entityManager->flush();
             $this->addFlash('success', 'Quote created successfully');
             return $this->redirectToRoute('app_quote_edit',[
@@ -96,9 +100,10 @@ class QuoteController extends AbstractController
             'company' => $company,
         ]);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-            $quoteService->syncBillingRows($quote);
+            if($quote->getIsSigned()) throw new BadRequestHttpException("The quote has been signed, it cannot be edited");
+            $quoteService->cleanBillingRowsDiscounts($quote);
+            $quoteService->cleanQuoteDiscounts($quote);
             $entityManager->flush();
             $this->addFlash('success', 'Quote edited successfully');
         }
@@ -114,6 +119,7 @@ class QuoteController extends AbstractController
     #[IsGranted(QuoteVoterAttributes::CAN_MANAGE_QUOTE, subject: 'quote')]
     public function delete(Request $request, Quote $quote, EntityManagerInterface $entityManager): Response
     {
+        if($quote->getIsSigned()) throw new BadRequestHttpException("The quote has been signed, it cannot be deleted");
         if ($this->isCsrfTokenValid('delete' . $quote->getId(), $request->request->get('_token'))) {
             $entityManager->remove($quote);
             $entityManager->flush();
@@ -141,7 +147,10 @@ class QuoteController extends AbstractController
                 ];
                 if ($urlSigned->isResent()) {
                     $newUrl = $urlSignedService->signURL('app_quote_preview', ['id' => $quote->getId(), 'company' => $company->getId()]);
-                    $urlSignedService->sendEmail($customerEmail, $newUrl);
+                    $urlSignedService->sendEmail($quote->getCustomer()->getEmail(), TemplatesList::SIGNED_URL_EXPIRED,[
+                        "link"=> $_ENV['IP'] . $newUrl,
+                        "name"=>$quote->getCustomer()->getFirstname(),
+                    ]);
                     $renderData = [
                         ...$renderData,
                         'sended' => true,
@@ -178,10 +187,16 @@ class QuoteController extends AbstractController
         }
     }
 
-    #[Route('/{id}/send', name: 'app_quote_send', methods: ['GET'])]
-    public function generatePreviewURL(Quote $quote,Company $company,URLSignedService $urlSignedService): string
+    #[Route('/{id}/ask-signature', name: 'app_quote_ask_signature', methods: ['POST'])]
+    #[IsGranted(QuoteVoterAttributes::CAN_MANAGE_QUOTE, subject: 'quote')]
+    public function askSignature(Quote $quote,Company $company,URLSignedService $urlSignedService): Response
     {
-        $url = $urlSignedService->signURL('app_quote_preview', ['id' => $quote->getId(), 'company' => $company->getId()]);
-        die("<a href=\"$url\">test</a>");
+        if($quote->getIsSigned()) throw new BadRequestHttpException("The quote has been signed");
+        $signedUrl = $urlSignedService->signURL('app_quote_preview', ['id' => $quote->getId(), 'company' => $company->getId()]);
+        $urlSignedService->sendEmail($quote->getCustomer()->getEmail(), TemplatesList::NEW_QUOTE_OPENED,[
+            "link"=> $_ENV['IP'] . $signedUrl,
+            "name"=>$quote->getCustomer()->getFirstname(),
+        ]);
+        return $this->redirectToRoute('app_quote_edit', ['id' => $quote->getId(), 'company' => $company->getId()]);
     }
 }

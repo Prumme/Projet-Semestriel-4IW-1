@@ -17,11 +17,18 @@
         }) }}
 		{% embed 'components/layouts/form_layout.html.twig' with {'content': 'Update', icon:"create-outline"} %}
 			{% block footer %}
-                {% include('components/layouts/delete_form_layout.html.twig') with {
+                {% include('components/layouts/action_form_layout.html.twig') with {
                     item: customer,
+					csrf_id:'delete',
+					confirm:"Are you sure you want to delete this customer? This action cannot be undone.",
+					content:'Delete',
+					icon:'trash-outline',
+					bg:'danger',
                     action: path('app_customer_delete', {company:company.id, id:customer.id}),
                 } %}
 			{% endblock %}
 		{% endembed %}
+
+		{% include "components/tables/table.html.twig" with { table:billingAddressTable } %}
 	</div>
 {% endblock %}

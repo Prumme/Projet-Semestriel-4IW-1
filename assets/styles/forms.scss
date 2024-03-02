@@ -1,5 +1,12 @@
+form{
+  margin-bottom: 0 !important;
+}
+
 [type="checkbox"]{
   @apply rounded cursor-pointer border-2 border-primary-500 focus:ring-0 checked:bg-primary-500 checked:focus:bg-primary-500;
+}
+form:not(.no-style){
+  max-width: 900px;
 }
 form:not(.no-style) input{
   font-size: calc(14 / 16 * 1rem);
@@ -30,6 +37,7 @@ form:not(.no-style)  > div{
         50: 50%,
         40: 40%,
         33: 33%,
+        30: 30%,
         25: 25%,
   );
 

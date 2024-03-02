@@ -1,15 +1,15 @@
-
-{% set uniqueId = random() %}
-
-<div class="relative">
-    <ion-icon name="ellipsis-vertical" class="text-secondary-500 dark:text-text-darkmode cursor-pointer text-xl" id="menuIcon-{{ uniqueId }}"></ion-icon>
-    <div class="hidden absolute left-0 top-0 mt-2 bg-[#FFFFFF] dark:bg-plain-darkmode border rounded shadow-md z-10" style="transform: translate(-60%, -100%);" id="contextMenu-{{ uniqueId }}">
-        {% for action in actions %}
-            <form class="mb-0" action="{{ path(action.href.path, action.href.params) }}" method="{{ action.href.method|default('GET') }}">
+{% if actions|length > 0 %}
+{% embed 'components/contextMenu/context-menu.html.twig' %}
+    {% block activator %}
+        <ion-icon name="ellipsis-vertical" class="text-secondary-500 cursor-pointer text-xl"></ion-icon>
+    {% endblock %}
+    {% block items  %}
+          {% for action in actions %}
+            <form action="{{ path(action.href.path, action.href.params) }}" method="{{ action.href.method|default('GET') }}">
                  {% if action.href.csrf|default(false) %}
                     <input type="hidden" name="_token" value="{{ csrf_token(action.href.csrf) }}">
                  {% endif %}
-                <button type="submit" class="w-full whitespace-nowrap flex px-4 py-2 gap-3 items-center hover:bg-white dark:hover:bg-slate-600 cursor-pointer dark:text-text-darkmode">
+                <button type="submit" class="flex gap-4">
                     {% if(action.icon is defined) %}
                         <ion-icon name="{{ action.icon }}" ></ion-icon>
                     {% endif %}
@@ -17,21 +17,6 @@
                 </button>
             </form>
         {% endfor %}
-    </div>
-</div>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const menuIcon = document.getElementById("menuIcon-{{ uniqueId }}");
-        const contextMenu = document.getElementById("contextMenu-{{ uniqueId }}");
-
-        menuIcon.addEventListener("click", function () {
-            contextMenu.classList.toggle("hidden");
-        });
-
-        document.addEventListener("click", function (event) {
-            if (!event.target.matches("#menuIcon-{{ uniqueId }}") && !event.target.matches("#contextMenu-{{ uniqueId }} *")) {
-                contextMenu.classList.add("hidden");
-            }
-        });
-    });
-</script>
+    {% endblock %}
+{% endembed %}
+{% endif %}

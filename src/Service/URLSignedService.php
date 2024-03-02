@@ -34,7 +34,7 @@ class URLSignedService
         }
     }
 
-    public function signURL($routeName,$routeParams,$expireDuration = '+12 hours',$tokenData = [],$paramsOnly=false)
+    public function signURL($routeName,$routeParams,$expireDuration = '+0 hours',$tokenData = [],$paramsOnly=false)
     {
         $expiredAt = (new \DateTime())->modify($expireDuration);
         $dataEncoded = $this->encodeData(['params'=>$routeParams,...$tokenData,'e'=>$expiredAt->getTimestamp()]);
@@ -93,12 +93,7 @@ class URLSignedService
     }
 
 
-    public function sendEmail($to,$urlSigned){
-        // @TODO en attente de la template
-        /*$templateId = TemplatesList::FORGET_PASSWORD;
-        $templateVariables = [
-            'link'=>$urlSigned,
-        ];
-        $this->emailService->sendEmailWithTemplate($to, $templateId, $templateVariables);*/
+    public function sendEmail(...$params){
+        $this->emailService->sendEmailWithTemplate(...$params);
     }
 }

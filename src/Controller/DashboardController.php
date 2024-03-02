@@ -22,12 +22,6 @@ class DashboardController extends AbstractController
     #[IsGranted(AuthentificableRoles::ROLE_USER)]
     public function index(BillingRowRepository $billingRowRepository, QuoteRepository $quoteRepository, CustomerRepository $customerRepository): Response
     {
-        //$dataBestFiveProducts = $billingRowRepository->bestFiveProduct($this->getUser()->getCompany()->getId());
-
-        //$dataProductSelled = $billingRowRepository->productSelled($this->getUser()->getCompany()->getId());
-
-        //$dataTotalEarned = $billingRowRepository->totalEarned($this->getUser()->getCompany()->getId());
-
         $monthlyNetIncome = $billingRowRepository->monthlyNetIncome($this->getUser()->getCompany()->getId());
 
         $monthlyQuotesCount = $quoteRepository->monthlyQuotesCount($this->getUser()->getCompany()->getId());

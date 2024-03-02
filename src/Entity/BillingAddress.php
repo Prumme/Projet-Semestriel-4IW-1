@@ -29,12 +29,12 @@ class BillingAddress
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $address_line_2 = null;
 
-    #[ORM\ManyToOne(targetEntity: Customer::class, cascade: ['remove'])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Customer::class)]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
     private Customer $customer;
 
     private EntityManager $manager;
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntityManager $entityManager = null)
     {
         $this->manager = $entityManager;
     }

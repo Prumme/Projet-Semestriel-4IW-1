@@ -18,59 +18,66 @@
     <div class="mt-[44rem] lg:mt-0">
     <div class="flex flex-col lg:flex-row  space-y-12 lg:space-y-0 lg:space-x-14 items-center">
         <div class="w-3/4 lg:w-1/2 flex flex-col space-y-8">
-            <h1 class="text-xl lg:text-4xl  mb-3 font-weight-normal w-min whitespace-nowrap">Your informations.</h1>
+            <h1 class="text-xl lg:text-4xl  mb-3 font-weight-normal w-min whitespace-nowrap">Company Address.</h1>
 
             <div class="flex flex-col lg:flex-row space-y-8 lg:space-y-0 lg:space-x-4 w-full justify-between">
-            {% include 'components/inputs/input.html.twig' with {
-                'label': 'Firstname',
-                'name': 'firstname',
-                'type': 'text',
-                'placeholder': 'firstname',
-                'required': true,
-                'autofocus': true,
-                'icon':'people',
-                'class': 'w-full'
-            } %}
+
 
             {% include 'components/inputs/input.html.twig' with {
-                'label': 'Lastname',
-                'name': 'lastname',
+                'label': 'Country Code (2 letters)',
+                'name': 'country_code',
                 'type': 'text',
-                'placeholder': 'lastname',
+                'max': 2,
+                'min': 2,
+                'placeholder': 'FR',
                 'required': true,
-                'icon':'people',
+                'autofocus': true,
+                'class': 'w-full',
+                'icon':'flag-outline'
+            } %}
+
+            
+
+            {% include 'components/inputs/input.html.twig' with {
+                'label': 'Zip code',
+                'name': 'zip_code',
+                'type': 'text',
+                'placeholder': '75 012',
+                'required': true,
+                'icon':'calculator-outline',
                 'class': 'w-full'
             } %}
             </div>
 
             {% include 'components/inputs/input.html.twig' with {
-                'label': 'Email',
-                'name': 'email',
-                'type': 'email',
-                'placeholder': 'Email',
+                'label': 'City',
+                'name': 'city',
+                'type': 'text',
+                'placeholder': 'city',
                 'required': true,
                 'autofocus': true,
-                'icon':'mail'
+                'icon':'business-outline',
+                'class': 'w-full'
             } %}
+         
 
             <div class="flex flex-col lg:flex-row space-y-8 lg:space-y-0 lg:space-x-4 w-full justify-between">
             {% include 'components/inputs/input.html.twig' with {
-                'label': 'Password',
-                'name': 'password',
-                'type': 'password',
-                'placeholder': 'Password',
+                'label': 'Address Line 1',
+                'name': 'address_line_1',
+                'type': 'text',
+                'placeholder': '2 rue des lilas',
                 'required': true,
-                'icon':'lock-closed',
+                'icon':'locate-outline',
                 'class': 'w-full'
             } %}
 
             {% include 'components/inputs/input.html.twig' with {
-                'label': 'Confirm password',
-                'name': 'password_verification',
-                'type': 'password',
-                'placeholder': 'Password',
-                'required': true,
-                'icon':'lock-closed',
+                'label': 'Address Line 2',
+                'name': 'address_line_2',
+                'type': 'text',
+                'placeholder': '7 rue des lilas',
+                'icon':'locate-outline',
                 'class': 'w-full'
             } %}
             </div>
@@ -116,7 +123,7 @@
 
     <div class="flex items-center justify-between w-full">
     {% include 'components/buttons/button.html.twig' with {
-        'content': 'Register',
+        'content': 'Next',
         'type': 'submit',
     } %}
 

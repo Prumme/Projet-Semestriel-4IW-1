@@ -63,6 +63,7 @@ class QuoteType extends AbstractType
 
         $builder->add('emited_at',DateType::class,[
             "label" => "Emited at",
+            'widget' => 'single_text',
             'attr' => [
                 'icon'=> 'calendar',
                 "class"=>"input-50",
@@ -70,6 +71,7 @@ class QuoteType extends AbstractType
         ])
             ->add('expired_at',DateType::class,[
                 "label" => "Expired at",
+                'widget' => 'single_text',
                 'attr' => [
                     'icon'=> 'calendar',
                     "class"=>"input-50",
@@ -86,6 +88,18 @@ class QuoteType extends AbstractType
                 'label' => "Billing rows",
                 'allow_add' => true,
                 'allow_delete' => true,
+                'by_reference' => false,
+            ])
+            ->add('discounts', CollectionType::class, [
+                'entry_type' => QuoteDiscountType::class,
+                'entry_options' => [],
+                'attr'=>[
+                    'icon'=> 'pricetag',
+                ],
+                'label' => "Discounts",
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
             ]);
     }
 
