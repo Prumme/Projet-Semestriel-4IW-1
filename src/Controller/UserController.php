@@ -34,9 +34,12 @@ class UserController extends AbstractController
         $this->passwordEncoder = $passwordEncoder;
     }
 
-    #[Route('/me', name: 'app_user_profile', methods: ['GET', 'POST'])]
+    #[Route('/me', name: 'app_user_profile', methods: ['GET', 'POST'])]    
     public function show_profile(Request $request, EntityManagerInterface $entityManager): Response
     {
+        if(!$this->getUser()){
+            return $this->redirectToRoute('app_login');
+        }
         $user = $this->getUser();
         $company = $user->getCompany();
         $quotes = $entityManager->getRepository(Quote::class)->findBy(['owner' => $user->getId()]);

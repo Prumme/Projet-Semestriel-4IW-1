@@ -126,12 +126,6 @@
         {%- if form.delete is defined -%}
             {{- form_row(form.delete) -}}
         {%- endif -%}
-
-        {# {%- if download_uri -%}
-            <a href="{{ asset_helper is same as(true) ? asset(download_uri) : download_uri }}" download>
-                {{ translation_domain is same as(false) ? download_label : download_label|trans({}, translation_domain) }}
-            </a>
-        {%- endif -%} #}
     </div>
 {%- endblock -%}
 
@@ -155,11 +149,6 @@
                 <img class="rounded-full w-40 h-40" src="{{ asset_helper is same as(true) ? asset(image_uri) : image_uri }}" alt="" />
             </a>
         {%- endif -%}
-        {# {%- if download_uri -%}
-            <a href="{{ asset_helper is same as(true) ? asset(download_uri) : download_uri }}" download>
-                {{ translation_domain is same as(false) ? download_label : download_label|trans({}, translation_domain) }}
-            </a>
-        {%- endif -%} #}
     </div>
 {%- endblock -%}
 
