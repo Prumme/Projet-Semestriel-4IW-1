@@ -7,8 +7,10 @@ use App\Entity\Customer;
 use App\Entity\Product;
 use App\Entity\Quote;
 use App\Entity\Company;
+use App\Entity\User;
 use App\Exception\URLSignedException;
 use App\Form\QuoteType;
+use App\Security\Voter\Attributes\UserVoterAttributes;
 use App\Service\QuoteService;
 use App\Service\URLSignedService;
 use App\Table\QuoteTable;
@@ -117,16 +119,44 @@ class QuoteController extends AbstractController
 
     #[Route('/{id}', name: 'app_quote_delete', methods: ['POST'])]
     #[IsGranted(QuoteVoterAttributes::CAN_MANAGE_QUOTE, subject: 'quote')]
-    public function delete(Request $request, Quote $quote, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Company $company, Quote $quote, EntityManagerInterface $entityManager): Response
     {
-        if($quote->getIsSigned()) throw new BadRequestHttpException("The quote has been signed, it cannot be deleted");
-        if ($this->isCsrfTokenValid('delete' . $quote->getId(), $request->request->get('_token'))) {
+        if($quote->getIsSigned()){
+            $this->addFlash('error', 'You are not allowed to delete the quote '.$quote->getFormattedNumber().' because it has been signed');
+        }  else if ($this->isCsrfTokenValid('delete' . $quote->getId(), $request->request->get('_token'))) {
             $entityManager->remove($quote);
             $entityManager->flush();
 
             $this->addFlash('success', 'Quote deleted successfully');
         }
-        return $this->redirectToRoute('app_quote_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_quote_index', ['company' => $company->getId()], Response::HTTP_SEE_OTHER);
+    }
+    #[Route('/delete', name: 'app_quote_mass_delete', methods: ['GET'])]
+    #[IsGranted(CompanyVoterAttributes::CAN_VIEW_COMPANY, subject: 'company')]
+    public function massDelete(Request $request, Company $company, EntityManagerInterface $entityManager)
+    {
+        $selectedStr = $request->query->get('selected');
+        if (!$selectedStr) return $this->redirectToRoute('app_quote_index', ['company' => $company->getId()]);
+
+        $selectedIds = explode(',', $selectedStr);
+        $CSRFToken = $request->query->get('_token');
+        if ($this->isCsrfTokenValid('mass-action-token', $CSRFToken)) {
+            foreach ($selectedIds as $quoteId) {
+                $quote = $entityManager->getRepository(Quote::class)->find($quoteId);
+                if ($this->isGranted(QuoteVoterAttributes::CAN_MANAGE_QUOTE, $quote)){
+                    dump($quote->getId());
+                    if(!$quote->getIsSigned()) {
+                    $entityManager->remove($quote);
+                    $this->addFlash('success', 'Quote '.$quote->getFormattedNumber().'has been deleted successfully');
+                    }else
+                        $this->addFlash('error', 'You are not allowed to delete the quote '.$quote->getFormattedNumber().' because it has been signed');
+
+                }
+                else $this->addFlash('error', 'You are not allowed to delete the quote '. $quote->getFormattedNumber());
+            }
+            $entityManager->flush();
+        }
+        return $this->redirectToRoute('app_quote_index', ['company' => $company->getId()]);
     }
 
 

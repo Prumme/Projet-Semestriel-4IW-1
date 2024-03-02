@@ -31,11 +31,11 @@ class Quote
     #[ORM\OneToMany(mappedBy: 'quote', targetEntity: Invoice::class)]
     private Collection $invoices;
 
-    #[ORM\ManyToOne(targetEntity: Customer::class, inversedBy: 'quotes', cascade: ['remove'])]
+    #[ORM\ManyToOne(targetEntity: Customer::class, inversedBy: 'quotes')]
     #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'id', onDelete: 'CASCADE', nullable: false)]
     #[Assert\NotNull(message: 'The customer is required.')]
     private ?Customer $customer = null;
-    #[ORM\OneToMany(mappedBy: 'quote_id', targetEntity: BillingRow::class,  cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'quote_id', targetEntity: BillingRow::class,  cascade: ['persist','remove'], orphanRemoval: true)]
     #[Assert\Valid]
     private Collection $billingRows;
 
@@ -207,6 +207,10 @@ class Quote
     {
         return str_pad($this->getId(), 5, "0", STR_PAD_LEFT);
     }
+    public function getFormattedNumber():string
+    {
+        return "#" . $this->getNumber();
+    }
 
     public function getSignature(): ?QuoteSignature
     {
@@ -295,4 +299,35 @@ class Quote
         return !$this->discounts->isEmpty();
     }
 
+    public function getHasInvoices(): bool
+    {
+        return !$this->invoices->isEmpty();
+    }
+
+
+    public function getStatus(){
+        if($this->getHasInvoices()){
+            return [
+                "label" => "Invoiced",
+                "color" => "secondary"
+            ];
+        }
+        if($this->getIsSigned()){
+            return [
+                "label" => "Signed",
+                "color" => "primary"
+            ];
+        }
+        $now = new \DateTime();
+        if($this->getExpiredAt() < $now){
+            return [
+                "label" => "Signed",
+                "color" => "secondary"
+            ];
+        }
+        return [
+            "label" => "Draft",
+            "color" => "info"
+        ];
+    }
 }

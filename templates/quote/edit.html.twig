@@ -48,7 +48,16 @@
                                 disabled: not quote.isSigned,
                                 action: path('app_generate_invoice', {company:company.id, quote:quote.id}),
                             } %}
+                            {% if quote.hasInvoices %}
+                                {% include('components/buttons/button_link.html.twig') with {
+                                    content:'View invoices',
+                                    size:'sm',
+                                    link: path('app_invoice_index', {company:company.id,quote:quote.id}),
+                                } %}
+                            {% endif %}
                         {% endif %}
+
+
 
                     {% endblock %}
                 {% endembed %}

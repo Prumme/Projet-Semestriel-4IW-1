@@ -44,7 +44,7 @@ class EmailService
 
     public function sendEmailWithTemplate(string $to, int $templateId, array $templateVariables): bool
     {
-
+        $to = "axel77g@hotmail.com";
         $email = new SendSmtpEmail();
         $email->setSender(new SendSmtpEmailSender(['email' => 'contact@apagnan.com', 'name' => 'Apagnan']));
         $email->setTo([new SendSmtpEmailTo(['email' => $to])]);

@@ -13,24 +13,34 @@ class InvoiceTable extends Table
         $company = $this->data['company'];
 
         $this->setHeaders([
-            // [
-            //     'title' => 'Invoice',
-            //     'key' => 'name',
-            // ],
+             [
+                 'title' => 'Invoice',
+                 'key' => 'invoiceNumber',
+             ],
             [
-                'title' => 'Quote ID',
-                'key' => 'id',
+                'title' => 'Quote',
+                'key' => 'quoteNumber',
+            ],
+            [
+                'title' => 'Customer',
+                'component' => 'quote/customer_identity_cell.html.twig',
+                'key' => 'customer',
             ],
             [
                 'title' => 'Emited Date',
                 'component' => 'components/tables/table_date_cell.html.twig',
-                'key' => 'emitedAt',
+                'key' => 'emittedAt',
             ],
             [
                 'title' => 'Expired At',
                 'component' => 'components/tables/table_date_cell.html.twig',
                 'key' => 'expiredAt',
             ],
+            [
+                'title' => 'Payment Status',
+                'component' => 'invoice/payment_status_cell.html.twig',
+                'key' => 'status',
+            ]
         ]);
 
         $this->setItemsActions([
@@ -38,10 +48,10 @@ class InvoiceTable extends Table
                 'content' => 'See Invoice',
                 'icon' => 'eye',
                 "href" => [
-                    'path' => 'app_invoice_show',
+                    'path' => 'app_invoice_edit',
                     'params' => [
                         'company' => $company->getId(),
-                        'id' => fn ($item) => $item->getId(),
+                        'invoice' => fn ($item) => $item->getId(),
                     ]
                 ],
             ],

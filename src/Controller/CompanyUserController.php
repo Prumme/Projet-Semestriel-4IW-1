@@ -35,7 +35,7 @@ class CompanyUserController extends AbstractController
     #[IsGranted(CompanyVoterAttributes::CAN_EDIT_COMPANY, subject: 'company')]
     public function index(Company $company, UserRepository $userRepository): Response
     {
-        $users = $userRepository->findAllWithingCompany($company);
+        $users = $userRepository->findAllWithinCompany($company);
         $table = new UserCompanyTable($users, ["company" => $company,'connectedUser'=>$this->getUser()]);
         return $this->render('company_user/index.html.twig', [
             'table' => $table->createTable(),
@@ -89,7 +89,6 @@ class CompanyUserController extends AbstractController
                 'user_id' => $user->getId(),
                 'link' => $url
             ];
-
 
             $this->sendinblueService->sendEmailWithTemplate($to, $templateId, $templateVariables);
 

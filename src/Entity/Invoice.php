@@ -9,6 +9,12 @@ use App\Repository\InvoiceRepository;
 #[ORM\Entity(repositoryClass: InvoiceRepository::class)]
 class Invoice
 {
+
+    const STATUS_AWAITING_PAYMENT = 'awaiting_payment';
+    const STATUS_PAID = 'paid';
+    const STATUS_UNPAID = 'unpaid';
+    const STATUS_CANCELLED = 'cancelled';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -39,8 +45,18 @@ class Invoice
         return $this->number;
     }
 
-    public function setInvoiceNumber(InvoiceService $invoiceService, Quote $quote): static
+    public function getCustomer() : ?Customer
     {
+        return $this->quote->getCustomer();
+    }
+
+    public function setInvoiceNumber(?InvoiceService $invoiceService = null, ?Quote $quote = null): static
+    {
+        if(!$quote || !$invoiceService){
+            $this->number = $this->number;
+            return $this;
+        }
+
         $currentYear = date('Y');
 
         $lastInvoiceNumber = $invoiceService->getLastInvoiceNumber();
@@ -97,6 +113,10 @@ class Invoice
     public function getQuote(): ?Quote
     {
         return $this->quote;
+    }
+    public function getQuoteNumber(): ?string
+    {
+        return $this->quote->getFormattedNumber();
     }
 
     public function setQuote(?Quote $quote): static

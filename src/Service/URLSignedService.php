@@ -34,7 +34,7 @@ class URLSignedService
         }
     }
 
-    public function signURL($routeName,$routeParams,$expireDuration = '+0 hours',$tokenData = [],$paramsOnly=false)
+    public function signURL($routeName,$routeParams,$expireDuration = '+12 hours',$tokenData = [],$paramsOnly=false)
     {
         $expiredAt = (new \DateTime())->modify($expireDuration);
         $dataEncoded = $this->encodeData(['params'=>$routeParams,...$tokenData,'e'=>$expiredAt->getTimestamp()]);
