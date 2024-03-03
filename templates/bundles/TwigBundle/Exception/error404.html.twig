@@ -4,7 +4,8 @@
 Not Found
 {% endblock %}
 
-{% block body %}
+{% block content %}
+    <div class="h-[70vh]"></div>
     <div class="absolute w-full h-full top-0 flex justify-center items-center lg:-translate-x-16 text-center lg:text-left">
         <div class="flex flex-col lg:flex-row translate-y-24 lg:translate-y-0">
         <h1 class="text-center text-[110px] lg:text-[230px] font-semibold text-secondary-400 opacity-10 leading-none lg:translate-y-12 lg:translate-x-32 -z-10">404</h1>
@@ -20,6 +21,7 @@ Not Found
             {% include 'components/buttons/button_link.html.twig' with {
                 content: 'Take Me Back to the Trail',
                 link: '/',
+                size:'md',
                 icon_left: 'arrow-back-circle-outline'
             } %}
         </section>
