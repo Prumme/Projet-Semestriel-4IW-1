@@ -33,6 +33,9 @@
                         { size:'sm', content:"See Products", bg:'secondary', link:path('app_product_index',{company:company.id}) })
                     }}
                     {{ include('components/buttons/button_link.html.twig',
+                        { size:'sm', content:"See Customers", bg:'secondary', link:path('app_customer_index',{company:company.id}) })
+                    }}
+                    {{ include('components/buttons/button_link.html.twig',
                         { size:'sm', content:"See Quotes", bg:'secondary', link:path('app_quote_index',{company:company.id}) })
                     }}
                     {{ include('components/buttons/button_link.html.twig',

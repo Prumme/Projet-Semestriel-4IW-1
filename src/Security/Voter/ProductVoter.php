@@ -47,6 +47,7 @@ class ProductVoter extends Voter
 
     private function canView(Product $product, User $user) : bool
     {
+        if($this->security->isGranted(AuthentificableRoles::ROLE_SUPER_ADMIN)) return true;
         return $user->getCompany() === $product->getCompany();
     }
 

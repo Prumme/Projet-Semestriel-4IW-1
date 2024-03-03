@@ -47,6 +47,7 @@ class CustomerVoter extends Voter
 
     private function canView(Customer $customer, User $user) : bool
     {
+        if($this->security->isGranted(AuthentificableRoles::ROLE_SUPER_ADMIN)) return true;
         return $user->getCompany() === $customer->getReferenceCompany();
     }
 

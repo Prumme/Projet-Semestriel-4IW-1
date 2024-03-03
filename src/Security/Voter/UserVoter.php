@@ -44,6 +44,7 @@ class UserVoter extends Voter
 
     private function canView(User $resource, User $user) : bool
     {
+        if($this->security->isGranted(AuthentificableRoles::ROLE_SUPER_ADMIN)) return true;
         if(!$this->security->isGranted(AuthentificableRoles::ROLE_COMPANY_ADMIN)) return false;
         return $user->getCompany() === $resource->getCompany();
     }

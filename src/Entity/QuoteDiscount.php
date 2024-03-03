@@ -14,10 +14,11 @@ class QuoteDiscount
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'discounts')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private ?Quote $quote = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Discount $discount = null;
 
     public function getId(): ?int
