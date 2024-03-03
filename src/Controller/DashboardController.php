@@ -13,7 +13,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use App\Repository\BillingAddressRepository;
 use App\Repository\CustomerRepository;
-use App\Repository\InvoiceRepository;
 use App\Repository\QuoteRepository;
 
 #[Route('/dashboard')]
@@ -51,54 +50,5 @@ class DashboardController extends AbstractController
                 'monthlyQuoteValue' => json_encode($monthlyQuoteValue),
                 'bestSellers' => json_encode($bestSellers)
             ]);
-    }
-
-    #[Route('/export', name: 'app_dashboard_export', methods: ['GET'])]
-    #[IsGranted(AuthentificableRoles::ROLE_USER)]
-    public function export(InvoiceRepository $invoiceRepository): Response
-    {
-       $invoiceData = $invoiceRepository->exportInvoiceData($this->getUser()->getCompany());
-
-       $totalsByYear = [];
-       $totalsByQuartile = [];
-
-       foreach ($invoiceData as $entry) {
-           $year = $entry["emitted_at"]->format("Y");
-
-           if (!isset($totalsByYear[$year])) {
-               $totalsByYear[$year] = 0;
-               $totalsByQuartile[$year] = [1 => 0, 2 => 0, 3 => 0, 4 => 0];
-           }
-
-           $quartile = ceil($entry["emitted_at"]->format("n") / 3);
-
-           $totalsByYear[$year] += floatval($entry["total"]);
-
-           $totalsByQuartile[$year][$quartile] += floatval($entry["total"]);
-       }
-
-       $csvFileName = "financial_statement.csv";
-
-       $csvFile = fopen($csvFileName, 'w');
-
-       fputcsv($csvFile, ["Year", "Total by Year", "Q1", "Q2", "Q3", "Q4"]);
-
-       foreach ($totalsByYear as $year => $totalByYear) {
-           $rowData = [$year, $totalByYear];
-           for ($i = 1; $i <= 4; $i++) {
-               $rowData[] = $totalsByQuartile[$year][$i];
-           }
-           fputcsv($csvFile, $rowData);
-       }
-
-       fclose($csvFile);
-
-       $response = new Response(file_get_contents($csvFileName));
-       $response->headers->set('Content-Type', 'text/csv');
-       $response->headers->set('Content-Disposition', 'attachment; filename="' . $csvFileName . '"');
-
-       unlink($csvFileName);
-
-       return $response;
     }
 }
