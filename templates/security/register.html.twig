@@ -3,132 +3,51 @@
 {% block title %}Register{% endblock %}
 
 {% block content %}
-<form method="post" class="p-2 w-screen lg:mx-16">
-    {% if error %}
-        <div class="text-danger-500">{{ error }}</div>
-    {% endif %}    
-    <div class="mt-[44rem] lg:mt-0">
-    <div class="flex flex-col lg:flex-row  space-y-12 lg:space-y-0 lg:space-x-14 items-center">
-        <div class="w-3/4 lg:w-1/2 flex flex-col space-y-8">
-            <h1 class="text-xl lg:text-4xl  mb-3 font-weight-normal w-min whitespace-nowrap">Company Address.</h1>
-
-            <div class="flex flex-col lg:flex-row space-y-8 lg:space-y-0 lg:space-x-4 w-full justify-between">
-
-
-            {% include 'components/inputs/input.html.twig' with {
-                'label': 'Country Code (2 letters)',
-                'name': 'country_code',
-                'type': 'text',
-                'max': 2,
-                'min': 2,
-                'placeholder': 'FR',
-                'required': true,
-                'autofocus': true,
-                'class': 'w-full',
-                'icon':'flag-outline'
-            } %}
-
-            
-
-            {% include 'components/inputs/input.html.twig' with {
-                'label': 'Zip code',
-                'name': 'zip_code',
-                'type': 'text',
-                'placeholder': '75 012',
-                'required': true,
-                'icon':'calculator-outline',
-                'class': 'w-full'
-            } %}
+    <div class="w-[900px] px-8">
+        <div class="flex flex-col items-center justify-center ">
+            <div class="md:flex md:flex-row flex-col  gap-12">
+                <div>
+                    <h1 class="text-xl lg:text-4xl  mb-5 font-weight-normal w-min whitespace-nowrap">Company Address.</h1>
+                    {{ form(formCompanyAddress) }}
+                </div>
+                <div>
+                    <h1 class="text-xl lg:text-4xl mb-5 font-weight-normal w-min whitespace-nowrap">Your Company.</h1>
+                    {{ form(formCompany) }}
+                </div>
             </div>
-
-            {% include 'components/inputs/input.html.twig' with {
-                'label': 'City',
-                'name': 'city',
-                'type': 'text',
-                'placeholder': 'city',
-                'required': true,
-                'autofocus': true,
-                'icon':'business-outline',
-                'class': 'w-full'
+            {% include 'components/buttons/button.html.twig' with {
+                'content': 'Next',
+                'type': 'submit',
+                'size':"md",
+                'icon': 'arrow-forward-circle-outline',
+                'handle': 'handleFormSubmit()'
             } %}
-         
-
-            <div class="flex flex-col lg:flex-row space-y-8 lg:space-y-0 lg:space-x-4 w-full justify-between">
-            {% include 'components/inputs/input.html.twig' with {
-                'label': 'Address Line 1',
-                'name': 'address_line_1',
-                'type': 'text',
-                'placeholder': '2 rue des lilas',
-                'required': true,
-                'icon':'locate-outline',
-                'class': 'w-full'
-            } %}
-
-            {% include 'components/inputs/input.html.twig' with {
-                'label': 'Address Line 2',
-                'name': 'address_line_2',
-                'type': 'text',
-                'placeholder': '7 rue des lilas',
-                'icon':'locate-outline',
-                'class': 'w-full'
-            } %}
-            </div>
         </div>
-
-
-        <div class="w-3/4 lg:w-1/2 flex flex-col space-y-8">
-            <h1 class="text-xl lg:text-4xl mb-3 font-weight-normal w-min whitespace-nowrap">Your Company.</h1>
-
-            {% include 'components/inputs/input.html.twig' with {
-                'label': 'Name of the company',
-                'name': 'name',
-                'type': 'text',
-                'placeholder': 'name',
-                'required': true,
-                'autofocus': true,
-                'icon':'storefront'
-            } %}
-
-            {% include 'components/inputs/input.html.twig' with {
-                'label': 'Siret',
-                'name': 'siret',
-                'type': 'text',
-                'placeholder': 'siret',
-                'required': true,
-                'icon':'at'
-            } %}
-
-            {% include 'components/inputs/input.html.twig' with {
-                'label': 'Vat number',
-                'name': 'vat_number',
-                'type': 'text',
-                'placeholder': 'vat number',
-                'required': true,
-                'icon':'document'
-            } %}
-            
-        </div>
-        </div>
-    </div>
-
-    {{ form_row(form._token) }}
-
-    <div class="flex items-center justify-between w-full">
-    {% include 'components/buttons/button.html.twig' with {
-        'content': 'Next',
-        'type': 'submit',
-    } %}
-
-        <div class="flex space-x-3 w-min">
+        <div class="flex space-x-3">
             <span class="text-slate-500">Do you already have an account ?</span>
             <div>
-            {% include 'components/link/link.html.twig' with {
-            'href': path('app_login'),
-            'text' : 'Login',
-            } 
-            %}
+                {% include 'components/link/link.html.twig' with {
+                    'href': path('app_login'),
+                    'text' : 'Login',
+                }
+                %}
             </div>
         </div>
     </div>
-</form>
+
+    <script>
+        function handleFormSubmit(){
+            const forms = document.querySelectorAll('form');
+            forms[1].querySelectorAll('input').forEach((input, index) => {
+                const hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = input.name;
+                hiddenInput.value = input.value;
+                forms[0].appendChild(hiddenInput);
+            });
+            forms[0].submit();
+
+        }
+    </script>
+
 {% endblock %}

@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CompanyRepository::class)]
 class Company
@@ -18,12 +19,15 @@ class Company
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotNull(message: 'The name of the company is required.'), Assert\Length(min: 3, max: 255, minMessage: 'The name of the company must be at least 3 characters long.')]
     private ?string $name = null;
 
     #[ORM\Column(length: 14, nullable: true)]
+    #[Assert\NotNull(message: 'The siret of the company is required.'), Assert\Length(min: 14, max: 14, exactMessage: 'The siret number must be 14 characters long.') ]
     private ?string $siret = null;
 
     #[ORM\Column(length: 15, nullable: true)]
+    #[Assert\NotNull(message: 'The vat number of the company is required.'), Assert\Length(min: 15, max: 15, exactMessage: 'The vat number must be 15 characters long.')]
     private ?string $vat_number = null;
 
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: User::class)]

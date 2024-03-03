@@ -3,91 +3,9 @@
 {% block title %}Register{% endblock %}
 
 {% block content %}
-<form method="post" class="p-2 w-screen lg:mx-16">
-    {% if error %}
-        <div class="text-danger-500">{{ error }}</div>
-    {% endif %}
-    
-    <div class="mt-[44rem] lg:mt-0">
-    <div class="flex flex-col lg:flex-row  space-y-12 lg:space-y-0 lg:space-x-14 justify-center items-center">
-        <div class="w-3/4 lg:w-1/2 flex flex-col space-y-8">
+<form method="post" class="p-2lg:mx-16 px-8 w-[900px]">
 
-
-        <h1 class="text-xl lg:text-4xl  mb-3 font-weight-normal w-min whitespace-nowrap">Your informations.</h1>
-
-        <div class="flex flex-col lg:flex-row space-y-8 lg:space-y-0 lg:space-x-4 w-full justify-between">
-            {% include 'components/inputs/input.html.twig' with {
-                'label': 'Firstname',
-                'name': 'firstname',
-                'type': 'text',
-                'placeholder': 'firstname',
-                'required': true,
-                'autofocus': true,
-                'icon':'people',
-                'class': 'w-full'
-            } %}
-
-            {% include 'components/inputs/input.html.twig' with {
-                'label': 'Lastname',
-                'name': 'lastname',
-                'type': 'text',
-                'placeholder': 'lastname',
-                'required': true,
-                'icon':'people',
-                'class': 'w-full'
-            } %}
-            </div>
-
-            {% include 'components/inputs/input.html.twig' with {
-                'label': 'Email',
-                'name': 'email',
-                'type': 'email',
-                'placeholder': 'Email',
-                'required': true,
-                'autofocus': true,
-                'icon':'mail'
-            } %}
-
-            <div class="flex flex-col lg:flex-row space-y-8 lg:space-y-0 lg:space-x-4 w-full justify-between">
-            {% include 'components/inputs/input.html.twig' with {
-                'label': 'Password',
-                'name': 'password',
-                'type': 'password',
-                'placeholder': 'Password',
-                'required': true,
-                'icon':'lock-closed',
-                'class': 'w-full'
-            } %}
-
-            {% include 'components/inputs/input.html.twig' with {
-                'label': 'Confirm password',
-                'name': 'password_verification',
-                'type': 'password',
-                'placeholder': 'Password',
-                'required': true,
-                'icon':'lock-closed',
-                'class': 'w-full'
-            } %}
-            </div>
-
-
-            {{ form_row(form._token) }}
-
-            <div class="flex items-center justify-between w-full">
-            {% include 'components/buttons/button.html.twig' with {
-                'content': 'Register',
-                'type': 'submit',
-            } %}
-
-        </div>
-    </div>
-        </div>
-
-            
-
-        </div>
-    </div>
-
-    
+    <h1 class="text-xl lg:text-4xl  mb-5 font-weight-normal w-min whitespace-nowrap">Your informations.</h1>
+    {{ form(form) }}
 </form>
 {% endblock %}

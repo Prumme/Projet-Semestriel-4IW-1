@@ -4,10 +4,6 @@
 
 {% block content %}
 <form method="post" class="p-5">
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
-
     <div>
         <h1 class="h3 mb-3 font-weight-normal">Please sign in.</h1>
 
@@ -30,35 +26,41 @@
             'required': true,
             'icon':'lock-closed'
         } %}
-        {% include 'components/inputs/input.html.twig' with {
-            'name': '_csrf_token',
-            'type': 'hidden',
-            'value': csrf_token('authenticate')
-        } %}
-
-        {% include 'components/link/link.html.twig' with {
-        'href': path('forget_password'),
-        'text' : 'Forget password?', 
-        } 
-    %}
+        {% if error %}
+            <div class="text-danger-500">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
     </div>
 
+
     <div class="flex items-center justify-between w-full">
-    {% include 'components/buttons/button.html.twig' with {
-        'content': 'Sign in',
-        'type': 'submit',
-    } %}
+        <div class="flex items-center center gap-6">
+            {% include 'components/buttons/button.html.twig' with {
+                'content': 'Sign in',
+                'size':'sm',
+                'type': 'submit',
+            } %}
+            {% include 'components/link/link.html.twig' with {
+                'href': path('forget_password'),
+                'text' : 'Forget password?',
+            } %}
+        </div>
+
 
         <div class="flex space-x-3 w-min">
             <span class="text-slate-500">Are you new?</span>
             <div>
             {% include 'components/link/link.html.twig' with {
-            'href': path('app_register'),
-            'text' : 'Create an account',
+                'href': path('app_register'),
+                'text' : 'Create an account',
             } 
             %}
             </div>
         </div>
     </div>
+    {% include 'components/inputs/input.html.twig' with {
+        'name': '_csrf_token',
+        'type': 'hidden',
+        'value': csrf_token('authenticate')
+    } %}
 </form>
 {% endblock %}

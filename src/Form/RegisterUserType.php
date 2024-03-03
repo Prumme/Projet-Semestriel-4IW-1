@@ -4,6 +4,8 @@ namespace App\Form;
 
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -15,14 +17,56 @@ class RegisterUserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-        ->add('email')
-        ->add('firstname')
-        ->add('lastname')
+
+        ->add('firstname',null,[
+            'label' => 'Firstname',
+            'attr' => [
+                'icon'=>'people',
+                'class'=>'input-50',
+                'placeholder' => 'Enter your firstname'
+            ]
+        ])
+            ->add('lastname',null,[
+                'label' => 'Lastname',
+                'attr' => [
+                    'class'=>'input-50',
+                    'placeholder' => 'Enter your lastname'
+                ]
+            ])
+        ->add('email',EmailType::class,[
+            'label' => 'Email',
+            'attr' => [
+                'icon'=>'at',
+                'placeholder' => 'Enter your email'
+            ]
+        ])
         ->add('password', RepeatedType::class, [
             'type' => PasswordType::class,
             'label' => 'Password',
-            'first_options'  => ['label' => 'New Password', 'required' => true],
-            'second_options' => ['label' => 'Password Verification', 'required' => true],
+            'first_options'  => [
+                'label' => 'New Password',
+                'required' => true,
+                'attr' => [
+                    'class'=>'input-50',
+                    'placeholder' => 'Enter your password',
+                    'icon'=>'lock-closed-outline'
+                ]
+            ],
+            'second_options' => [
+                'label' => 'Password Verification',
+                'required' => true,
+                'attr' => [
+                    'class'=>'input-50',
+                    'placeholder' => 'Enter your password again',
+                    'icon'=>'lock-closed-outline'
+                ]
+            ],
+        ])
+        ->add('submit',SubmitType::class,[
+            'label' => 'Register',
+            'attr' => [
+                'icon'=>'add-circle-outline',
+            ]
         ]);
     }
 
