@@ -236,6 +236,9 @@ class QuoteController extends AbstractController
             "link"=> $_ENV['IP'] . $signedUrl,
             "name"=>$quote->getCustomer()->getFirstname(),
         ]);
+
+        $this->addFlash('success', 'An email has been sent to the customer');
+
         return $this->redirectToRoute('app_quote_edit', ['id' => $quote->getId(), 'company' => $company->getId()]);
     }
 }
