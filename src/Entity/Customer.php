@@ -6,6 +6,7 @@ use App\Repository\CustomerRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CustomerRepository::class)]
 class Customer
@@ -16,24 +17,31 @@ class Customer
     private ?int $id = null;
 
     #[ORM\Column(length: 45)]
+    #[Assert\NotNull(message: 'The lastname is required.')]
     private ?string $lastname = null;
 
     #[ORM\Column(length: 45)]
+    #[Assert\NotNull(message: 'The firstname is required.')]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\NotNull(message: 'The company name is required.')]
     private ?string $company_name = null;
 
     #[ORM\Column(length: 14, nullable: true)]
+    #[Assert\NotNull(message: 'The company SIRET is required.'), Assert\Length(min: 14, max: 14, minMessage: 'The SIRET must be 14 characters long.', maxMessage: 'The SIRET must be 14 characters long.')]
     private ?string $company_siret = null;
 
     #[ORM\Column(length: 15, nullable: true)]
+    #[Assert\NotNull(message: 'The company VAT number is required.'), Assert\Length(min: 15, max: 15, minMessage: 'The VAT number must be 15 characters long.', maxMessage: 'The VAT number must be 15 characters long.')]
     private ?string $company_vat_number = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\NotNull(message: 'The email is required.'), Assert\Email(message: 'The email is not a valid email.')]
     private ?string $email = null;
 
     #[ORM\Column(length: 30, nullable: true)]
+    #[Assert\NotNull(message: 'The phone number is required.'), Assert\Length(min: 10, max: 30, minMessage: 'The phone number must be at least 10 characters long.', maxMessage: 'The phone number must be at most 30 characters long.')]
     private ?string $tel = null;
 
     #[ORM\ManyToOne(targetEntity: Company::class)]
@@ -42,6 +50,15 @@ class Customer
 
     #[ORM\OneToMany(mappedBy: 'customer', targetEntity: BillingAddress::class, cascade: ['remove'])]
     private Collection $billing_addresses;
+
+    #[ORM\OneToMany(mappedBy: 'customer', targetEntity: Quote::class)]
+    private Collection $quotes;
+
+    public function __construct()
+    {
+        $this->billing_addresses = new ArrayCollection();
+        $this->quotes = new ArrayCollection();
+    }
 
     //----
 
@@ -60,7 +77,7 @@ class Customer
         return $this->lastname;
     }
 
-    public function setLastname(string $lastname): static
+    public function setLastname(?string $lastname): static
     {
         $this->lastname = $lastname;
 
@@ -72,7 +89,7 @@ class Customer
         return $this->firstname;
     }
 
-    public function setFirstname(string $firstname): static
+    public function setFirstname(?string $firstname): static
     {
         $this->firstname = $firstname;
 
@@ -174,8 +191,15 @@ class Customer
         return $this;
     }
 
+    
+    public function hasQuotes(): bool
+    {
+        return !$this->quotes->isEmpty();
+    }
+
     public function __toString(): string
     {
         return $this->getIdentity();
     }
+
 }

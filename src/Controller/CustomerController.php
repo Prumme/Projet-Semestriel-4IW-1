@@ -35,7 +35,6 @@ class CustomerController extends AbstractController
     #[IsGranted(CompanyVoterAttributes::CAN_VIEW_COMPANY, subject: 'company')]
     public function new(Request $request, Company $company, EntityManagerInterface $entityManager): Response
     {
-
         $customer = new Customer();
         $customer->setReferenceCompany($company);
         $form = $this->createForm(CustomerType::class, $customer);
@@ -68,6 +67,7 @@ class CustomerController extends AbstractController
         $form = $this->createForm(CustomerType::class, $customer);
         $form->handleRequest($request);
 
+        
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
@@ -90,10 +90,11 @@ class CustomerController extends AbstractController
     #[IsGranted(CustomerVoterAttributes::CAN_DELETE_CUSTOMER, subject: 'customer')]
     public function delete(Request $request, Customer $customer, Company $company, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $customer->getId(), $request->request->get('_token'))) {
+        if ($customer->hasQuotes()) {
+            $this->addFlash('danger', 'You cannot delete a customer with quotes');
+        } else if ($this->isCsrfTokenValid('delete' . $customer->getId(), $request->request->get('_token'))) {
             $entityManager->remove($customer);
             $entityManager->flush();
-
             $this->addFlash('success', 'Customer deleted successfully');
         }
 
