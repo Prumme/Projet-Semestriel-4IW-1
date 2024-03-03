@@ -10,8 +10,7 @@ use Doctrine\Persistence\ObjectManager;
 class CompanyFixtures extends Fixture
 {
 
-    public function load(ObjectManager $manager): void
-    {
+    private function createCompany(ObjectManager $manager){
         $faker = \Faker\Factory::create();
         $company = new Company();
         $company->setName($faker->company);
@@ -30,7 +29,15 @@ class CompanyFixtures extends Fixture
         $manager->persist($company);
         $manager->persist($address);
         $manager->flush();
-        
+
+        return $company;
+    }
+
+    public function load(ObjectManager $manager): void
+    {
+        $company = $this->createCompany($manager);
+        $company2 = $this->createCompany($manager);
         $this->addReference("company", $company);
+        $this->addReference("company2", $company2);
     }
 }
