@@ -18,23 +18,11 @@
                     {% block footer %}
                         {% include('components/layouts/action_form_layout.html.twig') with {
                             item: quote,
-                            csrf_id:'delete',
-                            confirm:"Are you sure you want to delete this invoice? This action cannot be undone.",
-                            content:'Delete',
-                            icon:'trash-outline',
-                            bg:'danger',
-                            action: path('app_invoice_delete', {company:company.id, invoice:invoice.id}),
-                        } %}
-
-                        {% include('components/layouts/action_form_layout.html.twig') with {
-                            item: quote,
                             csrf_id:'go_to_quote',
                             content:'See the quote',
                             icon:'document-text-outline',
                             action: path('app_quote_edit', {company:company.id, id:quote.id}),
                         } %}
-
-
                     {% endblock %}
                 {% endembed %}
             </div>
