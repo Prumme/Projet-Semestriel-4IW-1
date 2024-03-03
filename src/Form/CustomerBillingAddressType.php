@@ -12,31 +12,48 @@ class CustomerBillingAddressType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('address_line_1',null,[
+            ->add('country_code',null,[
+                'label'=>'Country Code',
                 'attr'=>[
-                    'class'=>'input-50'
-                ]
-            ])
-            ->add('city',null,[
-                'attr'=>[
-                    'class'=>'input-50'
-                ]
-            ])
-            ->add('address_line_2',null,[
-                'attr'=>[
-                    'class'=>'input-50'
+                    'icon'=>'flag',
+                    'class'=>'input-50',
+                    'placeholder'=>'Country Code'
                 ]
             ])
             ->add('zip_code',null,[
+                'label'=>'Zip Code',
                 'attr'=>[
-                    'class'=>'input-50'
+                    'class'=>'input-50',
+                    'placeholder'=>'Zip Code'
                 ]
             ])
-            ->add('country_code',null,[
+            ->add('city',null,[
+                'label'=>'City',
                 'attr'=>[
-                    'class'=>'input-50'
+                    'icon'=>'business',
+                    'placeholder'=>'City'
                 ]
             ])
+
+            ->add('address_line_1',null,[
+                'label'=>'Address Line 1',
+                'attr'=>[
+                    'icon'=>'home',
+                    'class'=>'input-50',
+                    'placeholder'=>'Address Line 1'
+                ]
+            ])
+            ->add('address_line_2',null,[
+                'label'=>'Address Line 2',
+                'attr'=>[
+                    'class'=>'input-50',
+                    'placeholder'=>'Address Line 2'
+                ]
+            ])
+
+
+
+
         ;
     }
 

@@ -49,6 +49,7 @@ class CategoryVoter extends Voter
 
     private function canView(Category $category, User $user) : bool
     {
+        if($this->security->isGranted(AuthentificableRoles::ROLE_SUPER_ADMIN)) return true;
         return $user->getCompany() === $category->getCompany();
     }
 

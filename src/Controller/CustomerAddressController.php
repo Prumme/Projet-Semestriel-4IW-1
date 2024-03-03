@@ -6,16 +6,19 @@ use App\Entity\BillingAddress;
 use App\Entity\Company;
 use App\Entity\Customer;
 use App\Form\CustomerBillingAddressType;
+use App\Security\Voter\Attributes\CustomerVoterAttributes;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/company/{company}/customer/{customer}/address')]
 class CustomerAddressController extends AbstractController
 {
     #[Route('/new', name: 'app_customer_address_new',methods: ['GET', 'POST'])]
+    #[IsGranted(CustomerVoterAttributes::CAN_EDIT_CUSTOMER, subject: 'customer')]
     public function new(Request $request, Company $company, Customer $customer, EntityManagerInterface $entityManager): Response
     {
         $address = new BillingAddress($entityManager);
@@ -42,6 +45,7 @@ class CustomerAddressController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_customer_address_edit',methods: ['GET', 'POST'])]
+    #[IsGranted(CustomerVoterAttributes::CAN_EDIT_CUSTOMER, subject: 'customer')]
     public function edit(Request $request, Company $company, Customer $customer,BillingAddress $address, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(CustomerBillingAddressType::class, $address);
@@ -66,6 +70,7 @@ class CustomerAddressController extends AbstractController
     }
 
     #[Route('/{id}/delete', name: 'app_customer_address_delete',methods: ['POST'])]
+    #[IsGranted(CustomerVoterAttributes::CAN_DELETE_CUSTOMER, subject: 'customer')]
     public function delete(Request $request, Company $company, Customer $customer, BillingAddress $billingAddress, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $billingAddress->getId(), $request->request->get('_token'))) {
