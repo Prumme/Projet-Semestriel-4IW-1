@@ -23,6 +23,7 @@ class Product
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotNull(message: 'The description is required.')]
     private ?string $description = null;
 
     #[ORM\ManyToOne(inversedBy: 'products')]
@@ -60,7 +61,7 @@ class Product
         return $this->name;
     }
 
-    public function setName(string $name): static
+    public function setName(?string $name): static
     {
         $this->name = $name;
 
@@ -72,7 +73,7 @@ class Product
         return $this->description;
     }
 
-    public function setDescription(string $description): static
+    public function setDescription(?string $description): static
     {
         $this->description = $description;
 
