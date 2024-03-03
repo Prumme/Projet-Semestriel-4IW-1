@@ -40,7 +40,7 @@ class ProductController extends AbstractController
         $product = new Product();
         $product->setCompany($company);
         $product->setUserId($this->getUser());
-        $form = $this->createForm(ProductType::class, $product);
+        $form = $this->createForm(ProductType::class, $product, ['company' => $company]);
         $form->handleRequest($request);
 
         
@@ -67,7 +67,7 @@ class ProductController extends AbstractController
     #[IsGranted(ProductVoterAttributes::CAN_EDIT_PRODUCT, subject: 'product')]
     public function edit(Request $request, Company $company, Product $product, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(ProductType::class, $product);
+        $form = $this->createForm(ProductType::class, $product, ['company' => $company]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
