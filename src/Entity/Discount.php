@@ -38,7 +38,6 @@ class Discount
     {
 
         if(!in_array($type, [self::TYPE_PERCENTAGE, self::TYPE_FIXED])) {
-            dd($type);
             throw new \InvalidArgumentException('Invalid type');
         }
 

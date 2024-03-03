@@ -41,7 +41,7 @@ class CategoryController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
+            $category->setCompany($company);
             $entityManager->persist($category);
             foreach($category->getProducts() as $product){
                 $product->addCategory($category);
