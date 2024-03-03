@@ -54,6 +54,7 @@ class QuoteTable extends Table
             [
                 'content' => 'Delete',
                 'icon' => 'trash',
+                'visible'=> fn($quote)=> !$quote->getHasBeenSigned() ,
                 "href" => [
                     'csrf' => fn ($item) => 'delete' . $item->getId(),
                     'method' => 'post',

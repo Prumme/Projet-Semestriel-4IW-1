@@ -55,9 +55,23 @@ class CompanyUserController extends AbstractController
             foreach ($selectedIds as $userId) {
                 $user = $entityManager->getRepository(User::class)->find($userId);
                 if ($this->isGranted(UserVoterAttributes::CAN_DELETE_USER, $user)){
-                    $entityManager->remove($user);
-                    $this->addFlash('success', 'User with email: ' . $user->getEmail() . ' deleted successfully');
-                } 
+                    $quotes = $user->getQuotes();
+                    $canDelete = true;
+                    foreach($quotes as $quote){
+                        $newOwner = $company->getFirstUser();
+                        if($newOwner !== $quote->getOwner()){
+                            $quote->setOwner($company->getFirstUser());
+                        }else {
+                            $canDelete = false;
+                            $this->addFlash('error', 'This user is the owner of some quotes.');
+                            break;
+                        }
+                    }
+                    if($canDelete){
+                        $entityManager->remove($user);
+                        $this->addFlash('success', 'User with email: ' . $user->getEmail() . ' deleted successfully');
+                    }
+                }
                 else $this->addFlash('error', 'You are not allowed to delete user with email: ' . $user->getEmail());
             }
             $entityManager->flush();
@@ -136,9 +150,26 @@ class CompanyUserController extends AbstractController
     public function delete(Request $request, Company $company, User $user, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($user);
-            $entityManager->flush();
-            $this->addFlash('success', 'User Deleted Successfully');
+            $quotes = $user->getQuotes();
+
+            $canDelete = true;
+            foreach($quotes as $quote){
+                $newOwner = $company->getFirstUser();
+                if($newOwner !== $quote->getOwner()){
+                    $quote->setOwner($company->getFirstUser());
+                }else {
+                    $canDelete = false;
+                    $this->addFlash('error', 'This user is the owner of some quotes.');
+                    break;
+                }
+            }
+
+            if($canDelete){
+                $entityManager->remove($user);
+                $entityManager->flush();
+                $this->addFlash('success', 'User Deleted Successfully');
+            }
+
         }
 
         return $this->redirectToRoute('app_company_user_index', [

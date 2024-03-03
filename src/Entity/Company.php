@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\CompanyRepository;
+use App\Security\AuthentificableRoles;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -188,5 +189,11 @@ class Company
         $this->address = $address;
 
         return $this;
+    }
+
+    public function getFirstUser(): ?User
+    {
+        $adminUsers = $this->users->filter(fn (User $user) => $user->hasRole(AuthentificableRoles::ROLE_COMPANY_ADMIN));
+        return $adminUsers->first();
     }
 }

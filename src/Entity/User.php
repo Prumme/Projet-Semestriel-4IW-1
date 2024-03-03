@@ -53,8 +53,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?bool $resetPassword = false;
 
-    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Product::class)]
+    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Product::class, cascade: ['persist', 'remove'])]
     private Collection $products;
+
+    #[ORM\OneToMany(targetEntity: Quote::class, mappedBy: 'owner')]
+    private Collection $quotes;
+
 
     #[Vich\UploadableField(mapping: 'profile_picture', fileNameProperty: 'profilePictureName')]
     private ?File $profilePictureFile = null;
@@ -288,5 +292,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getQuotes() : Collection
+    {
+        return $this->quotes;
+    }
 
 }
