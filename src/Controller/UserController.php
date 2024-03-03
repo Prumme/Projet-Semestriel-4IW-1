@@ -200,7 +200,7 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $encodedPassword = $this->passwordEncoder->hashPassword($user, $data->getPassword());
+            $encodedPassword = $this->passwordEncoder->hashPassword($user, $data["password"]);
 
             $user->setPassword($encodedPassword);
 
