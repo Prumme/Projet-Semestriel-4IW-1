@@ -28,16 +28,6 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
 
     private function createUsers(Company $company, ObjectManager $manager, $alias=""){
 
-        $superAdmin = new User();
-        $superAdmin->setEmail("superadmin$alias@superadmin");
-        $superAdmin->setFirstname("superadmin");
-        $superAdmin->setLastname("superadmin");
-        $superAdmin->setPassword($this->passwordEncoder->hashPassword($superAdmin, 'superadmin'));
-        $superAdmin->setRoles([AuthentificableRoles::ROLE_SUPER_ADMIN]);
-        $superAdmin->setActivate(true);
-        $superAdmin->setCompany($company); // not logical but it's just for the demo
-        $manager->persist($superAdmin);
-
         $admin = new User();
         $admin->setEmail("admin$alias@admin");
         $admin->setFirstname("admin");
@@ -74,6 +64,16 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
     }
     public function load(ObjectManager $manager): void
     {
+        $superAdmin = new User();
+        $superAdmin->setEmail("superadmin@superadmin");
+        $superAdmin->setFirstname("superadmin");
+        $superAdmin->setLastname("superadmin");
+        $superAdmin->setPassword($this->passwordEncoder->hashPassword($superAdmin, 'superadmin'));
+        $superAdmin->setRoles([AuthentificableRoles::ROLE_SUPER_ADMIN]);
+        $superAdmin->setActivate(true);
+        $superAdmin->setCompany($this->getReference('superCompany'));
+        $manager->persist($superAdmin);
+
         $company = $this->getReference("company");
         $company2 = $this->getReference("company2");
 

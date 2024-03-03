@@ -35,8 +35,12 @@ class CompanyFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
+        $superCompany = $this->createCompany($manager);
+        $superCompany->setName("Super Company");
+
         $company = $this->createCompany($manager);
         $company2 = $this->createCompany($manager);
+        $this->addReference("superCompany", $superCompany);
         $this->addReference("company", $company);
         $this->addReference("company2", $company2);
     }
