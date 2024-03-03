@@ -19,10 +19,10 @@ class ForgetPasswordType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver->setDefaults([
-            'data_class' => User::class,
-        ]);
-    }
+    // public function configureOptions(OptionsResolver $resolver): void
+    // {
+    //     $resolver->setDefaults([
+    //         'data_class' => User::class,
+    //     ]);
+    // }
 }

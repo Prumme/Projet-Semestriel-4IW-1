@@ -145,7 +145,7 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $email = $data->getEmail();
+            $email = $data["email"];
 
             $user = $entityManagerInterface->getRepository(User::class)->findOneBy(['email' => $email]);
 
