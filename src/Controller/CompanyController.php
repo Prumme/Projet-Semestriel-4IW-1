@@ -63,7 +63,6 @@ class CompanyController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('success', 'Company updated successfully');
-            return $this->redirectToRoute('app_company_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('company/edit.html.twig', [
