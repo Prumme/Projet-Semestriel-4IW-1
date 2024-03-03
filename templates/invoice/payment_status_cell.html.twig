@@ -5,7 +5,7 @@
         : item.status == 'unpaid' ? 'danger' : 'secondary'
     %}
 	{% set label =
-        item.status == "awaiting_payment" ? 'Awaiting payement'
+        item.status == "awaiting_payment" ? 'Awaiting payment'
         : item.status == "paid" ? 'Paid'
         : item.status == 'unpaid' ? 'Not paid' : 'Cancelled'  %}
 	{% include 'components/chips-pills/chip.html.twig' with {
