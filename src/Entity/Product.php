@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 class Product
@@ -18,13 +19,14 @@ class Product
     private ?int $id = null;
 
     #[ORM\Column(length: 45)]
+    #[Assert\NotNull(message: 'The name is required.')]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
     #[ORM\ManyToOne(inversedBy: 'products')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false)]  
     private ?Company $company = null;
 
     #[ORM\ManyToOne(inversedBy: 'products')]
@@ -32,9 +34,11 @@ class Product
     private ?User $user_id = null;
 
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'products')]
+    #[Assert\Count(min: 1, minMessage: 'At least one category is required.')]
     private Collection $categories;
 
     #[ORM\Column]
+    #[Assert\NotNull(message: 'The price is required.')]
     private ?float $price = null;
 
     #[ORM\Column(length: 255)]
