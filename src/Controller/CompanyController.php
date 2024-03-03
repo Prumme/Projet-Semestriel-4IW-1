@@ -75,7 +75,23 @@ class CompanyController extends AbstractController
     #[IsGranted(CompanyVoterAttributes::CAN_DELETE_COMPANY, subject: 'company')]
     public function delete(Request $request, Company $company, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$company->getId(), $request->request->get('_token'))) {
+        if($this->getUser()->getCompany()->getId() == $company->getId()){
+            $this->addFlash('danger', 'You cannot delete your own company');
+        }
+        else if ($this->isCsrfTokenValid('delete'.$company->getId(), $request->request->get('_token'))) {
+            $users = $company->getUsers();
+            $customers = $company->getCustomers();
+            $categories = $company->getCategories();
+            $quotes = [];
+            foreach ($users as $user) $quotes = array_merge($quotes, $user->getQuotes()->toArray());
+            foreach($quotes as $quote) {
+                $invoices = $quote->getInvoices();
+                foreach ($invoices as $invoice) $entityManager->remove($invoice);
+                $entityManager->remove($quote);
+            }
+            foreach ($users as $user) $entityManager->remove($user);
+            foreach ($categories as $category) $entityManager->remove($category);
+            foreach ($customers as $customer)  $entityManager->remove($customer);
             $entityManager->remove($company);
             $entityManager->flush();
             
