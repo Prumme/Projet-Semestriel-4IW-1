@@ -156,7 +156,7 @@ class QuoteController extends AbstractController
                     dump($quote->getId());
                     if(!$quote->getIsSigned()) {
                     $entityManager->remove($quote);
-                    $this->addFlash('success', 'Quote '.$quote->getFormatedNumber().'has been deleted successfully');
+                    $this->addFlash('success', 'Quote '.$quote->getFormatedNumber().' has been deleted successfully');
                     }else
                         $this->addFlash('error', 'You are not allowed to delete the quote '.$quote->getFormatedNumber().' because it has been signed');
 
