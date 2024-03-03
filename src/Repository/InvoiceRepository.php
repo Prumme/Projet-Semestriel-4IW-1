@@ -63,4 +63,23 @@ class InvoiceRepository extends ServiceEntityRepository
 
         return $query->getQuery()->getResult();
     }
+
+    public function exportInvoiceData(Company $company){
+        $qb = $this->createQueryBuilder('i')
+            ->select('i.status', 'i.emitted_at', 'q.id as quote_id', 'SUM(br.unit * br.quantity) as total' )
+            ->join('i.quote', 'q')
+            ->join('q.billingRows', 'br')
+            ->join('q.customer', 'c')
+            ->join('q.owner', 'o')
+            ->where('o.company = :company')
+            ->andWhere("i.status LIKE 'paid'")
+            ->groupBy('i.id', 'q.id', 'i.status', 'i.emitted_at');
+
+        $result = $qb
+            ->getQuery()
+            ->setParameter('company', $company)
+            ->getResult();
+
+        return $result;
+    }
 }
