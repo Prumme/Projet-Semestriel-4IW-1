@@ -73,14 +73,12 @@ class InvoiceRepository extends ServiceEntityRepository
             ->join('q.owner', 'o')
             ->where('o.company = :company')
             ->andWhere("i.status LIKE 'paid'")
-            ->setParameter('company', $company);
-        
-            $result = $qb
+            ->groupBy('i.id', 'q.id', 'i.status', 'i.emitted_at');
+
+        $result = $qb
             ->getQuery()
             ->setParameter('company', $company)
             ->getResult();
-
-        dd($result);
 
         return $result;
     }
