@@ -13,6 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use App\Repository\BillingAddressRepository;
 use App\Repository\CustomerRepository;
+use App\Repository\InvoiceRepository;
 use App\Repository\QuoteRepository;
 
 #[Route('/dashboard')]
@@ -50,5 +51,13 @@ class DashboardController extends AbstractController
                 'monthlyQuoteValue' => json_encode($monthlyQuoteValue),
                 'bestSellers' => json_encode($bestSellers)
             ]);
+    }
+
+    #[Route('/export', name: 'app_dashboard_export', methods: ['GET'])]
+    #[IsGranted(AuthentificableRoles::ROLE_COMPANY_ADMIN)]
+    public function export(InvoiceRepository $invoiceRepository): Response
+    {
+        $invoiceData = $invoiceRepository->exportInvoiceData($this->getUser()->getCompany()->getId());
+
     }
 }
