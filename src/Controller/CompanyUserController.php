@@ -87,7 +87,6 @@ class CompanyUserController extends AbstractController
         $user->setCompany($company);
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($user);
             $entityManager->flush();

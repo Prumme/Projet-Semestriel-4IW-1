@@ -29,7 +29,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
-    #[Assert\Email(message: 'The email "{{ value }}" is not a valid email.')]
+    #[Assert\Email(message: 'The email "{{ value }}" is not a valid email.'), Assert\NotBlank(message: 'Please enter an email')]
     private ?string $email = null;
 
     #[ORM\Column]
@@ -43,11 +43,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column(length: 45)]
-    #[Assert\Length(min: 2, minMessage: 'Your firstname should be at least 2 characters')]
+    #[Assert\Length(min: 2, minMessage: 'Your firstname should be at least 2 characters'), Assert\NotBlank(message: 'Please enter please enter a firstname')]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 45)]
-    #[Assert\Length(min: 2, minMessage: 'Your lastname should be at least 2 characters')]
+    #[Assert\Length(min: 2, minMessage: 'Your lastname should be at least 2 characters'), Assert\NotBlank(message: 'Please enter please enter a lastname')]
     private ?string $lastname = null;
 
     #[ORM\ManyToOne(targetEntity: Company::class)]
