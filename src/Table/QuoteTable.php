@@ -15,7 +15,7 @@ class QuoteTable extends Table
         $this->setHeaders([
             [
                 'title' => 'Quote',
-                'key' => 'formattedNumber',
+                'key' => 'formatedNumber',
             ],
             [
                 'title' => 'Customer',

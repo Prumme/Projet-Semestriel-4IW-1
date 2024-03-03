@@ -36,7 +36,7 @@ class UpdateInvoiceStatusCommand extends Command
 
         foreach ($invoices as $invoice) {
             if ($invoice->getExpiredAt() < $currentDate) {
-                $invoice->setStatus('unpaid');
+                $invoice->setStatus(Invoice::STATUS_UNPAID);
             }
         }
 

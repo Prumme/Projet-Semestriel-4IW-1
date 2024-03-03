@@ -131,7 +131,7 @@ class QuoteController extends AbstractController
     public function delete(Request $request, Company $company, Quote $quote, EntityManagerInterface $entityManager): Response
     {
         if($quote->getIsSigned()){
-            $this->addFlash('error', 'You are not allowed to delete the quote '.$quote->getFormattedNumber().' because it has been signed');
+            $this->addFlash('error', 'You are not allowed to delete the quote '.$quote->getFormatedNumber().' because it has been signed');
         }  else if ($this->isCsrfTokenValid('delete' . $quote->getId(), $request->request->get('_token'))) {
             $entityManager->remove($quote);
             $entityManager->flush();
@@ -156,12 +156,12 @@ class QuoteController extends AbstractController
                     dump($quote->getId());
                     if(!$quote->getIsSigned()) {
                     $entityManager->remove($quote);
-                    $this->addFlash('success', 'Quote '.$quote->getFormattedNumber().'has been deleted successfully');
+                    $this->addFlash('success', 'Quote '.$quote->getFormatedNumber().'has been deleted successfully');
                     }else
-                        $this->addFlash('error', 'You are not allowed to delete the quote '.$quote->getFormattedNumber().' because it has been signed');
+                        $this->addFlash('error', 'You are not allowed to delete the quote '.$quote->getFormatedNumber().' because it has been signed');
 
                 }
-                else $this->addFlash('error', 'You are not allowed to delete the quote '. $quote->getFormattedNumber());
+                else $this->addFlash('error', 'You are not allowed to delete the quote '. $quote->getFormatedNumber());
             }
             $entityManager->flush();
         }
