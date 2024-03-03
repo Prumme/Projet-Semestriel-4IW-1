@@ -47,6 +47,9 @@ class CategoryController extends AbstractController
                 $product->addCategory($category);
                 $entityManager->persist($product);
             }
+            
+            $this->addFlash('success', 'Category created successfully');
+
             $entityManager->flush();
 
             return $this->redirectToRoute('app_category_index', [
@@ -75,6 +78,9 @@ class CategoryController extends AbstractController
                 $product->addCategory($category);
                 $entityManager->persist($product);
             }
+
+            $this->addFlash('success', 'Category updated successfully');
+
             $entityManager->flush();
 
             return $this->redirectToRoute('app_category_index', [
@@ -96,6 +102,9 @@ class CategoryController extends AbstractController
         if ($this->isCsrfTokenValid('delete' . $category->getId(), $request->request->get('_token'))) {
 
             $entityManager->remove($category);
+
+            $this->addFlash('success', 'Category deleted successfully');
+
             $entityManager->flush();
         }
 
