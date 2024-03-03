@@ -3,7 +3,7 @@
     {$DEBUG}
 }
 
-{$SERVER_NAME}
+http://{$SERVER_NAME}
 
 log
 
