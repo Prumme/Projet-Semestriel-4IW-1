@@ -161,7 +161,6 @@ class QuoteController extends AbstractController
             foreach ($selectedIds as $quoteId) {
                 $quote = $entityManager->getRepository(Quote::class)->find($quoteId);
                 if ($this->isGranted(QuoteVoterAttributes::CAN_MANAGE_QUOTE, $quote)){
-                    dump($quote->getId());
                     if(!$quote->getIsSigned()) {
                     $entityManager->remove($quote);
                     $this->addFlash('success', 'Quote '.$quote->getFormatedNumber().' has been deleted successfully');
