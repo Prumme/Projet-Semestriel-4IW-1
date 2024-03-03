@@ -4,18 +4,19 @@ namespace App\Controller;
 
 use App\Entity\Company;
 use App\Entity\Product;
-use Symfony\Component\HttpFoundation\Request;
-use Doctrine\ORM\EntityManagerInterface;
-
-use App\Repository\ProductRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use App\Form\ProductType;
 use App\Table\ProductsTable;
-use App\Security\Voter\Attributes\ProductVoterAttributes;
-use App\Security\Voter\Attributes\CompanyVoterAttributes;
+
+use App\Repository\ProductRepository;
+use App\Security\AuthentificableRoles;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use App\Security\Voter\Attributes\CompanyVoterAttributes;
+use App\Security\Voter\Attributes\ProductVoterAttributes;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/company/{company}/product')]
 class ProductController extends AbstractController
@@ -24,7 +25,7 @@ class ProductController extends AbstractController
     #[IsGranted(CompanyVoterAttributes::CAN_VIEW_COMPANY, subject: 'company')]
     public function index(Company $company, ProductRepository $productRepository): Response
     {
-        $products = $productRepository->findAll();
+        $products = $productRepository->findAllWithinCompany($company);
         $table = new ProductsTable($products, ['company'=>$company]);
         return $this->render('product/index.html.twig', [
             'table' => $table->createTable(),
@@ -42,13 +43,17 @@ class ProductController extends AbstractController
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
+        
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($product);
             $entityManager->flush();
 
+            $this->addFlash('success', 'Product created successfully');
+
             return $this->redirectToRoute('app_product_index', [
                 'company' => $company->getId(),
             ], Response::HTTP_SEE_OTHER);
+
         }
 
         return $this->render('product/new.html.twig', [
@@ -68,6 +73,8 @@ class ProductController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
             
+            $this->addFlash('success', 'Product updated successfully');
+
             return $this->redirectToRoute('app_product_index', [
                 'company' => $company->getId(),
             ], Response::HTTP_SEE_OTHER);
@@ -81,13 +88,17 @@ class ProductController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_product_delete', methods: ['POST'])]
-    #[IsGranted(ProductVoterAttributes::CAN_DELETE_PRODUCT, subject: 'product')]
+    #[IsGranted(AuthentificableRoles::ROLE_USER)]
     public function delete(Request $request, Product $product, Company $company, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$product->getId(), $request->request->get('_token'))) {
+        if (!$this->isGranted(ProductVoterAttributes::CAN_DELETE_PRODUCT, $product)) {
+            $this->addFlash('error', 'You cannot delete this product');
+        } else if ($this->isCsrfTokenValid('delete'.$product->getId(), $request->request->get('_token'))) {
             $entityManager->remove($product);
             $entityManager->flush();
-        }
+
+            $this->addFlash('success', 'Product deleted successfully');
+        } 
 
         return $this->redirectToRoute('app_product_index', [
             'company' => $company->getId(),

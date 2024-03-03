@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\BillingAddress;
+use App\Entity\Company;
 use App\Entity\Customer;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -20,8 +21,7 @@ class CustomerFixtures extends Fixture implements DependentFixtureInterface
         ];
     }
 
-    public function load(ObjectManager $manager): void
-    {
+    private function createCustomers(Company $company,ObjectManager $manager){
         $faker = \Faker\Factory::create();
 
         for($i = 0; $i < 10; $i++){
@@ -33,14 +33,22 @@ class CustomerFixtures extends Fixture implements DependentFixtureInterface
             $customer->setCompanyVatNumber((string) $faker->numberBetween(1000000000000, 9999999999999));
             $customer->setTel($faker->phoneNumber);
             $customer->setEmail($faker->email);
-            $customer->setReferenceCompany($this->getReference("company"));
+            $customer->setReferenceCompany($company);
             $this->createBillingAddress($manager, $customer);
             $manager->persist($customer);
         }
         $manager->flush();
     }
+    public function load(ObjectManager $manager): void
+    {
+        $company = $this->getReference("company");
+        $company2 = $this->getReference("company2");
 
-    public function createBillingAddress($manager, Customer $customer){
+        $this->createCustomers($company, $manager);
+        $this->createCustomers($company2, $manager);
+    }
+
+    private function createBillingAddress($manager, Customer $customer){
         $faker = \Faker\Factory::create();
         $billingAddress = new BillingAddress($manager);
         $billingAddress->setCity($faker->city);

@@ -112,7 +112,15 @@ class QuoteController extends AbstractController
         ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            if($quote->getIsSigned()) throw new BadRequestHttpException("The quote has been signed, it cannot be edited");
+            if($quote->getIsSigned()){ 
+                $this->addFlash('danger', 'The quote has been signed, it cannot be edited');
+                return $this->render('quote/edit.html.twig', [
+                    'quote' => $quote,
+                    'form' => $form,
+                    'company' => $company,
+                ]);
+                // throw new BadRequestHttpException("The quote has been signed, it cannot be edited");
+            }
             $quoteService->cleanBillingRowsDiscounts($quote);
             $quoteService->cleanQuoteDiscounts($quote);
             $entityManager->flush();
@@ -156,7 +164,7 @@ class QuoteController extends AbstractController
                     dump($quote->getId());
                     if(!$quote->getIsSigned()) {
                     $entityManager->remove($quote);
-                    $this->addFlash('success', 'Quote '.$quote->getFormatedNumber().'has been deleted successfully');
+                    $this->addFlash('success', 'Quote '.$quote->getFormatedNumber().' has been deleted successfully');
                     }else
                         $this->addFlash('error', 'You are not allowed to delete the quote '.$quote->getFormatedNumber().' because it has been signed');
 
@@ -230,12 +238,19 @@ class QuoteController extends AbstractController
     #[IsGranted(QuoteVoterAttributes::CAN_MANAGE_QUOTE, subject: 'quote')]
     public function askSignature(Quote $quote,Company $company,URLSignedService $urlSignedService): Response
     {
-        if($quote->getIsSigned()) throw new BadRequestHttpException("The quote has been signed");
+        if($quote->getIsSigned()){
+            $this->addFlash('danger', 'The quote has been signed');
+            return $this->redirectToRoute('app_quote_edit', ['id' => $quote->getId(), 'company' => $company->getId()]);
+            // throw new BadRequestHttpException("The quote has been signed");
+        }
         $signedUrl = $urlSignedService->signURL('app_quote_preview', ['id' => $quote->getId(), 'company' => $company->getId()]);
         $urlSignedService->sendEmail($quote->getCustomer()->getEmail(), TemplatesList::NEW_QUOTE_OPENED,[
             "link"=> $_ENV['IP'] . $signedUrl,
             "name"=>$quote->getCustomer()->getFirstname(),
         ]);
+
+        $this->addFlash('success', 'An email has been sent to the customer');
+
         return $this->redirectToRoute('app_quote_edit', ['id' => $quote->getId(), 'company' => $company->getId()]);
     }
 }

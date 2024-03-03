@@ -29,6 +29,15 @@
                     {{ include('components/buttons/button_link.html.twig',
                         { size:'sm', content:"See users", bg:'secondary', link:path('app_company_user_index',{company:company.id}) })
                     }}
+                    {{ include('components/buttons/button_link.html.twig',
+                        { size:'sm', content:"See Products", bg:'secondary', link:path('app_product_index',{company:company.id}) })
+                    }}
+                    {{ include('components/buttons/button_link.html.twig',
+                        { size:'sm', content:"See Quotes", bg:'secondary', link:path('app_quote_index',{company:company.id}) })
+                    }}
+                    {{ include('components/buttons/button_link.html.twig',
+                        { size:'sm', content:"See Invoices", bg:'secondary', link:path('app_invoice_index',{company:company.id}) })
+                    }}
                 {% endif %}
             {% endblock %}
         {% endembed %}

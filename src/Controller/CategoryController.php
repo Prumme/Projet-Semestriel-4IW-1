@@ -25,7 +25,7 @@ class CategoryController extends AbstractController
     #[IsGranted(CompanyVoterAttributes::CAN_VIEW_COMPANY, subject: 'company')]
     public function index(Company $company, CategoryRepository $categoryRepository): Response
     {
-        $categories = $categoryRepository->findAll();
+        $categories = $categoryRepository->findAllWithinCompany($company);
         $table = new CategoriesTable($categories, ['company'=>$company]);
         return $this->render('category/index.html.twig', [
             'table' => $table->createTable(),
@@ -41,12 +41,15 @@ class CategoryController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
+            $category->setCompany($company);
             $entityManager->persist($category);
             foreach($category->getProducts() as $product){
                 $product->addCategory($category);
                 $entityManager->persist($product);
             }
+            
+            $this->addFlash('success', 'Category created successfully');
+
             $entityManager->flush();
 
             return $this->redirectToRoute('app_category_index', [
@@ -75,6 +78,9 @@ class CategoryController extends AbstractController
                 $product->addCategory($category);
                 $entityManager->persist($product);
             }
+
+            $this->addFlash('success', 'Category updated successfully');
+
             $entityManager->flush();
 
             return $this->redirectToRoute('app_category_index', [
@@ -96,6 +102,9 @@ class CategoryController extends AbstractController
         if ($this->isCsrfTokenValid('delete' . $category->getId(), $request->request->get('_token'))) {
 
             $entityManager->remove($category);
+
+            $this->addFlash('success', 'Category deleted successfully');
+
             $entityManager->flush();
         }
 
