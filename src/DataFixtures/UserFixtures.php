@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Company;
 use App\Entity\User;
 use App\Security\AuthentificableRoles;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -25,24 +26,10 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $this->passwordEncoder = $passwordEncoder;
     }
 
-    public function load(ObjectManager $manager): void
-    {
-
-        $company = $this->getReference("company");
-
-        $superAdmin = new User();
-        $superAdmin->setEmail("superadmin@superadmin");
-        $superAdmin->setFirstname("superadmin");
-        $superAdmin->setLastname("superadmin");
-        $superAdmin->setPassword($this->passwordEncoder->hashPassword($superAdmin, 'superadmin'));
-        $superAdmin->setRoles([AuthentificableRoles::ROLE_SUPER_ADMIN]);
-        $superAdmin->setActivate(true);
-        $superAdmin->setCompany($company); // not logical but it's just for the demo 
-        $manager->persist($superAdmin);
-
+    private function createUsers(Company $company, ObjectManager $manager, $alias=""){
 
         $admin = new User();
-        $admin->setEmail("admin@admin");
+        $admin->setEmail("admin$alias@admin");
         $admin->setFirstname("admin");
         $admin->setLastname("admin");
         $admin->setPassword($this->passwordEncoder->hashPassword($admin, 'admin'));
@@ -52,7 +39,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $manager->persist($admin);
 
         $user = new User();
-        $user->setEmail("user@user");
+        $user->setEmail("user$alias@user");
         $user->setFirstname("user");
         $user->setLastname("user");
         $user->setPassword($this->passwordEncoder->hashPassword($user, 'user'));
@@ -74,5 +61,23 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         }
 
         $manager->flush();
+    }
+    public function load(ObjectManager $manager): void
+    {
+        $superAdmin = new User();
+        $superAdmin->setEmail("superadmin@superadmin");
+        $superAdmin->setFirstname("superadmin");
+        $superAdmin->setLastname("superadmin");
+        $superAdmin->setPassword($this->passwordEncoder->hashPassword($superAdmin, 'superadmin'));
+        $superAdmin->setRoles([AuthentificableRoles::ROLE_SUPER_ADMIN]);
+        $superAdmin->setActivate(true);
+        $superAdmin->setCompany($this->getReference('superCompany'));
+        $manager->persist($superAdmin);
+
+        $company = $this->getReference("company");
+        $company2 = $this->getReference("company2");
+
+        $this->createUsers($company,$manager);
+        $this->createUsers($company2,$manager,"+2");
     }
 }

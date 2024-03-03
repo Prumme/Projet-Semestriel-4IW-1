@@ -24,7 +24,7 @@ class ProductController extends AbstractController
     #[IsGranted(CompanyVoterAttributes::CAN_VIEW_COMPANY, subject: 'company')]
     public function index(Company $company, ProductRepository $productRepository): Response
     {
-        $products = $productRepository->findAll();
+        $products = $productRepository->findAllWithinCompany($company);
         $table = new ProductsTable($products, ['company'=>$company]);
         return $this->render('product/index.html.twig', [
             'table' => $table->createTable(),

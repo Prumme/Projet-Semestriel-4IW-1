@@ -28,8 +28,8 @@ class QuoteRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('q')
             ->select('q')
-            ->join('q.owner',"o")
-            ->where("o.company = :company")
+            ->leftJoin('q.owner',"o")
+            ->andWhere('o.company = :company')
             ->setParameter('company', $company);
     }
 
@@ -45,10 +45,6 @@ class QuoteRepository extends ServiceEntityRepository
         }
 
         if(!empty($filters->status)){
-            if($filters->status == "none"){
-
-            }
-
             if($filters->status == "draft"){
                 $qb->andWhere("q.signature IS NULL");
             }
@@ -56,9 +52,7 @@ class QuoteRepository extends ServiceEntityRepository
             if($filters->status == "signed"){
                 $qb->andWhere("q.signature IS NOT NULL");
             }
-
         }
-        
 
         return $qb->getQuery()->getResult();
     }

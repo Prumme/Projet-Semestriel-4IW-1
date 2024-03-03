@@ -25,7 +25,7 @@ class CategoryController extends AbstractController
     #[IsGranted(CompanyVoterAttributes::CAN_VIEW_COMPANY, subject: 'company')]
     public function index(Company $company, CategoryRepository $categoryRepository): Response
     {
-        $categories = $categoryRepository->findAll();
+        $categories = $categoryRepository->findAllWithinCompany($company);
         $table = new CategoriesTable($categories, ['company'=>$company]);
         return $this->render('category/index.html.twig', [
             'table' => $table->createTable(),
