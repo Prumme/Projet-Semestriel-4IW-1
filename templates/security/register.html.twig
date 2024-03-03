@@ -6,15 +6,7 @@
 <form method="post" class="p-2 w-screen lg:mx-16">
     {% if error %}
         <div class="text-danger-500">{{ error }}</div>
-    {% endif %}
-
-    {% if app.user %}
-        {# <div class="mb-3">
-            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
-        </div> #}
-    {% endif %}
-
-    
+    {% endif %}    
     <div class="mt-[44rem] lg:mt-0">
     <div class="flex flex-col lg:flex-row  space-y-12 lg:space-y-0 lg:space-x-14 items-center">
         <div class="w-3/4 lg:w-1/2 flex flex-col space-y-8">
