@@ -17,7 +17,7 @@ Not Found
         {% include 'components/titles/title.html.twig' with {text: 'Oooops', underline: true, color: '#21295C'} %}
 
             <h2 class="mt-6 text-black text-2xl">{{ exception.statusText }}</h2>
-            <p class="mt-7 w-3/5 mb-5 text-black text-base">{{ exception.message }}</p>
+            <p class="mt-7 w-3/5 mb-5 text-black text-base">An error occurred on the server, please excuse us for the inconvenience.</p>
             {% include 'components/buttons/button_link.html.twig' with {
                 content: 'Take Me Back to the Trail',
                 link: '/',
