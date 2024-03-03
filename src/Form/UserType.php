@@ -28,8 +28,8 @@ class UserType extends AbstractType
             ->add('lastname')
             ->add('theme', ChoiceType::class, [
                 'choices' => [
-                    'Default' => 'default',
-                    'beyond violet' => 'secondary',
+                    'Green' => 'default',
+                    'Purple' => 'secondary',
                     'Halloween' => 'halloween',
                 ],
                 'placeholder' => 'Choose a theme',

@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\BillingAddressRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: BillingAddressRepository::class)]
 class BillingAddress
@@ -15,15 +17,19 @@ class BillingAddress
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
+    #[Assert\NotNull(message: 'The city is required.')]
     private ?string $city = null;
 
     #[ORM\Column]
+    #[Assert\NotNull(message: 'The zip code is required.')]
     private ?int $zip_code = null;
 
     #[ORM\Column(length: 2)]
+    #[Assert\NotNull(message: 'The country code is required. Example : FR, US')]
     private ?string $country_code = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotNull(message: 'The address line 1 is required.')]
     private ?string $address_line_1 = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -49,7 +55,7 @@ class BillingAddress
         return $this->city;
     }
 
-    public function setCity(string $city): static
+    public function setCity(?string $city): static
     {
         $this->city = $city;
 
@@ -61,7 +67,7 @@ class BillingAddress
         return $this->zip_code;
     }
 
-    public function setZipCode(int $zip_code): static
+    public function setZipCode(?int $zip_code): static
     {
         $this->zip_code = $zip_code;
 
@@ -73,7 +79,7 @@ class BillingAddress
         return $this->country_code;
     }
 
-    public function setCountryCode(string $country_code): static
+    public function setCountryCode(?string $country_code): static
     {
         $this->country_code = $country_code;
 
@@ -85,7 +91,7 @@ class BillingAddress
         return $this->address_line_1;
     }
 
-    public function setAddressLine1(string $address_line_1): static
+    public function setAddressLine1(?string $address_line_1): static
     {
         $this->address_line_1 = $address_line_1;
 

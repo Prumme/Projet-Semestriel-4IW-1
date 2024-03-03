@@ -27,10 +27,9 @@ class CustomerAddressController extends AbstractController
             $entityManager->persist($address);
             $entityManager->flush();
             $this->addFlash('success', 'Billing row created successfully');
-            return $this->redirectToRoute('app_customer_address_edit',[
-                'id' => $address->getId(),
-                'customer' => $customer->getId(),
+            return $this->redirectToRoute('app_customer_edit', [
                 'company' => $company->getId(),
+                'id' => $customer->getId(),
             ]);
         }
 
@@ -52,11 +51,9 @@ class CustomerAddressController extends AbstractController
             $entityManager->persist($address);
             $entityManager->flush();
             $this->addFlash('success', 'Billing row edited successfully');
-            return $this->redirectToRoute('app_customer_address_edit',[
-                'id' => $address->getId(),
-                'address' => $address,
-                'customer' => $customer->getId(),
+            return $this->redirectToRoute('app_customer_edit', [
                 'company' => $company->getId(),
+                'id' => $customer->getId(),
             ]);
         }
 

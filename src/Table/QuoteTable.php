@@ -68,7 +68,7 @@ class QuoteTable extends Table
 
         $this->setGroupedActions([
             [
-                'content'=>"delete",
+                'content'=>"Delete",
                 'icon'=>'trash',
                 'href'=>[
                     'path'=>'app_quote_mass_delete',

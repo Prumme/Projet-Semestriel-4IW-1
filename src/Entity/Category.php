@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use PhpParser\Node\Stmt\Function_;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 class Category
@@ -18,9 +19,11 @@ class Category
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\NotNull(message: 'The name is required.')]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotNull(message: 'The description is required.')]
     private ?string $description = null;
 
     #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'categories')]
@@ -48,7 +51,7 @@ class Category
         return $this->name;
     }
 
-    public function setName(string $name): static
+    public function setName(?string $name): static
     {
         $this->name = $name;
 
@@ -60,7 +63,7 @@ class Category
         return $this->description;
     }
 
-    public function setDescription(string $description): static
+    public function setDescription(?string $description): static
     {
         $this->description = $description;
 
