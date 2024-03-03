@@ -77,7 +77,7 @@ class DashboardController extends AbstractController
            $totalsByQuartile[$year][$quartile] += floatval($entry["total"]);
        }
 
-       $csvFileName = "financial_statement.csv";
+       $csvFileName = tempnam(sys_get_temp_dir(), 'csv');
 
        $csvFile = fopen($csvFileName, 'w');
 
@@ -94,8 +94,9 @@ class DashboardController extends AbstractController
        fclose($csvFile);
 
        $response = new Response(file_get_contents($csvFileName));
+
        $response->headers->set('Content-Type', 'text/csv');
-       $response->headers->set('Content-Disposition', 'attachment; filename="' . $csvFileName . '"');
+       $response->headers->set('Content-Disposition', 'attachment; filename="financial_statement.csv"');
 
        unlink($csvFileName);
 
