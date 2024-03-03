@@ -51,7 +51,7 @@ class UserCompanyTable extends Table{
             [
                 'content'=>'Delete',
                 'icon'=>'trash',
-                'visible'=> fn($user)=> $connectedUser->getId() !== $user->getId() && $connectedUser->hasRole(AuthentificableRoles::ROLE_COMPANY_ADMIN) && !$user->hasUpperRole($connectedUser),
+                'visible'=> fn($user)=> $connectedUser->getId() !== $user->getId() && ($connectedUser->hasRole(AuthentificableRoles::ROLE_COMPANY_ADMIN,)  || $connectedUser->hasUpperRole($user)) && !$user->hasUpperRole($connectedUser),
                 "href"=> [
                     'csrf'=> fn($item)=> 'delete' . $item->getId(),
                     'method'=>'post',

@@ -24,11 +24,11 @@ class Product
     private ?string $description = null;
 
     #[ORM\ManyToOne(inversedBy: 'products')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Company $company = null;
 
     #[ORM\ManyToOne(inversedBy: 'products')]
-    #[ORM\JoinColumn(nullable: true)]
+    #[ORM\JoinColumn(nullable: true,onDelete: 'CASCADE')]
     private ?User $user_id = null;
 
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'products')]
