@@ -1,0 +1,66 @@
+form{
+  margin-bottom: 0 !important;
+}
+
+[type="checkbox"]{
+  @apply rounded cursor-pointer border-2 border-primary-500 focus:ring-0 checked:bg-primary-500 checked:focus:bg-primary-500;
+}
+form:not(.no-style){
+  max-width: 900px;
+}
+form:not(.no-style) input{
+  font-size: calc(14 / 16 * 1rem);
+}
+form:not(.no-style)  > div{
+  @apply flex flex-wrap;
+
+  --gap-y : 25px; // make scss var
+  --gap-y-demi : calc(var(--gap-y) / 2);
+  --gap-x : 30px; // make scss var
+  --gap-x-demi : calc(var(--gap-x) / 2);
+
+  gap: var(--gap-y) var(--gap-x);
+  padding-bottom: var(--gap-y);
+  /* Generate input group sizes available */
+  /* All the other elements have to take the whole row size */
+  > *:not(:where([class^="input-"],button,a)){
+    flex : 0 0 100%;
+  }
+
+  &.filter-form{
+    gap: 0.75em;
+    padding-bottom: unset ;
+    flex-direction: row;
+      align-items: center;
+    & > * {
+      flex: 1 1 auto !important;
+    }
+    .justify-center{
+      justify-content: flex-start  !important;
+    }
+  }
+
+  $sizes: (
+        75: 75%,
+        66: 66%,
+        60: 60%,
+        50: 50%,
+        40: 40%,
+        33: 33%,
+        30: 30%,
+        25: 25%,
+  );
+
+  @each $className, $sizes in $sizes {
+    .input-#{$className} {
+      flex: 0 0 calc(#{$sizes} - var(--gap-x-demi));
+    }
+  }
+
+  /* On mobile devices all the form elements have to take the whole row size */
+  @media screen and (max-width: 768px) {
+    & > *{
+        flex : 0 0 100% !important;
+    }
+  }
+}

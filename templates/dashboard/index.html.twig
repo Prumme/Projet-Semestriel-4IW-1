@@ -1,0 +1,160 @@
+{% extends 'backoffice.html.twig' %}
+
+{% block title %}Company index{% endblock %}
+
+
+
+
+
+{% block body %}
+
+    <div class="mb-8 flex justify-between">
+        <div>
+            {% include 'components/titles/title.html.twig' with {
+            text: 'Dashboard',
+            underline: true
+            }
+            %}
+        </div>
+        
+        {# TO DISPLAY FOR ACCOUNTANT #}
+        <div>
+            {% include 'components/buttons/button_link.html.twig' with {
+                content: 'Export Financial Statement',
+                size: 'sm',
+            } %} 
+        </div>
+    </div>
+
+    <div class="grid grid-cols-4 gap-6">
+        <div class="h-40 rounded-md border border-primary-200 p-6 flex flex-col justify-between">
+            <div class="flex justify-between">
+                <h3>Net Income</h3>
+            </div>
+            <div class="flex flex-col gap-1">
+                <h2 class="text-primary-500 text-4xl">€ {{monthlyNetIncome}}</h2>
+                <p>
+                {% if IncomeEvolutionRate > 0 %}
+                    <ion-icon name="trending-up-outline" style="color: green; padding-right:5px;"></ion-icon><span style="color:green;">
+                {% else %}
+                    <ion-icon name="trending-down-outline" style="color: red; padding-right:5px;"></ion-icon><span style="color:red;">
+                {% endif %}
+                {{IncomeEvolutionRate}}%</span> from last month
+                </p>
+            </div>
+        </div>
+
+        <div class="h-40 rounded-md border border-primary-200 p-6 flex flex-col justify-between">
+            <div class="flex justify-between">
+                <h3>Quotes per Month</h3>
+                <a href="{{ path('app_quote_index', {'company': company}) }}"><ion-icon name="ellipsis-horizontal-outline"></ion-icon></a>
+            </div>
+            <div class="flex flex-col gap-1">
+                <h2 class="text-primary-500 text-4xl">{{monthlyQuotesCount}}</h2>
+                <p>
+                {% if QuotesCountEvolutionRate > 0 %}
+                    <ion-icon name="trending-up-outline" style="color: green; padding-right:5px;"></ion-icon><span style="color:green;">
+                {% else %}
+                    <ion-icon name="trending-down-outline" style="color: red; padding-right:5px;"></ion-icon><span style="color:red;">
+                {% endif %}
+                {{QuotesCountEvolutionRate}}%</span> from last month
+                </p>
+            </div>
+        </div>
+
+        <div class="h-40 rounded-md border border-primary-200 p-6 flex flex-col justify-between">
+            <div class="flex justify-between">
+                <h3>Average quote Price</h3>
+            </div>
+            <div class="flex flex-col gap-1">
+                <h2 class="text-primary-500 text-4xl">€ {{monthlyAvgQuotePrice}}</h2>
+                <p>
+                {% if AvgQuotePriceEvolutionRate > 0 %}
+                    <ion-icon name="trending-up-outline" style="color: green; padding-right:5px;"></ion-icon><span style="color:green;">
+                {% else %}
+                    <ion-icon name="trending-down-outline" style="color: red; padding-right:5px;"></ion-icon><span style="color:red;">
+                {% endif %}
+                {{AvgQuotePriceEvolutionRate}}%</span> from last month
+                </p>
+            </div>
+        </div>
+        
+        <div class="h-40 rounded-md border border-primary-200 p-6 flex flex-col justify-between">
+            <div class="flex justify-between">
+                <h3>Number of Customers</h3>
+                <a href="{{ path('app_customer_index', {'company': company}) }}"><ion-icon name="ellipsis-horizontal-outline"></ion-icon></a>
+            </div>
+            <div class="flex flex-col gap-1">
+                <h2 class="text-primary-500 text-4xl">{{countCustomer}}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-6 mt-6">
+        <div class="h-70 rounded-xl border border-primary-200 p-4">
+            <h3>Monthly Sales</h3>
+            <canvas data-bind-component="lineChart" data-chart-dataset="{{ monthlyQuoteValue }}" class="w-full"></canvas>
+        </div>
+
+        <div class="h-70 rounded-xl border border-primary-200 p-4">
+            <h3>Best Sellers</h3>
+            <canvas data-bind-component="barChart" data-chart-dataset="{{ bestSellers }}" class="w-full"></canvas>
+
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 gap-6 mt-6 mb-6">
+        <div class="h-82 rounded-xl border border-primary-200 p-4">
+            <h3>Top Quotes</h3>
+            <div class="relative overflow-x-auto">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+                    <thead class="text-xs text-gray-700 uppercase">
+                        <tr>
+                            <th scope="col" class="px-2 py-3">
+                                No
+                            </th>
+                            <th scope="col" class="px-4 py-3">
+                                Companies
+                            </th>
+                            <th scope="col" class="px-4 py-3">
+                                Quote Value
+                            </th>
+                            <th scope="col" class="px-4 py-3">
+                                Owner
+                            </th>
+                            <th scope="col" class="px-4 py-3">
+                                Date
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for quote in topFiveQuotes %}
+                                <tr class="border-b">
+                                    <a href="{{ path('app_quote_edit', {'company': company, 'id': quote.quote_id}) }}">
+                                        <th scope="row" class="px-2 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                            {{ loop.index }}
+                                        </th>
+                                        <td class="px-4 py-4">
+                                            {{ quote.customer_name }}
+                                        </td>
+                                        <td class="px-4 py-4">
+                                            € {{ quote.total_amount }}
+                                        </td>
+                                        <td class="px-4 py-4">
+                                            {{ quote.owner_last_name}} {{ quote.owner_first_name }}
+                                        </td>
+                                        <td class="px-4 py-4">
+                                            {{ quote.date }}
+                                        </td>
+                                    </a>
+                                </tr>
+                            </a>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}

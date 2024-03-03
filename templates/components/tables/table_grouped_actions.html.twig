@@ -1,0 +1,28 @@
+<div data-grouped-actions-container class="hidden flex justify-end bg-primary-500">
+    <div class="flex gap-5 items-center">
+        <div class="text-white opacity-40">
+            <span data-grouped-actions-count></span> selected
+        </div>
+    
+        {% embed 'components/contextMenu/context-menu.html.twig' %}
+            {% block activator %}
+                {% include 'components/buttons/button.html.twig'  with {content:"Groupped Action", size:"sm", bg:'transparent' } %}
+            {% endblock %}
+            {% block items  %}
+                {%  for action in groupedActions %}
+                    <form action="{{ path(action.href.path, action.href.params) }}" method="get">
+                        <input type="hidden" name="selected" data-grouped-action-input>
+                        <input type="hidden" name="_token" value="{{ csrf_token('mass-action-token') }}">
+                        <button type="submit">
+                            {% if(action.icon is defined) %}
+                                <ion-icon name="{{ action.icon }}" ></ion-icon>
+                            {% endif %}
+                            {{ action.content }}
+                        </button>
+                    </form>
+                {% endfor %}
+            {% endblock %}
+        {% endembed %}
+        
+    </div>
+</div>

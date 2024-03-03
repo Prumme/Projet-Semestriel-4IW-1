@@ -1,0 +1,20 @@
+{% extends 'message.html.twig' %}
+{% block title %}We Sent you a Mail{% endblock %}
+{% block content %}
+    <div class="flex flex-col items-center justify-center h-full">
+        <h1 class="text-white">{{ message | default('Your email has been confirmed!') }}</h1>
+        <div class="mt-12">
+            {% include 'svg/illustrations/girl-checkmark.svg.twig' %}
+        </div>
+        <h2 class="text-white">{{ submessage | default('') }}</h2>
+        <p class="underline mt-12">You will be redirect in few second</p>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        setTimeout(function () {
+            window.location.href = "{{ path('app_login') }}";
+        }, 5000);
+    </script>
+{% endblock %}

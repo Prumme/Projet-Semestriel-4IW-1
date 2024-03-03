@@ -1,0 +1,58 @@
+{% set paranormalReviews = [
+        {
+            profile_picture: '/images/exorcist.png',
+            name: 'John Smith',
+            job: 'Exorcist',
+            content: 'I have encountered many cases of demonic possession throughout my career, but what I have seen recently surpasses all understanding.'
+        },
+        {   
+            profile_picture: '/images/ghost_hunter.png',
+            name: 'Jane Doe',
+            job: 'Ghost Hunter',
+            content: 'I have spent nights in the most haunted houses in the country. I can tell you with certainty that spirits are real and they have much to teach us.'
+        },
+        {
+            profile_picture: '/images/ufo_hunter.png',
+            name: 'Alice Johnson',
+            job: 'UFO Hunter',
+            content: 'Since my first encounter with a UFO in my childhood, I have dedicated my life to seeking evidence of the existence of extraterrestrials.'
+        },
+        {
+            profile_picture: '/images/demon_hunter.png',
+            name: 'Bob Thompson',
+            job: 'Demon Hunter',
+            content: 'Demons lurk in the darkest corners of our world, seeking to corrupt and destroy. I am here to track them down and banish them to the abyss.'
+        },
+    ] 
+%}
+
+<div data-bind-component="carousel" class="w-full">
+    <div class="absolute z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full bg-[#FFFFFF] rounded-lg p-6 h-fit">
+        {% for index, review in paranormalReviews %}
+            <div class="review-card {% if index != 0 %}hidden{% endif %}">
+                {% include 'components/cards/review_card.html.twig' with {
+                    profile_picture: review.profile_picture,
+                    name: review.name,
+                    job: review.job,
+                    content: review.content
+                } %}
+            </div>
+        {% endfor %}
+    </div>
+    <div class="absolute z-10 top-48 lg:top-80 left-0 lg:left-20 w-full lg:w-auto">
+        <div class="flex justify-center items-center gap-2">
+            {# Slider Indicators #}
+            {% for _ in paranormalReviews %} 
+                <hr class="indicator border-b-4 w-9 border-grey rounded-full transition-all duration-200">
+            {% endfor %}
+            {# Slider Controls #}
+            <button id="btn-previous" type="button">
+                <ion-icon name="arrow-back-circle-outline" size="small"></ion-icon>
+            </button>
+            <button id="btn-next" type="button">
+                <ion-icon name="arrow-forward-circle-outline" size="small"></ion-icon>
+            </button>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,37 @@
+{# HOW TO USE IT
+
+{% include 'components/inputs/checkbox.html.twig' with {
+            'label': 'Email' OPT,
+            'name': 'email' OPT,
+            'placeholder': 'Email' OPT,
+            'value': last_username OPT,
+            'required': true OPT,
+            'autofocus': true OPT,
+            'icon':'mail' OPT
+} %}
+
+/HOW TO USE IT #}
+
+<div class="inline-flex flex-row-reverse justify-end items-center gap-4 {{ class|default('') }}">
+    {% if label is defined %}
+        {% include 'components/inputs/formLabel.html.twig' with {
+            label: label ?? null,
+            name: name ?? null,
+            id: id ?? null,
+            icon: icon ?? null
+        }%}
+    {% endif %}
+    <input
+        autocomplete="off"
+        class="bg-white dark:bg-[#282828]"
+        type="checkbox"
+        name="{{ (name ?? label ?? '') |default('') }}"
+        id="{{ id|default('') }}"
+        required="{{ required|default('') }}"
+        placeholder="{{ placeholder|default('') }}"
+        {% if value is defined %}
+        value="{{ value|default('') }}"
+        {% endif %}
+        onchange="{{ onChange|default('') }}"
+    >
+</div>

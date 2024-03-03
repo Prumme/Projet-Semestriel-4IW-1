@@ -1,0 +1,135 @@
+{% set tableId = 'table' ~ random() %}
+{% set hasActions = table.actions is defined ? table.actions != null : false  %}
+{% set hasGrouppedActions = table.groupedActions is defined ? table.groupedActions != null : false  %}
+<div id="{{ tableId }}" class="flex  flex-col gap-2">
+    {% if hasActions or filters %}
+    <div class="table_actions flex items-center gap-x-4">
+        <div class="flex-1 w-full">
+            {% if filters %}
+                {{ form(filters, {attr:{class:"filter-form"}}) }}
+            {% endif %}
+        </div>
+        {% for action in table.actions %}
+            <div class="justify-self-end">
+                {% include 'components/buttons/button_link.html.twig' with {size:"sm", icon_left:action.icon, content: action.content, link: path(action.href.path,action.href.params)} %}
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <div>
+  
+        {% if hasGrouppedActions %}
+            {% include 'components/tables/table_grouped_actions.html.twig' with {tableId: tableId, groupedActions: table.groupedActions} %}
+        {% endif %}
+        <div class="w-full overflow-x-auto">
+            <table class="w-full min-w-[800px]">
+                <thead class="border-t-2 border-primary-500">
+                {% if hasGrouppedActions  %}
+                <th class="text-left py-4 px-4">
+                    {% include "components/inputs/checkbox.html.twig" with { onChange: "selectAll" ~ tableId ~"(this)" } %}
+                </th>
+                {% endif %}
+                {% for header in table['headers'] %}
+                    <th class="text-left font-semibold opacity-50 {{ header.class|default('') }}{{ hasGrouppedActions ? '' : ' pl-4 ' }} py-4 dark:text-text-darkmode dark:opacity-100">{{ header.title }}</th>
+                {% endfor %}
+                </thead>
+                <tbody>
+                {% for row in table['rows'] %}
+                    <tr id="item-{{ row['item'].id }}" class="odd:bg-[#F4F5F8] hover:bg-primary-100 hover:cursor-pointer dark:odd:bg-[#282828] hover:dark:bg-[#181818] dark:text-text-darkmode">
+                        {% if hasGrouppedActions  %}
+                        <td class="px-4">
+                            {% include "components/inputs/checkbox.html.twig" with { onChange: "selectOne" ~ tableId ~"(this)" } %}
+                        </td>
+                        {% endif %}
+                        {% for cell in row['cells'] %}
+                            <td class="py-2 {{ cell['header'].class|default('') }} {{ hasGrouppedActions ? '' : 'pl-4' }}">
+                                {% if cell['header'].component != null %}
+                                    {% include cell['header'].component with { item: row['item'], actions: cell['value'] } %}
+                                {% else %}
+                                    {{ cell['value'] }}
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="100" class="text-center py-4">No data available</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="100" class="p-4 text-right text-primary bg-primary-50 dark:bg-[#282828] dark:text-white border-t-2 border-primary-100">
+                        {{ table['rows'] | length }} {{ table['rows'] | length > 1 ? 'items' : 'item' }}
+                    </td>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    const table = {{ tableId }};
+
+    const onSelectHandler = "{{ onSelect|default('') }}";
+    if(onSelectHandler){
+        table.addEventListener('select', function ($event) {
+            eval(onSelectHandler);
+        })
+    }
+
+    function emitSelect(){
+        const selected = getAllSelected()
+        const selectEvent = new CustomEvent('select', {
+            bubbles: true,
+            detail: { message: 'Table selection change', selected }
+        });
+        table.dispatchEvent(selectEvent);
+    }
+
+    function getItemIdFromCheckbox(checkbox){
+        return checkbox.closest('tr').id.replace('item-', '');
+    }
+
+    function getAllSelected(){
+        const selected = [];
+        checkboxes = table.querySelectorAll('td input[type="checkbox"]');
+        for(var i=0, n=checkboxes.length;i<n;i++) {
+            if(checkboxes[i].checked){
+                selected.push(getItemIdFromCheckbox(checkboxes[i]));
+            }
+        }
+
+        // Update grouped action inputs
+        const groupedActionInputs = table.querySelectorAll('[data-grouped-action-input]');
+        for(var i=0, n=groupedActionInputs.length;i<n;i++) {
+            groupedActionInputs[i].value = selected.join(',');
+        }
+
+        // Show/Hide grouped actions container
+        const groupedActionsContainer = table.querySelector('[data-grouped-actions-container]');
+        if(selected.length > 0)
+            groupedActionsContainer.classList.remove('hidden');
+        else
+            groupedActionsContainer.classList.add('hidden');
+
+        // Update grouped actions count
+        const groupedActionsCount = table.querySelector('[data-grouped-actions-count]');
+        groupedActionsCount.innerText = selected.length;
+
+        return selected;
+    }
+
+    function selectAll{{ tableId }}(source) {
+        checkboxes = table.querySelectorAll('input[type="checkbox"]');
+        let selected = [];
+        for(var i=0, n=checkboxes.length;i<n;i++) {
+            checkboxes[i].checked = source.checked;
+        }
+
+        this.emitSelect()
+    }
+
+    function selectOne{{ tableId }}(source) {
+        this.emitSelect()
+    }
+</script>

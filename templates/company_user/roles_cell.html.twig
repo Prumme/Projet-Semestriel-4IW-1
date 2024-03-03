@@ -1,0 +1,10 @@
+<div class="text-xs">
+    {% for role in item.roles %}
+        {% include 'components/chips-pills/chip.html.twig' with {
+            'label': role,
+            'close_icon': false,
+            'type' : 'primary'
+        }
+        %}
+    {% endfor %}
+</div>

@@ -1,0 +1,15 @@
+.animated-flash-delay {
+  width: 0;
+  height: 2px;
+  animation: progressBar linear 3s forwards;
+}
+
+@keyframes progressBar {
+  0% {
+    width: 0;
+  }
+
+  100% {
+    width: 100%;
+  }
+}

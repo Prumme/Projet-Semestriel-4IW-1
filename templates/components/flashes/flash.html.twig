@@ -1,0 +1,31 @@
+{# HOW TO USE IT
+
+{% include 'components/flashes/flash.html.twig' %}
+
+/HOW TO USE IT #}
+
+<script>
+    function removeFlash(id) {
+        document.getElementById(id).remove();
+    }
+
+    addEventListener('DOMContentLoaded', () => {
+        const flash = document.querySelectorAll('[flash]');
+        flash.forEach((element) => {
+            setTimeout(() => {
+                element.remove();
+            }, 3000);
+        });
+    });
+</script>
+
+<div class="fixed bottom-12 right-6 flex flex-col-reverse z-50">
+    {% for type, flasheMessages in app.flashes %}
+        {% for message in flasheMessages %}
+            <div id="flash-{{message}}" flash  onClick="removeFlash('flash-{{message}}')" class="relative bg-white p-4 border-l-4 border-{{type}}-500 shadow-md cursor-pointer hover:shadow-lg mt-3" >
+                {{ message }}
+                <div class="absolute bottom-0 animated-flash-delay left-0 bg-{{type}}-500"></div>
+            </div>
+        {% endfor %}
+    {% endfor %}
+</div>

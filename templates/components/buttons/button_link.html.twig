@@ -1,0 +1,52 @@
+{# HOW TO USE IT #}
+
+{# 
+{% include 'components/buttons/button_link.html.twig' with {
+    content: 'CALLOUT', -- OPTIONAL
+    link: '#', -- OPTIONAL
+    icon_left: 'icon', -- OPTIONAL
+    icon_right: 'icon', -- OPTIONAL
+    gradient: true | false -- OPTIONAL
+} %} 
+#}
+
+{# /HOW TO USE IT #}
+
+{# WHAT DOES IT DO #}
+
+{# 
+    This component is a button with a link. 
+    It can be used to create a redirect button.
+#}
+
+{# /WHAT DOES IT DO #}
+
+{# PATH #}
+
+{# 
+    components/buttons/button_link.html.twig
+#}
+
+{# /PATH #}
+
+{# MORE #}
+
+{# The value of the icon has to be a string of the ion icon https://icon-sets.iconify.design/ion/ #}
+
+{# /MORE #}
+
+{% if gradient is not defined %}
+    {% set gradient = false %}
+{% endif %}
+
+<a href="{{ link | default('#') }}" class="w-min text-white text-{{ size | default('xl') }} bg-{{ bg | default('primary')}}-500 rounded-full px-5 py-2 hover:bg-{{ bg | default('primary')}}-600 duration-200 inline-flex items-center justify-center space-x-2.5  {{ gradient? 'bg-gradient-to-l from-primary-400 to-success-500 hover:to-primary-500':''}}">
+    {% if icon_left is defined %}
+        <ion-icon name="{{ icon_left }}"></ion-icon>
+    {% endif %}
+
+    <span class="whitespace-nowrap">{{ content | default('CALLOUT') }}</span>
+
+    {% if icon_right is defined %}
+        <ion-icon name="{{ icon_right }}" ></ion-icon>
+    {% endif %}
+</a>

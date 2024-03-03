@@ -1,0 +1,7 @@
+<div>
+    {% set status = item.status %}
+	{% include 'components/chips-pills/chip.html.twig' with {
+		label: status['label'],
+		type: status['color']
+	} %}
+</div>

@@ -1,0 +1,211 @@
+@tailwind base;
+@tailwind components;
+@import "forms";
+@import "typography";
+@import "animation";
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-size: 16px;
+  }
+}
+
+@layer base {
+  :root{
+    --white: #F2F4F8;
+    --primary-50: #f8fcfb;
+    --primary-100: #edf7f6;
+    --primary-200: #dbf0ec;
+    --primary-300: #bfe3dd;
+    --primary-400: #7ec8bc;
+    --primary-450: #54C7B7;
+    --primary-500: #49AB9A;
+    --primary-550: #2C757F;
+    --primary-600: #32766b;
+    --primary-700: #25564e;
+    --primary-750: #0E4138;
+    --primary-800: #15322d;
+    --primary-900: #0b1917;
+    --primary-950: #060e0d;
+
+    --secondary-400: #21295C;
+    --secondary-500: #1E143B;
+    --secondary-600: #1a1234;
+
+    --danger-500: #F34E29;
+
+    --success-500: #2e7881;
+
+    --warning-500: #FFD339;
+
+    --info-500: #BBDEF0;
+
+    --black: #1E1E1E;
+
+    --green-blue: #2e7881;
+
+    --secondary-light: #21295C;
+    
+    --primary-darken: #337D70;
+
+    --disabled: #BEDFD9;
+
+    --plain-darkmode: #1e1e1e;
+
+    --text-darkmode: #F2F4F8;
+
+  }
+
+  [theme="secondary"]{
+    --white: #F2F4F8;
+
+    --primary-50: #f8fcfb;
+    --primary-100: #e1d0fa;
+    --primary-200: #dfcff4;
+    --primary-300: #d7bbfa;
+    --primary-400: #c093fb;
+    --primary-450: #a05ef8;
+    --primary-500: #9346F9;
+    --primary-550: #7939cc;
+    --primary-600: #6448c0;
+    --primary-700: #462c9a;
+    --primary-750: #362278;
+    --primary-800: #352176;
+    --primary-900: #1e0b5a;
+    --primary-950: #110340;
+
+    --secondary-400: #21295C;
+    --secondary-500: #1E143B;
+    --secondary-600: #1a1234;
+
+    --danger-500: #F34E29;
+
+    --success-500: #353ccb;
+
+    --warning-500: #ffb039;
+
+    --info-500: #9198b9;
+
+    --black: #1E1E1E;
+
+    --green-blue: #2e7881;
+
+    --secondary-light: #21295C;
+    
+    --primary-darken: #1E143B; //done
+
+    --disabled: #BEDFD9;
+
+    --plain-darkmode: #1e1e1e;
+
+    --text-darkmode: #F2F4F8;
+
+  }
+
+  [theme="halloween"]{
+    --white: #F2F4F8;
+    --primary-50: #f8fcfb;
+    --primary-100: #ebbfaa;
+    --primary-200: #febc9d;
+    --primary-300: #ff9868;
+    --primary-400: #f77d45;
+    --primary-450: #f76a29;
+    --primary-500: #ff580A;
+    --primary-550: #d94b0a;
+    --primary-600: #c24309;
+    --primary-700: #993709;
+    --primary-750: #792c08;
+    --primary-800: #5b2207;
+    --primary-900: #3d1706;
+    --primary-950: #2a1004;
+
+    --secondary-400: #21295C;
+    --secondary-500: #1E143B;
+    --secondary-600: #32766b;
+
+    --danger-500: #F34E29;
+
+    --success-500: #6d33a4;
+
+    --warning-500: #FFD339;
+
+    --info-500: #BBDEF0;
+
+    --black: #1E1E1E;
+
+    --green-blue: #2e7881;
+
+    --secondary-light: #21295C;
+    
+    --primary-darken: #1E143B; //done
+
+    --disabled: #BEDFD9;
+
+  }
+}
+
+@layer components {
+  .nav-active-link {
+    @apply w-full py-2 pl-2 rounded-md bg-transparent bg-gradient-to-r from-green_blue to-primary-500 duration-300 transition ease-in;
+  }
+  .nav-active-link ion-icon {
+    @apply text-white;
+  }
+
+  .nav-unactive-link {
+    @apply w-full py-2 pl-2 rounded-md bg-transparent hover:bg-gradient-to-r from-green_blue to-primary-500 duration-300 transition ease-in;
+  }
+  .nav-unactive-link ion-icon {
+    @apply text-primary-600;
+  }
+
+  .nav-unactive-link:hover ion-icon {
+    @apply text-white;
+  }
+}
+
+#quote_billingRows{
+  padding: 0.75em;
+  background: #f1f1f16e;
+  border: 1px solid rgb(229, 229, 229);
+  .input, [type="text"]{
+    background-color: transparent !important;
+  }
+}
+.billing-row-grid{
+  display: grid;
+  grid-template-columns: 3fr repeat(5, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 0.75em;
+  align-items: center;
+
+  //get the first element with id ending by discount_value
+  [id$="discount_value"]{
+    grid-area: 2 / 2 / 3 / 6;
+    align-self: flex-end;
+  }
+  + .billing-row-grid{
+    margin-top: 1.5em;
+    padding-top: 1.5em;
+    border-top: 1px solid rgb(229, 229, 229);
+  }
+}
+
+#quote_discounts{
+  display: flex;
+  flex-direction: column;
+  gap: 0.75em;
+
+  > div {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.75em;
+    align-items: center;
+    .input, [type="text"]{
+      background-color: transparent !important;
+    }
+  }
+
+
+}

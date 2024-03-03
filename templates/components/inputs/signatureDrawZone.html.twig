@@ -1,0 +1,24 @@
+<div data-bind-component="signatureDrawZone">
+    <form action="{{ action }}" method="post" class="no-style flex flex-col w-1/3 gap-4">
+        <div class="w-full">
+            <canvas width="250" class="border border-primary-500 rounded w-full" ></canvas>
+            <input type="hidden" name="signature">
+        </div>
+        {{ include('components/inputs/input.html.twig',{
+            placeholder: 'Your full name',
+            name: 'signedBy',
+            type: 'text',
+        }) }}
+        {{ include('components/inputs/checkbox.html.twig',{
+            label: 'Agreed',
+            id: 'hasBeenAgreed',
+            name: 'hasBeenAgreed',
+            type: 'checkbox',
+        }) }}
+        {{ include('components/buttons/button.html.twig',{
+            content: 'Sign it',
+            type: 'submit',
+            size:'sm'
+        }) }}
+    </form>
+</div>

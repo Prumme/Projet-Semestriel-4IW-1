@@ -1,0 +1,32 @@
+{% extends 'only_header.html.twig' %}
+
+{% block title %}
+    Link expired
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            {% if sended is defined %}
+                <div class="col-12">
+                    <h1>Link sended !</h1>
+                    <p>The link has been sended to the email : <span class="text-primary-500">{{ email }}</span></p>
+                </div>
+            {% else %}
+                <div class="col-12">
+                    <h1>Link expired</h1>
+                    <p>The link you followed has expired. Would you receive a new link to the email : <span class="text-primary-500">{{ email }}</span></p>
+
+                   <div class="pt-4">
+                       {{ include('components/buttons/button_link.html.twig',{
+                           content: 'Resend link',
+                           size:'md',
+                           link: urlSigned.resentLink
+                       }) }}
+                   </div>
+
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

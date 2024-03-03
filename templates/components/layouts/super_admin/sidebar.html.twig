@@ -1,0 +1,87 @@
+{# OPEN SIDEBAR RESPONSIVE #}
+<div data-bind-component="mainSidebar">
+	<button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" class="fixed inline-flex items-center p-2 mt-2 ms-3 text-sm text-primary-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:text-primary-400 dark:hover:bg-primary-700 dark:focus:ring-primary-600">
+		<span class="sr-only">Open sidebar</span>
+		<ion-icon name="menu-outline" class="text-xl"></ion-icon>
+	</button>
+
+	<aside id="default-sidebar" class="absolute top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:relative sm:translate-x-0" aria-label="Sidebar">
+		<div class="h-full px-3 py-1 overflow-y-auto bg-primary-750">
+			{# LOGO #}
+			<div class="w-full h-full inline-flex flex-col items-start px-2 py-2">
+
+				<div class="flex items-center justify-between">
+					<a href="/" class="flex items-center ps-2.5 mb-5">
+						<img src="{{ asset('images/logo.png') }}" alt="Company name" class="w-20 h-20 mr-2">
+					</a>
+					<button class="absolute top-4 right-4 sm:hidden">
+						<ion-icon name="close-outline" class="text-xl text-white" data-drawer-close="default-sidebar"></ion-icon>
+					</button>
+				</div>
+				{# SIDEBAR #}
+				<ul class="flex flex-col w-full h-full gap-3">
+					{# DASHBOARD #}
+					<li class="w-full px-4">
+						{% include 'components/sidebar/sidebar_title.html.twig' with {title: "Dashboard"} %}
+					</li>
+					{# BALANCE #}
+					<li class="w-full px-4">
+						{# TODO: PUT THE CORRECT ROUTE IN THE path:  #}
+						{% include 'components/sidebar/sidebar_link.html.twig' with
+							{
+								'path': path('app_dashboard'),
+								'icon': 'bar-chart',
+								'title': 'Balance',
+								'active_route': ['app_dashboard']
+							}
+						%}
+					</li>
+					{# COMPANIES #}
+					<li class="w-full px-4">
+						{% include 'components/sidebar/sidebar_link.html.twig' with
+							{
+								'path': path('app_company_index'),
+								'icon': 'business',
+								'title': 'Companies',
+								'active_route': ['app_company_index', 'app_company_new', 'app_company_edit']
+							}
+						%}
+					</li>
+				</ul>
+				{# INFORMATIONS #}
+				<ul class="flex flex-col w-full h-full gap-3">
+					<li class="w-full px-4">
+						{% include 'components/sidebar/sidebar_title.html.twig' with {title: "Informations"} %}
+					</li>
+					{# PROFILE #}
+					<li class="w-full px-4">
+						{% include 'components/sidebar/sidebar_link.html.twig' with
+								{
+									'path': '#profile',
+									'icon': 'person-circle-outline',
+									'title': 'Profile',
+								}
+							%}
+					</li>
+				</ul>
+				<div class="flex-grow basis-full"></div>
+				{# ACTIONS #}
+				<ul class="flex flex-col w-full h-full gap-3">
+					<li class="w-full px-4">
+						{% include 'components/sidebar/sidebar_title.html.twig' with {title: "Actions"} %}
+					</li>
+					{# LOGOUT #}
+					<li class="w-full px-4">
+						{% include 'components/sidebar/sidebar_link.html.twig' with
+							{
+								'path': path('app_logout'),
+								'icon': 'log-out-outline',
+								'title': 'Logout',
+							}
+						%}
+					</li>
+				</ul>
+			</div>
+		</div>
+	</aside>
+</div>

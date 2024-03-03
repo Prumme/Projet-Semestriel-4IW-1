@@ -1,0 +1,18 @@
+{#
+HOW TO USE IT
+
+{% include 'components/inputs/formLabel.html.twig' with {
+        'label': 'Sign in',
+        'name': 'email',
+        'id':'input-id' OPT
+        'icon': 'mail' OPT,
+} %}
+
+/HOW TO USE IT
+#}
+<div class="inline-flex items-center gap-2">
+    {% if(icon) %}
+        <ion-icon name="{{ icon }}" class="text-2xl"></ion-icon>
+    {% endif %}
+    <label for="{{ id | default('') }}">{{ label | capitalize }}</label>
+</div>

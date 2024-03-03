@@ -1,0 +1,30 @@
+{#
+HOW TO USE IT
+
+{% include 'components/sideabr/nav_link.html.twig' with {
+    'path': {{ path('path') }},
+    'icon': 'mail',
+    'title': 'Logout'
+} %}
+
+#}
+{% if active_route is not defined %}
+    {% set active_route = [] %}
+{% endif %}
+
+{% if app.request.get('_route') in active_route %}
+
+<div class="w-full py-2 pl-2 rounded-md bg-transparent bg-gradient-to-r	from-success-500 to-primary-500 duration-300 transition ease-in cursor-pointer">
+    <a href="{{ path }}" class="flex items-center">
+        <ion-icon name="{{ icon }}" class="text-xl text-white "></ion-icon>
+        <span class="ml-3 text-white text-xs">{{ title }}</span>
+    </a>
+</div>
+{% else %}
+<div class="w-full py-2 pl-2 rounded-md group bg-transparent hover:bg-gradient-to-r	from-success-500 to-primary-500 duration-300 transition ease-in cursor-pointer">
+    <a href="{{ path }}" class="flex items-center">
+        <ion-icon name="{{ icon }}" class="text-xl group-hover:text-white text-primary-600"></ion-icon>
+        <span class="ml-3 text-white text-xs">{{ title }}</span>
+    </a>
+</div>
+{% endif %}

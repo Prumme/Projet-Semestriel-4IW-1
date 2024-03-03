@@ -1,0 +1,24 @@
+{% extends 'only_header.html.twig' %}
+
+{% block title %}
+    Link expired
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1>Invoice paid!</h1>
+                <p>
+                    Your invoice has been paid successfully. You can now download your invoice from the link below
+                </p>
+                {{ include('components/buttons/button_link.html.twig', {
+                    'content': 'Download invoice',
+                    'link': previewSignedURL,     
+                    'size': 'md',              
+                    })
+                }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

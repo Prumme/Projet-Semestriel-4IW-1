@@ -1,0 +1,42 @@
+
+<div onclick="discoverBillingRow(event)" onfocus="discoverBillingRow(event)" tabindex="1" class="billing-row-grid" data-billing-row="true">
+    {% set products = form.vars.products %}
+    {% for child in form %}
+        {% if child.vars.name == 'product' %}
+            <div class="inline-block flex-grow">
+                {{ form_label(child) }}
+                {{ include('components/inputs/searchInput.html.twig', {
+                    options: products,
+                    value: child.vars.value,
+                    name: child.vars.full_name,
+                    callback: 'handleSearchSelectedProduct',
+                }) }}
+                {{ form_errors(child) }}
+            </div>
+        {% else %}
+            {{ form_row(child) }}
+        {% endif %}
+    {% endfor %}
+    <div>
+        {{ include('form_themes/collection_delete_script.html.twig') }}
+    </div>
+    <script>
+        function discoverBillingRow(event){
+            let idBillingRow = event.currentTarget.id
+            if(!idBillingRow){
+                window.Quote.getInstance().exploreBillingRows()
+            }
+        }
+        function handleSearchSelectedProduct(value,searchInput){
+            let billingRowContainer = searchInput.closest('[data-billing-row="true"]')
+            const billinRow = window.Quote.getInstance().getBillingRow(billingRowContainer.id)
+            if(!billinRow){
+                window.Quote.getInstance().exploreBillingRows()
+                return this.handleSearchSelectedProduct(value,searchInput)
+            }
+            billinRow.setVal('unit',value.price)
+        }
+        window.discoverBillingRow = discoverBillingRow
+        window.handleSearchSelectedProduct = handleSearchSelectedProduct
+    </script>
+</div>

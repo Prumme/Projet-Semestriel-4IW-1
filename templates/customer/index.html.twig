@@ -1,0 +1,7 @@
+{% extends 'backoffice.html.twig' %}
+
+{% block title %}Customer index{% endblock %}
+
+{% block body %}
+    {% include 'components/layouts/table_layout.html.twig' with {title:'Customers', table:table} %}
+{% endblock %}

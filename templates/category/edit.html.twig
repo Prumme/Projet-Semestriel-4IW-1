@@ -1,0 +1,32 @@
+{% extends 'backoffice.html.twig' %}
+
+{% block title %}Edit Category
+{% endblock %}
+
+{% block body %}
+	<div class="flex flex-col gap-4">
+		<h1>Edit Category</h1>
+
+		{{ include('components/buttons/button_link.html.twig',{
+				size:'sm',
+				bg:'secondary',
+				content:"Go back",
+				icon_left:"arrow-back-circle-outline",
+				link:path('app_category_index', {'company':company.id})
+			}) }}
+
+		{% embed 'components/layouts/form_layout.html.twig' with {'content': 'Update', icon:"create-outline"} %}
+            {% block footer %}
+                {% include('components/layouts/action_form_layout.html.twig') with {
+                    item: category,
+					csrf_id:'delete',
+					content:'Delete',
+					confirm:"Are you sure you want to delete this category? This action cannot be undone.",
+					icon:'trash-outline',
+					bg:'danger',
+                    action: path('app_category_delete', {id:category.id, company:company.id})
+                } %}
+            {% endblock %}
+        {% endembed %}
+	</div>
+{% endblock %}

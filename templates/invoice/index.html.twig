@@ -1,0 +1,9 @@
+{% extends 'backoffice.html.twig' %}
+
+{% block title %}
+	Invoice index
+{% endblock %}
+
+{% block body %}
+	{% include 'components/layouts/table_layout.html.twig' with {title:"Invoices", table:table,filters:filterForm} %}
+{% endblock %}

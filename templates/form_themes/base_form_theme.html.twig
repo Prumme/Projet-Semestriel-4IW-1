@@ -1,0 +1,155 @@
+{% block form_row %}
+    {% set classes = attr.class is defined ?  attr.class : '' %}
+    {% set inputClasses =  "w-full px-0 py-2.5 border-0 border-b-2 border-primary-500 dark:bg-[#282828] dark:text-white text-primary-500 focus:border-secondary-500  disabled:text-disabled focus:text-secondary-500 focus:ring-0 " %}
+    <div class="inline-block {{ classes }}"
+            {% if form.vars.id is defined %}
+                id="{{ form.vars.id }}"
+            {% endif %}>
+        {{ form_label(form) }}
+        {{ form_widget(form,{
+            'attr': {
+                'class': inputClasses
+            }
+        }) }}
+        {{ form_errors(form) }}
+    </div>
+{% endblock %}
+
+{% block button_row %}
+    {% set classes = attr.class is defined ?  attr.class : '' %}
+    <div class="inline-block flex justify-center items-end {{ classes }}">
+        {{ form_widget(form) }}
+    </div>
+{% endblock %}
+{% block button_widget %}
+    {{ include('components/buttons/button.html.twig',{
+        content: form.vars.label,
+        icon: form.vars.attr.icon is defined ? form.vars.attr.icon : null,
+        size: 'sm'
+    }) }}
+{% endblock %}
+
+
+{% block choice_widget %}
+    {{ include('components/inputs/select.html.twig') }}
+{% endblock %}
+
+{# Reset collection Type #}
+{% block collection_row %}
+    {% set uniqueId = random() %}
+    <div class="flex justify-between">
+    {{ form_label(form) }}
+    {{ include('form_themes/collection_adding_script.html.twig',{uniqueId:uniqueId}) }}
+    </div>
+    {%set lastChild = form.children|last %}
+    {% set lastChildName = lastChild.vars.name | default("0")  %}
+    {{ form_widget(form,{
+        'attr':{
+            'data-collection-unique-id': uniqueId,
+            'data-next-index': (lastChildName | number_format) + 1
+        }
+    }) }}
+    {{ form_errors(form) }}
+{% endblock %}
+
+{% block billing_row_row %}
+    {{ form_widget(form) }}
+    {{ form_errors(form) }}
+{% endblock %}
+
+{% block billing_row_widget %}
+    {{ include('components/billingRow/billingRow_widget.html.twig') }}
+{% endblock %}
+
+{% block quote_discount_row %}
+    {{ form_widget(form) }}
+    {{ form_errors(form) }}
+{% endblock %}
+
+{% block quote_discount_widget %}
+  <div>
+      {% for child in form %}
+          {{ form_row(child) }}
+      {% endfor %}
+      <div>
+          {{ include('form_themes/collection_delete_script.html.twig') }}
+      </div>
+  </div>
+{% endblock %}
+
+
+{% block form_errors %}
+{%- if errors|length > 0 -%}
+    <ul>
+        {%- for error in errors -%}
+            <li><span class="text-danger-500 text-sm block pt-2">{{ error.message }}</span></li>
+        {%- endfor -%}
+    </ul>
+    {%- endif -%}
+
+{% endblock %}
+
+{% block checkbox_row %}
+    {% set inputClasses =  "w-full px-0 py-2.5 border-0 border-b-2 border-primary-500 text-primary-500 focus:border-secondary-500 focus:text-secondary-500  focus:ring-0 " %}
+    {% set classes = attr.class is defined ?  attr.class : '' %}
+    <div class="inline-flex items-center gap-2  {{ classes }} ">
+        {{ form_widget(form) }}
+        {{ form_label(form) }}
+        {{ form_errors(form) }}
+    </div>
+
+{% endblock %}
+
+
+{%- block form_label -%}
+    {% set icon = form.vars.attr.icon is defined ? form.vars.attr.icon : '' %}
+    {# Create tailwind flex container #}
+    <div class="inline-flex items-center gap-2">
+        {% if(icon) %}
+            <ion-icon name="{{ icon }}" class="text-2xl"></ion-icon>
+        {% endif %}
+        <label for="">{{ (form.vars.label ?? name ?? title) | capitalize }}</label>
+    </div>
+{%- endblock form_label -%}
+
+{%- block vich_file_row -%}
+    {%- set force_error = true -%}
+    {{- block('form_row') -}}
+{%- endblock -%}
+
+{%- block vich_file_widget -%}
+    <div class="vich-file">
+        {%- if errors|length > 0 -%}
+            {%- set attr = attr|merge({class: (attr.class|default('') ~ ' is-invalid')|trim}) -%}
+        {%- endif -%}
+        {{- form_widget(form.file, {attr: attr}) -}}
+        {%- if form.delete is defined -%}
+            {{- form_row(form.delete) -}}
+        {%- endif -%}
+    </div>
+{%- endblock -%}
+
+{%- block vich_image_row -%}
+    {%- set force_error = true -%}
+    {{- block('form_row') -}}
+{%- endblock -%}
+
+{%- block vich_image_widget -%}
+    <div class="vich-image">
+        {%- if errors|length > 0 -%}
+            {%- set attr = attr|merge({class: (attr.class|default('') ~ ' is-invalid')|trim}) -%}
+        {%- endif -%}
+        {{- form_widget(form.file, {attr: attr}) -}}
+        {%- if form.delete is defined -%}
+            {{- form_row(form.delete) -}}
+        {%- endif -%}
+
+        {%- if image_uri -%}
+            <a href="{{ asset_helper is same as(true) ? asset(image_uri) : image_uri }}" download>
+                <img class="rounded-full w-40 h-40" src="{{ asset_helper is same as(true) ? asset(image_uri) : image_uri }}" alt="" />
+            </a>
+        {%- endif -%}
+    </div>
+{%- endblock -%}
+
+
