@@ -116,7 +116,7 @@ class Invoice
     }
     public function getQuoteNumber(): ?string
     {
-        return $this->quote->getFormattedNumber();
+        return $this->quote->getFormatedNumber();
     }
 
     public function setQuote(?Quote $quote): static

@@ -1,7 +1,7 @@
 {% if actions|length > 0 %}
 {% embed 'components/contextMenu/context-menu.html.twig' %}
     {% block activator %}
-        <ion-icon name="ellipsis-vertical" class="text-secondary-500 cursor-pointer text-xl"></ion-icon>
+        <ion-icon name="ellipsis-vertical" class="text-secondary-500 dark:text-[#FFFFFF] cursor-pointer text-xl"></ion-icon>
     {% endblock %}
     {% block items  %}
           {% for action in actions %}
@@ -9,7 +9,7 @@
                  {% if action.href.csrf|default(false) %}
                     <input type="hidden" name="_token" value="{{ csrf_token(action.href.csrf) }}">
                  {% endif %}
-                <button type="submit" class="flex gap-4">
+                <button type="submit" class="flex gap-4 items-center">
                     {% if(action.icon is defined) %}
                         <ion-icon name="{{ action.icon }}" ></ion-icon>
                     {% endif %}

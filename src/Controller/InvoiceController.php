@@ -82,11 +82,14 @@ class InvoiceController extends AbstractController
         $templateId = TemplatesList::NEW_INVOICE;
         $user = $quote->getCustomer()->getIdentity();
         $signedUrl = $urlSignedService->signURL('app_invoice_preview', ['invoice' => $invoice->getId(), 'company' => $company->getId()]);
-
+        $pay_link = $urlSignedService->signURL('app_invoice_paid', ['invoice' => $invoice->getId(), 'company' => $company->getId()]);
+        
         $templateVariables = [
             'name' => $user,
             'link' => $_ENV['IP'] . $signedUrl,
+            'pay_link' => $_ENV['IP'] . $pay_link, 
         ];
+
         $this->sendinblueService->sendEmailWithTemplate($to, $templateId, $templateVariables);
 
         $this->addFlash('success', 'Invoice created successfully!');
@@ -96,6 +99,46 @@ class InvoiceController extends AbstractController
         ], Response::HTTP_SEE_OTHER);
     }
 
+    #[Route('/{invoice}/paid', name: 'app_invoice_paid', methods: ['GET'])]
+    public function paid(Request $request, Invoice $invoice, Company $company, EntityManagerInterface $entityManager, URLSignedService $urlSignedService): Response
+    {
+        if($invoice->getStatus() === Invoice::STATUS_CANCELLED) throw $this->createNotFoundException('The invoice has been cancelled.');
+        if($invoice->getStatus() === Invoice::STATUS_PAID) throw $this->createNotFoundException('The invoice has already been paid.');
+
+        $invoice->setStatus(Invoice::STATUS_PAID);
+        $quote = $invoice->getQuote();
+        $entityManager->flush();
+        
+        try {
+            $urlSignedService->verifyURL($request);
+        }catch (URLSignedException $e){
+            if(!$e->hasExpired()) throw $e;
+            $urlSigned = $e->getUrlSigned();
+            $customerEmail = $quote->getCustomer()->getEmail();
+            $renderData = [
+                'urlSigned' => $urlSigned,
+                'email' => $customerEmail,
+            ];
+            if ($urlSigned->isResent()) {
+                $newUrl = $urlSignedService->signURL('app_quote_paid', ['id' => $invoice->getId(), 'company' => $company->getId()], '+1 hours');
+                $urlSignedService->sendEmail($quote->getCustomer()->getEmail(), TemplatesList::SIGNED_URL_EXPIRED,[
+                    "link"=> $_ENV['IP'] . $newUrl,
+                    "name"=>$quote->getCustomer()->getFirstname(),
+                ]);
+                $renderData = [
+                    ...$renderData,
+                    'sended' => true,
+                ];
+            }
+            return $this->render($urlSigned->getTemplate(), $renderData);
+        }
+
+        $urlSigned = $urlSignedService->signURL('app_invoice_preview', ['invoice' => $invoice->getId(), 'company' => $company->getId()]);
+
+        return $this->render('invoice/paid.html.twig', [
+            'previewSignedURL' => $urlSigned,
+        ]);
+    }
 
     #[Route('/{invoice}/edit', name: 'app_invoice_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request,Company $company, Invoice $invoice, EntityManagerInterface $entityManager): Response
@@ -105,6 +148,8 @@ class InvoiceController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
+
+            $this->addFlash('success', 'Invoice updated successfully!');
         }
 
         return $this->render('invoice/edit.html.twig', [
@@ -123,9 +168,10 @@ class InvoiceController extends AbstractController
             $entityManager->flush();
         }
 
+        $this->addFlash('danger', 'Invoice deleted successfully!');
+
         return $this->redirectToRoute('app_invoice_index', [], Response::HTTP_SEE_OTHER);
     }
-
 
     #[Route('/{invoice}/preview', name: 'app_invoice_preview', methods: ['GET'])]
     public function preview(Request $request, Company $company,Invoice $invoice,  URLSignedService $urlSignedService): Response
@@ -158,6 +204,7 @@ class InvoiceController extends AbstractController
                 return $this->render($urlSigned->getTemplate(), $renderData);
             }
         }
+
         return $this->render('invoice/preview.html.twig', [
             'invoice'=> $invoice,
             'quote' => $quote,
