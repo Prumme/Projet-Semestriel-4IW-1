@@ -2,14 +2,16 @@
 
 namespace App\Table;
 
+use App\Security\Voter\Attributes\CustomerVoterAttributes;
 use App\Table\Core\Table;
 
 class CustomersTable extends Table
 {
-    protected array $neededData = ['company'];
+    protected array $neededData = ['company','security'];
     protected function buildTable(): void
     {
         $company = $this->data['company'];
+        $security = $this->data['security'];
 
         $this->setHeaders([
             [
@@ -43,6 +45,7 @@ class CustomersTable extends Table
             [
                 'content' => 'Delete',
                 'icon' => 'trash',
+                'visible'=> fn($item) => $security->isGranted(CustomerVoterAttributes::CAN_DELETE_CUSTOMER,$item),
                 "href" => [
                     'csrf' => fn ($item) => 'delete' . $item->getId(),
                     'method' => 'post',

@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Security\AuthentificableRoles;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Entity\Company;
@@ -23,10 +25,10 @@ class CategoryController extends AbstractController
 
     #[Route('/', name: 'app_category_index', methods: ['GET'])]
     #[IsGranted(CompanyVoterAttributes::CAN_VIEW_COMPANY, subject: 'company')]
-    public function index(Company $company, CategoryRepository $categoryRepository): Response
+    public function index(Company $company, CategoryRepository $categoryRepository, Security $security): Response
     {
         $categories = $categoryRepository->findAllWithinCompany($company);
-        $table = new CategoriesTable($categories, ['company'=>$company]);
+        $table = new CategoriesTable($categories, ['company'=>$company,'security'=>$security]);
         return $this->render('category/index.html.twig', [
             'table' => $table->createTable(),
         ]);
@@ -37,7 +39,7 @@ class CategoryController extends AbstractController
     public function new(Request $request, Company $company, EntityManagerInterface $entityManager): Response
     {
         $category = new Category();
-        $form = $this->createForm(CategoryType::class, $category);
+        $form = $this->createForm(CategoryType::class, $category, ['company'=>$company]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -68,7 +70,7 @@ class CategoryController extends AbstractController
     #[IsGranted(CategoryVoterAttributes::CAN_EDIT_CATEGORY, subject: 'category')]
     public function edit(Request $request, Company $company, Category $category, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(CategoryType::class, $category);
+        $form = $this->createForm(CategoryType::class, $category, ['company'=>$company]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -96,15 +98,14 @@ class CategoryController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_category_delete', methods: ['POST'])]
-    #[IsGranted(CategoryVoterAttributes::CAN_DELETE_CATEGORY, subject: 'category')]
+    #[IsGranted(AuthentificableRoles::ROLE_USER)]
     public function delete(Request $request, Company $company, Category $category, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $category->getId(), $request->request->get('_token'))) {
-
+        if(!$this->isGranted(CategoryVoterAttributes::CAN_DELETE_CATEGORY, $category)){
+            $this->addFlash('error', 'You are not allowed to delete this category');
+        } else if ($this->isCsrfTokenValid('delete' . $category->getId(), $request->request->get('_token'))) {
             $entityManager->remove($category);
-
             $this->addFlash('success', 'Category deleted successfully');
-
             $entityManager->flush();
         }
 

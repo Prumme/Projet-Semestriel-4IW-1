@@ -2,13 +2,15 @@
 
 namespace App\Table;
 
+use App\Security\Voter\Attributes\ProductVoterAttributes;
 use App\Table\Core\Table;
 
 class ProductsTable extends Table{
-    protected array $neededData = ['company'];
+    protected array $neededData = ['company','security'];
     protected function buildTable() : void
     {
         $company = $this->data['company'];
+        $security = $this->data['security'];
 
         $this->setHeaders([
             [
@@ -21,7 +23,6 @@ class ProductsTable extends Table{
             ],
             [
                 'title'=>"Price",
-                //'component'=>'product/price_cell.html.twig',
                 'key'=>'price'
             ],
             [
@@ -38,7 +39,7 @@ class ProductsTable extends Table{
                 "href"=> [
                     'path'=>'app_product_edit',
                     'params'=>[
-                        'id'=> fn($item)=>$item->getId(),
+                        'id'=> fn($item) => $item->getId(),
                         'company'=> $company->getId(),
                     ]
                 ],
@@ -46,8 +47,9 @@ class ProductsTable extends Table{
             [
                 'content'=>'Delete',
                 'icon'=>'trash',
+                'visible'=> fn($item) => $security->isGranted(ProductVoterAttributes::CAN_DELETE_PRODUCT,$item),
                 "href"=> [
-                    'csrf'=> fn($item)=> 'delete' . $item->getId(),
+                    'csrf'=> fn($item) => 'delete' . $item->getId(),
                     'method'=>'post',
                     'path'=>'app_product_delete',
                     'params'=>[
