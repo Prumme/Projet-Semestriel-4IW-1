@@ -5,12 +5,12 @@
 {% block body %}
     <h1 class="dark:text-white">Profile</h1>
     <div class="flex flex-row gap-7">
-        <div class="w-64 mt-5">
+        <div class="flex-grow mt-5">
             {% embed 'components/layouts/form_layout.html.twig' with {'content': 'Save', icon:"create-outline"} %}
                     
             {% endembed %}
         </div>
-        <div class="flex flex-col">
+        <div class="flex flex-col w-64">
             <div>
                 <h2 class="dark:text-white">My Quotes</h2>
                 {% if quotes is not empty %}
