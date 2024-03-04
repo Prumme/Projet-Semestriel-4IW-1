@@ -21,9 +21,9 @@ class DashboardController extends AbstractController
 {
     #[Route('/', name: 'app_dashboard', methods: ['GET'])]
     #[IsGranted(AuthentificableRoles::ROLE_USER)]
-    public function index(BillingRowRepository $billingRowRepository, QuoteRepository $quoteRepository, CustomerRepository $customerRepository): Response
+    public function index(BillingRowRepository $billingRowRepository, QuoteRepository $quoteRepository, CustomerRepository $customerRepository, InvoiceRepository $invoiceRepository): Response
     {
-        $monthlyNetIncome = $billingRowRepository->monthlyNetIncome($this->getUser()->getCompany()->getId());
+        $monthlyNetIncome = $invoiceRepository->monthlyNetIncome($this->getUser()->getCompany());
 
         $monthlyQuotesCount = $quoteRepository->monthlyQuotesCount($this->getUser()->getCompany()->getId());
 
@@ -33,7 +33,7 @@ class DashboardController extends AbstractController
 
         $topFiveQuotes = $quoteRepository->topFiveQuotes($this->getUser()->getCompany()->getId());
 
-        $monthlyQuoteValue = $quoteRepository->getAllQuoteValuesByDay($this->getUser()->getCompany()->getId());
+        $monthlyQuoteValue = $invoiceRepository->getAllQuoteValuesByDay($this->getUser()->getCompany());
 
         $bestSellers = $billingRowRepository->getBestSellers($this->getUser()->getCompany()->getId());
 

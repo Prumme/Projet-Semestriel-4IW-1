@@ -96,7 +96,6 @@ class QuoteRepository extends ServiceEntityRepository
             ->leftJoin('q.billingRows', 'br')
             ->join('q.owner', 'o')
             ->where('o.company = :company')
-            ->andWhere('q.signature IS NOT NULL')
             ->andWhere('q.emited_at BETWEEN :start AND :end')
             ->groupBy('q.id');
 
@@ -198,30 +197,6 @@ class QuoteRepository extends ServiceEntityRepository
             ->setParameter('start', new \DateTime('first day of this month'))
             ->setParameter('end', new \DateTime('last day of this month'))
             ->getResult();
-        foreach($result as $key => $value) {
-            $result[$key]['day'] = $value['day']->format('Y-m-d');
-        }
-        return $result;
-    }
-
-    public function getAllQuoteValuesByDay($company): array
-    {
-        $qb = $this->createQueryBuilder('q')
-            ->select("q.emited_at AS day", 'SUM(br.unit * br.quantity) AS total_amount')
-            ->join('q.billingRows', 'br')
-            ->join('q.owner', 'o')
-            ->where('o.company = :company')
-            ->andWhere('q.emited_at BETWEEN :start AND :end')
-            ->groupBy('day')
-            ->orderBy('day');
-
-        $result = $qb
-            ->getQuery()
-            ->setParameter('company', $company)
-            ->setParameter('start', new \DateTime('first day of this month'))
-            ->setParameter('end', new \DateTime('last day of this month'))
-            ->getResult();
-        
         foreach($result as $key => $value) {
             $result[$key]['day'] = $value['day']->format('Y-m-d');
         }
