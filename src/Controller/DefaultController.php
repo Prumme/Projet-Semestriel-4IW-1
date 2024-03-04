@@ -2,14 +2,15 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
-use Doctrine\ORM\EntityManagerInterface;
-use App\Form\ContactUsType;
-use Symfony\Component\Routing\Annotation\Route;
+use App\Data\ContactUsDTO;
 use App\Data\TemplatesList;
+use App\Form\ContactUsType;
 use App\Service\EmailService;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class DefaultController extends AbstractController
 {
@@ -26,7 +27,8 @@ class DefaultController extends AbstractController
     #[Route('/contact-us', name: 'app_contact_us')]
     public function contactUs(Request $request, EntityManagerInterface $entityManagerInterface): Response
     {
-        $form = $this->createForm(ContactUsType::class, null, [
+        $contactData = new ContactUsDTO();
+        $form = $this->createForm(ContactUsType::class, $contactData, [
             'action' => $this->generateUrl('app_contact_us'),
             'method' => 'GET',
         ]);

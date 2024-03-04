@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\User;
+use App\Data\ContactUsDTO;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -24,8 +24,8 @@ class ContactUsType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        // $resolver->setDefaults([
-        //     'data_class' => User::class,
-        // ]);
+        $resolver->setDefaults([
+             'data_class' => ContactUsDTO::class,
+         ]);
     }
 }
