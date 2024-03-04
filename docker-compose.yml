@@ -20,21 +20,21 @@ services:
       start_period: 30s
     environment:
       APP_ENV: ${APP_ENV:-prod}
-      DATABASE_URL: postgresql://${POSTGRES_USER:-symfony}:${POSTGRES_PASSWORD:-ChangeMe}@database:5432/${POSTGRES_DB:-app}?serverVersion=${POSTGRES_VERSION:-13}
+      DATABASE_URL: postgresql://kfAbHdhbhHTzMrbF:gzExETedTBpUIaK@database:5432/app?serverVersion=${POSTGRES_VERSION:-13}
       # Run "composer require symfony/mercure-bundle" to install and configure the Mercure integration
-      MERCURE_URL: ${CADDY_MERCURE_URL:-http://caddy/.well-known/mercure}
+      ll: ${CADDY_MERCURE_URL:-http://caddy/.well-known/mercure}
       MERCURE_PUBLIC_URL: https://${SERVER_NAME:-localhost}/.well-known/mercure
       MERCURE_JWT_SECRET: ${CADDY_MERCURE_JWT_SECRET:-!ChangeMe!}
-  adminer:
-    image: adminer:latest
-    container_name: adminer
-    restart: always
-    environment:
-      ADMINER_DEFAULT_SERVER: database
-      ADMINER_DEFAULT_DB_HOST: database
-      ADMINER_DEFAULT_DB_NAME: app
-    ports:
-      - 7777:8080
+  #adminer:
+  #  image: adminer:latest
+  #  container_name: adminer
+  #  restart: always
+  #  environment:
+  #    ADMINER_DEFAULT_SERVER: database
+  #    ADMINER_DEFAULT_DB_HOST: database
+  #    ADMINER_DEFAULT_DB_NAME: app
+  #  ports:
+  #    - 7777:8080
   caddy:
     build:
       context: .
@@ -67,9 +67,9 @@ services:
   database:
     image: postgres:${POSTGRES_VERSION:-13}-alpine
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-app}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ChangeMe}
-      POSTGRES_USER: ${POSTGRES_USER:-symfony}
+      POSTGRES_DB: app
+      POSTGRES_PASSWORD: gzExETedTBpUIaK
+      POSTGRES_USER: kfAbHdhbhHTzMrbF
     volumes:
       - db_data:/var/lib/postgresql/data:rw
 
