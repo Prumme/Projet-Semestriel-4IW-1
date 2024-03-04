@@ -82,4 +82,66 @@ class InvoiceRepository extends ServiceEntityRepository
 
         return $result;
     }
+
+    public function monthlyNetIncome(Company $company): array
+    {
+
+        $qb = $this->createQueryBuilder('i')
+            ->select('SUM(br.unit * br.quantity) as net_income')
+            ->join('i.quote', 'q')
+            ->join('q.owner', 'o')
+            ->join('q.billingRows', 'br')
+            ->where('o.company = :company')
+            ->andWhere("i.status LIKE 'paid'")
+            ->andWhere('i.emitted_at BETWEEN :start AND :end');
+
+        $result['thisMonth'] = $qb
+            ->getQuery()
+            ->setParameter('company', $company)
+            ->setParameter('start', new \DateTime('first day of this month'))
+            ->setParameter('end', new \DateTime('last day of this month'))
+            ->getSingleScalarResult();
+        
+        $result['lastMonth'] = $qb
+            ->getQuery()
+            ->setParameter('company', $company)
+            ->setParameter('start', new \DateTime('first day of last month'))
+            ->setParameter('end', new \DateTime('last day of last month'))
+            ->getSingleScalarResult();
+        
+        if($result['lastMonth'] == 0) {
+            $result['evolution_rate_percentage'] = 100;
+        }
+        else{
+            $result['evolution_rate_percentage'] = number_format(($result['thisMonth'] - $result['lastMonth']) / abs($result['lastMonth']) * 100, 2);
+        }
+
+        return $result;
+    }   
+
+    public function getAllQuoteValuesByDay(Company $company): array
+    {
+
+        $qb = $this->createQueryBuilder('i')
+            ->select("i.emitted_at AS day", 'SUM(br.unit * br.quantity) AS total_amount')
+            ->join('i.quote', 'q')
+            ->join('q.owner', 'o')
+            ->join('q.billingRows', 'br')
+            ->where('o.company = :company')
+            ->andWhere('i.emitted_at BETWEEN :start AND :end')
+            ->groupBy('day')
+            ->orderBy('day');
+        
+        $result = $qb
+            ->getQuery()
+            ->setParameter('company', $company)
+            ->setParameter('start', new \DateTime('first day of this month'))
+            ->setParameter('end', new \DateTime('last day of this month'))
+            ->getResult();
+        
+        foreach($result as $key => $value) {
+            $result[$key]['day'] = $value['day']->format('Y-m-d');
+        }
+        return $result;
+    }
 }
