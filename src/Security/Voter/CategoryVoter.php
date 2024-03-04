@@ -61,8 +61,7 @@ class CategoryVoter extends Voter
 
     private function canDelete(Category $category, User $user) : bool
     {
-
-        if(!$this->security->isGranted(AuthentificableRoles::ROLE_USER)) return false;
+        if(!$this->security->isGranted(AuthentificableRoles::ROLE_COMPANY_ADMIN)) return false;
         return $this->canView($category, $user);
     }
 }

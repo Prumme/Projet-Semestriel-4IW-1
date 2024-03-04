@@ -10,6 +10,7 @@ use App\Table\ProductsTable;
 use App\Repository\ProductRepository;
 use App\Security\AuthentificableRoles;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,10 +24,10 @@ class ProductController extends AbstractController
 {
     #[Route('/', name: 'app_product_index', methods: ['GET'])]
     #[IsGranted(CompanyVoterAttributes::CAN_VIEW_COMPANY, subject: 'company')]
-    public function index(Company $company, ProductRepository $productRepository): Response
+    public function index(Company $company, ProductRepository $productRepository, Security $security): Response
     {
         $products = $productRepository->findAllWithinCompany($company);
-        $table = new ProductsTable($products, ['company'=>$company]);
+        $table = new ProductsTable($products, ['company'=>$company,'security'=>$security]);
         return $this->render('product/index.html.twig', [
             'table' => $table->createTable(),
         ]);

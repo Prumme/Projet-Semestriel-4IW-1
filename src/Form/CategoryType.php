@@ -26,6 +26,11 @@ class CategoryType extends AbstractType
                         'class'=>'input-50',
                     ],
                     'class' => Product::class,
+                    'query_builder' => function (\Doctrine\ORM\EntityRepository $er) use($options) {
+                        return $er->createQueryBuilder('p')
+                            ->where('p.company = :company')
+                            ->setParameter('company', $options['company']);
+                    },
                     'expanded' => false,
                     'multiple' => true,
                     'choice_label' => 'name',
@@ -45,6 +50,7 @@ class CategoryType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Category::class,
+            'company'=>null,
         ]);
     }
 }

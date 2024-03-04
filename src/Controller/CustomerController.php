@@ -6,12 +6,14 @@ use App\Entity\Company;
 use App\Entity\Customer;
 use App\Form\CustomerType;
 use App\Repository\CustomerRepository;
+use App\Security\AuthentificableRoles;
 use App\Security\Voter\Attributes\CompanyVoterAttributes;
 use App\Security\Voter\Attributes\CustomerVoterAttributes;
 use App\Table\CustomersBillingAddressTable;
 use App\Table\CustomersTable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,10 +24,10 @@ class CustomerController extends AbstractController
 {
     #[Route('/', name: 'app_customer_index', methods: ['GET'])]
     #[IsGranted(CompanyVoterAttributes::CAN_VIEW_COMPANY, subject: 'company')]
-    public function index(Company $company, CustomerRepository $customerRepository): Response
+    public function index(Company $company, CustomerRepository $customerRepository,Security $security): Response
     {
         $customers = $customerRepository->findAllWithinCompany($company);
-        $table = new CustomersTable($customers, ['company' => $company]);
+        $table = new CustomersTable($customers, ['company' => $company,'security'=>$security]);
         return $this->render('customer/index.html.twig', [
             'table' => $table->createTable(),
         ]);
@@ -87,10 +89,13 @@ class CustomerController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_customer_delete', methods: ['POST'])]
-    #[IsGranted(CustomerVoterAttributes::CAN_DELETE_CUSTOMER, subject: 'customer')]
+    #[IsGranted(AuthentificableRoles::ROLE_USER)]
     public function delete(Request $request, Customer $customer, Company $company, EntityManagerInterface $entityManager): Response
     {
-        if ($customer->hasQuotes()) {
+        if(!$this->isGranted(CustomerVoterAttributes::CAN_DELETE_CUSTOMER,$customer)){
+            $this->addFlash('danger', 'You do not have the permission to delete this customer');
+        }
+        else if ($customer->hasQuotes()) {
             $this->addFlash('danger', 'You cannot delete a customer with quotes');
         } else if ($this->isCsrfTokenValid('delete' . $customer->getId(), $request->request->get('_token'))) {
             $entityManager->remove($customer);
