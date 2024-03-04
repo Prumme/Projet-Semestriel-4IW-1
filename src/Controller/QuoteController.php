@@ -7,10 +7,8 @@ use App\Entity\Customer;
 use App\Entity\Product;
 use App\Entity\Quote;
 use App\Entity\Company;
-use App\Entity\User;
 use App\Exception\URLSignedException;
 use App\Form\QuoteType;
-use App\Security\Voter\Attributes\UserVoterAttributes;
 use App\Form\QuoteFilterType;
 use App\Service\QuoteService;
 use App\Service\URLSignedService;
@@ -19,7 +17,6 @@ use App\Repository\QuoteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Security\Voter\Attributes\QuoteVoterAttributes;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -60,7 +57,7 @@ class QuoteController extends AbstractController
         $quote->setEmitedAt(new \DateTime());
         $quote->setExpiredAt((new \DateTime())->modify('+1 month'));
 
-        $products = $entityManager->getRepository(Product::class)->findAll();
+        $products = $entityManager->getRepository(Product::class)->findAllWithinCompany($company);
         $form = $this->createForm(QuoteType::class, $quote, [
             'products' => array_map(fn ($product) => [
                 'value' => json_encode($product->toArray()),
