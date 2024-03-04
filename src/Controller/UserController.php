@@ -18,6 +18,7 @@ use App\Service\EmailService;
 use App\Data\TemplatesList;
 use App\Entity\Quote;
 use App\Form\UserType;
+use App\Entity\Invoice;
 
 #[Route('/user')]
 class UserController extends AbstractController
@@ -43,6 +44,10 @@ class UserController extends AbstractController
         $user = $this->getUser();
         $company = $user->getCompany();
         $quotes = $entityManager->getRepository(Quote::class)->findBy(['owner' => $user->getId()]);
+        $invoices = [];
+        foreach($quotes as $quote){
+            array_push($invoices, $entityManager->getRepository(Invoice::class)->findOneBy(['quote' => $quote->getId()]));
+        }
 
         $form = $this->createForm(UserType::class, $user, [
             'show_roles' => false,
@@ -61,7 +66,8 @@ class UserController extends AbstractController
             'user' => $user,
             'company' => $company,
             'form' => $form,
-            'quotes'=> $quotes
+            'quotes'=> $quotes,
+            'invoices' => $invoices
         ]);
         
     }

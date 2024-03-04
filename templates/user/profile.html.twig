@@ -27,8 +27,17 @@
             </div>
             <div>
                 <h2 class="dark:text-white">My Invoices</h2>
-                {# TO IMPLEMENT WITH INVOICES#}
-                <p>No invoices found</p>
+                {% if invoices is not empty %}
+                    <ul>
+                        {% for invoice in invoices %}
+                            <a href="{{ path('app_invoice_edit', {'invoice': invoice.id, 'company': company.id}) }}">
+                            <li>{{ invoice.InvoiceNumber }}</li>
+                            </a>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No invoices found</p>
+                {% endif %}
             </div>
         </div>
 
