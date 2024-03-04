@@ -17,19 +17,19 @@ class BillingAddress
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
-    #[Assert\NotNull(message: 'The city is required.')]
+    #[Assert\NotNull(message: 'The city is required.'), Assert\Length(min: 3, max: 100, minMessage: 'The city must be at least 3 characters long.')]
     private ?string $city = null;
 
     #[ORM\Column]
-    #[Assert\NotNull(message: 'The zip code is required.')]
+    #[Assert\NotNull(message: 'The zip code is required.'), Assert\Length(min: 5, max: 5, exactMessage: 'The zip code must be 5 characters long.')]
     private ?int $zip_code = null;
 
     #[ORM\Column(length: 2)]
-    #[Assert\NotNull(message: 'The country code is required. Example : FR, US')]
+    #[Assert\NotNull(message: 'The country code is required. Example : FR, US'), Assert\Length(min: 2, max: 2, exactMessage: 'The country code must be 2 characters long.')]
     private ?string $country_code = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotNull(message: 'The address line 1 is required.')]
+    #[Assert\NotNull(message: 'The address line 1 is required.'), Assert\Length(min: 3, max: 255, minMessage: 'The address line 1 must be at least 3 characters long.')]
     private ?string $address_line_1 = null;
 
     #[ORM\Column(length: 255, nullable: true)]
